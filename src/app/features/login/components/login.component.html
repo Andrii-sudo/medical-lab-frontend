@@ -1,0 +1,44 @@
+<div class="wrapper">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <p class="form-title">Вхід в систему</p>
+        <div class="form-block">
+            <label for="email">Email</label>
+            <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>
+            
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
+            {
+                <span class="error">Email обов'язковий</span>
+            }
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
+            {
+                <span class="error">Неправильний формат email</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="password">Пароль</label>
+            <div class="password-wrapper">
+                <input formControlName="password" [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Вкажіть пароль" />
+                <img [src]="showPassword ? '/icons/eye-off.svg' : '/icons/eye.svg'" class="eye-icon" (click)="togglePassword()"/>
+            </div>
+            @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required'))
+            {   
+                <span class="error">Пароль обов'язковий</span>
+            }    
+            @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength'))
+            {
+                <span class="error">Мінімум 6 символів</span>
+            }
+        </div>    
+        
+        <div class="form-block right-align">
+            <button type="submit" [disabled]="loginForm.invalid" id="submit">Увійти</button>
+        </div>
+        
+        <div class="form-block center-align">
+            @if (loginError)
+            {
+                <span class="error" id="loginError">Неправильний Email або пароль</span>
+            }
+        </div>   
+    </form>
+</div>

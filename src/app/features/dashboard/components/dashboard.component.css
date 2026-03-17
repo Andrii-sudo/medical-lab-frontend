@@ -1,0 +1,179 @@
+.content
+{
+    margin-left: 250px; 
+    padding: 2rem;
+}
+
+.content p
+{
+    margin: 0;
+}
+
+.top-bar
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+.date
+{
+    font-weight: 600;
+}
+
+.cards 
+{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.card 
+{
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-text 
+{    
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.card-label 
+{
+    font-size: 12px;
+    color: #a0c4f1;
+}
+
+.card-sub
+{
+    font-size: 11px;
+    color: #6b8cba;
+}
+
+.card-value 
+{
+    font-size: 28px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+
+.schedule-samples
+{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.panel
+{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #1e293b;
+    color: #cbd5f5;
+    box-shadow: 0 1px 4px rgb(0, 0, 0, 0.3);
+}
+
+
+.panel-title
+{
+    font-weight: 600;
+    margin-bottom: 0.75rem !important;
+    color: white;
+}
+
+.panel-item
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-top: 1px solid #2d3f55 ;
+    font-size: 13px;
+}
+
+.panel-item:last-child
+{
+    border-bottom: none;
+}
+
+.panel-item-day
+{
+    flex: 0 0 3rem;
+    text-align: center;
+}
+
+.panel-item-office
+{
+    flex: 1;
+}
+
+.panel-item-time
+{
+    flex: 0 0 6rem;
+    text-align: center;
+}
+
+.panel-item-dot
+{
+    display: inline-block;
+    flex: 0 0 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+
+    margin: 0 0.5rem;
+}
+
+.dot-red    { background-color: #e24b4a; }
+.dot-yellow { background-color: #ef9f27; }
+.dot-green  { background-color: #639922; }
+
+.panel-item-sample
+{
+    flex: 1;
+}
+
+.panel-item-datetime
+{
+    flex: 0 0 8rem;
+    text-align: center;
+}
+
+@media (max-width: 1050px) 
+{
+    .cards 
+    {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .schedule-samples
+    {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) 
+{
+    .cards 
+    {
+        grid-template-columns: 1fr;
+    }
+}

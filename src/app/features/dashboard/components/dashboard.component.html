@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<div class="content">
+    <div class="top-bar">
+        <h2>Інформаційна панель</h2>
+        <span class="date">{{ today }}</span>
+    </div>
+    <div class="cards">
+        <div class="card">
+            <div class="card-text">
+                <span class="card-label">Заплановані відвідувачі</span>
+                <span class="card-sub">на сьогодні</span>
+            </div>
+            <span class="card-value">{{ plannedVisitors }}</span>
+        </div>
+        <div class="card">
+            <div class="card-text">
+                <span class="card-label">Очікують здачі зразка</span>
+                <span class="card-sub">пацієнти</span>
+            </div>
+            <span class="card-value">{{ pendingSamples }}</span>
+        </div>
+        <div class="card">
+            <div class="card-text">
+                <span class="card-label">Зразків в лабораторії</span>
+                <span class="card-sub">в обробці</span>
+            </div>
+            <span class="card-value">{{ processingSamples }}</span>
+        </div>
+        <div class="card">
+            <div class="card-text">
+                <span class="card-label">Готових результатів</span>
+                <span class="card-sub">на сьогодні</span>
+            </div>
+            <span class="card-value">{{ completedResults }}</span>
+        </div>
+    </div>
+    <div class="schedule-samples">
+        <div class="panel">
+            <p class="panel-title">Мій графік</p>
+            @for (shift of shifts; track $index)
+            {
+                <div class="panel-item">
+                    <span class="panel-item-day">{{ shift.day }}</span>
+                    <span class="panel-item-office">{{ shift.city }}, Відділення №{{ shift.officeNumber }}</span>
+                    <span class="panel-item-time">{{ shift.startTime }}-{{ shift.endTime }}</span>
+                </div>
+            }
+        </div>
+        <div class="panel">
+            <p class="panel-title">Зразки, що скоро прострочаться</p>
+            @for (sample of samples; track $index)
+            {
+                <div class="panel-item">
+                    <span class="panel-item-dot" [class]="getSampleStatus(sample.expiresAt)"></span>
+                    <span class="panel-item-sample">{{ sample.type }}</span>
+                    <span class="panel-item-datetime">{{ formatExpiryDate(sample.expiresAt) }}</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
