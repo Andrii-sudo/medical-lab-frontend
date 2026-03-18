@@ -61,7 +61,6 @@ form
     font-size: 15px;
     outline: none;
     transition: border-color 0.2s;
-    
 }
 
 .form-block input:focus
@@ -169,6 +168,7 @@ form
     transition: opacity 0.2s;
 }
 
-.eye-icon:hover {
+.eye-icon:hover 
+{
     opacity: 1;
 }
