@@ -6,8 +6,8 @@
     <button class="btn-add">+ Новий пацієнт</button>
 </div>
 
-<div class="patients-panel">
-    <div class="patients-list">
+<div class="table-panel">
+    <div class="table">
         <span class="col-header">Пацієнт</span>
         <span class="col-header">Дата народження</span>
         <span class="col-header">Контакти</span>
@@ -18,8 +18,8 @@
             <div class="list-row">
                 @if (patient.middleName != null)
                 {
-                    <div class="patient-name">
-                        <span class="text">{{ patient.lastName }} {{ patient.firstName }}</span>
+                    <div class="cell-stack">
+                        <span class="maintext">{{ patient.lastName }} {{ patient.firstName }}</span>
                         <span class="subtext">{{ patient.middleName }}</span>
                     </div>
                 }
@@ -32,8 +32,8 @@
 
                 @if (patient.phone != null && patient.email != null)
                 {  
-                    <div class="patient-contacts">
-                        <span class="text">{{ patient.phone }}</span>
+                    <div class="cell-stack">
+                        <span class="maintext">{{ patient.phone }}</span>
                         <span class="subtext">{{ patient.email }}</span>
                     </div>
                 }

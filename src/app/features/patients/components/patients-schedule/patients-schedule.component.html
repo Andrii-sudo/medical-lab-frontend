@@ -15,8 +15,8 @@
     </select>
 </div>
 
-<div class="patients-panel">
-    <div class="schedule-list">
+<div class="table-panel">
+    <div class="table">
         <span class="col-header">Час</span>
         <span class="col-header">Пацієнт</span>
         <span class="col-header">Мета візиту</span>
@@ -30,8 +30,8 @@
 
                 @if (app.patientMiddleName != null)
                 {
-                    <div class="patient-name">
-                        <span class="text">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
+                    <div class="cell-stack">
+                        <span class="maintext">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
                         <span class="subtext">{{ app.patientMiddleName }}</span>
                     </div>
                 }
