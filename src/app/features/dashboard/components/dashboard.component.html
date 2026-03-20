@@ -52,7 +52,7 @@
             @for (sample of samples; track $index)
             {
                 <div class="panel-item">
-                    <span class="panel-item-dot" [class]="getSampleStatus(sample.expiresAt)"></span>
+                    <span class="panel-item-dot" [ngClass]="getSampleStatus(sample.expiresAt)"></span>
                     <span class="panel-item-sample">{{ sample.type }}</span>
                     <span class="panel-item-datetime">{{ formatExpiryDate(sample.expiresAt) }}</span>
                 </div>

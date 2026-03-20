@@ -1,4 +1,4 @@
-export interface PatientListItem 
+export interface Patient 
 {
     firstName: string;
     lastName: string;

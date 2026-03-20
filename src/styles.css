@@ -1,5 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+@font-face 
+{
+    font-family: 'Open Sans';
+    src: url('/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+* 
+{
+    box-sizing: border-box;
+}
 
 body
 {

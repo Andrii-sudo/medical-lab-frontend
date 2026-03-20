@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { PatientsListComponent } from './patients-list/patients-list.component';
 import { PatientsScheduleComponent } from './patients-schedule/patients-schedule.component';
-import { PatientTab } from '../enums/patient-tab';
+import { PatientTab } from '../enums/patient-tab.enum';
 
 
 @Component({

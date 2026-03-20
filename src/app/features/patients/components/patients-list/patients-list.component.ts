@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { patientList } from '../dummy'
-import { PatientListItem } from '@features/patients/interfaces/patient-list-item';
+import { Patient } from '@features/patients/interfaces/patient.interface';
 
 @Component({
     selector: 'app-patients-list',
@@ -11,5 +11,5 @@ import { PatientListItem } from '@features/patients/interfaces/patient-list-item
 })
 export class PatientsListComponent 
 {
-    patients: PatientListItem[] = patientList;
+    patients: Patient[] = patientList;
 }

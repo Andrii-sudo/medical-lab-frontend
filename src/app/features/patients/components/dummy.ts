@@ -1,6 +1,9 @@
-import { PatientListItem } from "../interfaces/patient-list-item";
+import { Patient } from "../interfaces/patient.interface";
+import { Appointment } from "../interfaces/appointment.interface";
+import { AppointmentPurpose } from "../enums/appointment-purpose.enum";
+import { AppointmentStatus } from "../enums/appointment-status.enum";
 
-export const patientList: PatientListItem[] = [
+export const patientList: Patient[] = [
   {
     firstName: "Тетяна",
     lastName: "Шевченко",
@@ -28,5 +31,45 @@ export const patientList: PatientListItem[] = [
     middleName: "Сергійович",
     birthDate: new Date(1960, 1, 17), // 1 = лютий
     phone: "+38 063 456 78 90"
+  }
+];
+
+export const appointments: Appointment[] = [
+  {
+    visitTime: new Date(new Date().setHours(9, 0, 0)),
+    patientFirstName: 'Олена',
+    patientLastName: 'Коваленко',
+    status: AppointmentStatus.Completed,
+    purpose: AppointmentPurpose.FirstVisit
+  },
+  {
+    visitTime: new Date(new Date().setHours(10, 30, 0)),
+    patientFirstName: 'Іван',
+    patientLastName: 'Петренко',
+    patientMiddleName: 'Миколайович',
+    status: AppointmentStatus.Arrived,
+    purpose: AppointmentPurpose.Sample
+  },
+  {
+    visitTime: new Date(new Date().setHours(12, 0, 0)),
+    patientFirstName: 'Марія',
+    patientLastName: 'Сидоренко',
+    status: AppointmentStatus.Pending,
+    purpose: AppointmentPurpose.Results
+  },
+  {
+    visitTime: new Date(new Date().setHours(14, 15, 0)),
+    patientFirstName: 'Олександр',
+    patientLastName: 'Ткаченко',
+    patientMiddleName: 'Васильович',
+    status: AppointmentStatus.Arrived,
+    purpose: AppointmentPurpose.FirstVisit
+  },
+  {
+    visitTime: new Date(new Date().setHours(19, 45, 0)),
+    patientFirstName: 'Анна',
+    patientLastName: 'Мороз',
+    status: AppointmentStatus.Cancelled,
+    purpose: AppointmentPurpose.Sample
   }
 ];

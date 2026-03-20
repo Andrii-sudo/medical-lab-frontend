@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { Shift } from '../interfaces/shift.interface';
 import { Sample } from '../interfaces/sample.interface';
@@ -9,7 +10,7 @@ import { shifts, samples } from '../dummy'
 
 @Component({
     selector: 'app-dashboard',
-    imports: [NavbarComponent],
+    imports: [NavbarComponent, CommonModule],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'
 })

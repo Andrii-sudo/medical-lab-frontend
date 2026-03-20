@@ -84,7 +84,6 @@
 {
     display: grid;
     grid-template-columns: 2fr 1fr 1.5fr auto;
-
     grid-template-rows: auto;
     grid-auto-rows: 1fr;
 }
@@ -155,13 +154,14 @@
     color: #a0c4f1;
 }
 
-.row-action
+.col-action
 {
     display: flex;
     justify-content: flex-end;
 }
 
-.btn-order
+
+.btn-action
 {
     background-color: transparent;
     color: #4a90e2;
@@ -172,11 +172,20 @@
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s, color 0.2s;   
 }
 
-.btn-order:hover
+.btn-action:hover
 {
     background-color: #4a90e2;
     color: white;
+}
+
+.empty-state
+{
+    grid-column: 1 / -1;
+    padding: 2rem 0.75rem;
+    text-align: center;
+    color: #6b8cba;
+    font-size: 14px;
 }
