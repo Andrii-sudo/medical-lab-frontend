@@ -1,0 +1,120 @@
+.backdrop
+{
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+dialog
+{
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    width: 25rem;
+    box-shadow: 0 1px 4px rgb(0, 0, 0, 0.3);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.dialog-header
+{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.dialog-title
+{
+    color: white;
+    font-weight: 600;
+    margin: 0;
+}
+
+.dialog-close
+{
+    background-color: #334155;
+    color: #cbd5f5;
+    border: 1px solid #475569;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dialog-close:hover
+{
+    background-color: #475569;
+    color: white;
+    border-color: #64748b;
+}
+
+.dialog-description
+{
+    color: #a0c4f1;
+    margin-bottom: 1rem;
+}
+
+.dialog-actions
+{
+    display: flex;
+    justify-content: end;
+    gap: 0.5rem;
+}
+
+.dialog-cancel
+{
+    background-color: #334155;
+    color: #cbd5f5;
+    border: 1px solid #475569;
+    padding: 0 1rem;
+    height: 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dialog-cancel:hover
+{
+    background-color: #475569;
+    color: white;
+    border-color: #64748b;
+}
+
+.dialog-confirm
+{
+    background-color: #2563eb;
+    color: white;
+    border: 1px solid #1d4ed8;
+    padding: 0 1rem;
+    height: 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dialog-confirm:hover
+{
+    background-color: #1d4ed8;
+    border-color: #1e40af;
+}
+
+.dialog-confirm:active
+{
+    background-color: #1e40af;
+}
+
+@media (max-width: 550px) 
+{
+    dialog
+    {
+        width: 90%;
+    }
+}
