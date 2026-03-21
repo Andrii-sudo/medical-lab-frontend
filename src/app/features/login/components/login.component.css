@@ -96,7 +96,7 @@ form
 
 #submit
 {
-    background-color: #3b82f6;
+    background-color: #2563eb;
     color: white;
     border: none;
 
@@ -113,7 +113,13 @@ form
 
 #submit:hover
 {
-    background-color: #2563eb;
+    background-color: #1d4ed8;
+    border-color: #1e40af;
+}
+
+#submit:active
+{
+    background-color: #1e40af;
 }
 
 #submit:disabled

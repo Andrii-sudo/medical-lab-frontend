@@ -60,14 +60,16 @@
                         class="btn-action btn-advance" 
                         [title]="app.status === AppointmentStatus.Completed ? 'Завершено' : 'Підтвердити візит'"
                         [disabled]="app.status === AppointmentStatus.Completed
-                                    || app.status === AppointmentStatus.Cancelled">
+                                    || app.status === AppointmentStatus.Cancelled"
+                        (click)="onAdvanceClick(app.id)">
                         &#10003;
                     </button>
                     
                     <button
                         class="btn-action btn-cancel" 
                         title="Скасувати запис"
-                        [disabled]="app.status !== AppointmentStatus.Pending">
+                        [disabled]="app.status !== AppointmentStatus.Pending"
+                        (click)="onCancelClick(app.id)">
                         &#10006;
                     </button>
                 </div>
@@ -79,3 +81,21 @@
         }
     </div>
 </div>
+
+@if (showAdvanceDialog)
+{
+    <app-confirm-dialog 
+        [title]="dialogTitle" 
+        [description]="dialogDescription"
+        (cancel)="showAdvanceDialog = false"
+        (confirm)="advanceAppointment(selectedAppId)" />
+}
+
+@if (showCancelDialog)
+{
+    <app-confirm-dialog 
+        [title]="dialogTitle" 
+        [description]="dialogDescription"
+        (cancel)="showCancelDialog = false"
+        (confirm)="cancelAppointment(selectedAppId)" />
+}

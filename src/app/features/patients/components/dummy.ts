@@ -5,6 +5,7 @@ import { AppointmentStatus } from "../enums/appointment-status.enum";
 
 export const patientList: Patient[] = [
   {
+    id: 1,
     firstName: "Тетяна",
     lastName: "Шевченко",
     middleName: "Михайлівна",
@@ -13,12 +14,14 @@ export const patientList: Patient[] = [
     email: "t.shevchenko@gmail.com"
   },
   {
+    id: 2,
     firstName: "Василь",
     lastName: "Мельник",
     birthDate: new Date(1972, 10, 4), // 10 = листопад
     email: "v.melnyk@gmail.com"
   },
   {
+    id: 3,
     firstName: "Олена",
     lastName: "Коваленко",
     middleName: "Іванівна",
@@ -26,6 +29,7 @@ export const patientList: Patient[] = [
     phone: "+38 067 123 45 67"
   },
   {
+    id: 4,
     firstName: "Андрій",
     lastName: "Бойко",
     middleName: "Сергійович",
@@ -36,6 +40,7 @@ export const patientList: Patient[] = [
 
 export const appointments: Appointment[] = [
   {
+    id: 1,
     visitTime: new Date(new Date().setHours(9, 0, 0)),
     patientFirstName: 'Олена',
     patientLastName: 'Коваленко',
@@ -43,6 +48,7 @@ export const appointments: Appointment[] = [
     purpose: AppointmentPurpose.FirstVisit
   },
   {
+    id: 2,
     visitTime: new Date(new Date().setHours(10, 30, 0)),
     patientFirstName: 'Іван',
     patientLastName: 'Петренко',
@@ -51,6 +57,7 @@ export const appointments: Appointment[] = [
     purpose: AppointmentPurpose.Sample
   },
   {
+    id: 3,
     visitTime: new Date(new Date().setHours(12, 0, 0)),
     patientFirstName: 'Марія',
     patientLastName: 'Сидоренко',
@@ -58,6 +65,7 @@ export const appointments: Appointment[] = [
     purpose: AppointmentPurpose.Results
   },
   {
+    id: 4,
     visitTime: new Date(new Date().setHours(14, 15, 0)),
     patientFirstName: 'Олександр',
     patientLastName: 'Ткаченко',
@@ -66,6 +74,7 @@ export const appointments: Appointment[] = [
     purpose: AppointmentPurpose.FirstVisit
   },
   {
+    id: 5,
     visitTime: new Date(new Date().setHours(19, 45, 0)),
     patientFirstName: 'Анна',
     patientLastName: 'Мороз',
