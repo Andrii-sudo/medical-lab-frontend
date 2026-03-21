@@ -1,0 +1,57 @@
+<div class="toolbar">
+    <div class="search-wrapper">
+        <input type="text" />
+        <img src="icons/search.svg" class="search-icon" />
+    </div>
+    <button class="btn-add">+ Новий пацієнт</button>
+</div>
+
+<div class="table-panel">
+    <div class="table">
+        <span class="col-header">Пацієнт</span>
+        <span class="col-header">Дата народження</span>
+        <span class="col-header">Контакти</span>
+        <span class="col-header"></span>
+
+        @for (patient of patients; track $index) 
+        { 
+            <div class="list-row">
+                @if (patient.middleName != null)
+                {
+                    <div class="cell-stack">
+                        <span class="maintext">{{ patient.lastName }} {{ patient.firstName }}</span>
+                        <span class="subtext">{{ patient.middleName }}</span>
+                    </div>
+                }
+                @else 
+                {
+                    <span class="single">{{ patient.lastName }} {{ patient.firstName }}</span>
+                }
+
+                <span class="single">{{ patient.birthDate | date:'dd.MM.yyyy' }}</span>
+
+                @if (patient.phone != null && patient.email != null)
+                {  
+                    <div class="cell-stack">
+                        <span class="maintext">{{ patient.phone }}</span>
+                        <span class="subtext">{{ patient.email }}</span>
+                    </div>
+                }
+                @else
+                {
+                    <span class="single">{{ patient.email ?? patient.phone }}</span>
+                }  
+                
+                <div class="col-action">
+                    <button class="btn-action">Записати</button>
+                </div>
+            </div>
+        }
+        @empty
+        {
+            <div class="empty-state">
+                <span>Пацієнтів не знайдено</span>
+            </div>
+        }
+    </div>
+</div>

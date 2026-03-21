@@ -1,0 +1,32 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Пацієнти</h2>
+    </div>
+
+    <div class="tabs">
+        <button 
+            class="tab"
+            [class.active]="activeTab === PatientTab.All"
+            (click)="activeTab = PatientTab.All">
+            Всі пацієнти
+        </button>
+        <button 
+            class="tab"
+            [class.active]="activeTab === PatientTab.Schedule"
+            (click)="activeTab = PatientTab.Schedule">
+            Записані пацієнти
+        </button>
+    </div>
+    
+    @if (activeTab === PatientTab.All)
+    {
+        <app-patients-list />
+    }
+
+    @if (activeTab === PatientTab.Schedule)
+    {
+        <app-patients-schedule />
+    }
+</main>

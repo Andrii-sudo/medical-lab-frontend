@@ -1,0 +1,81 @@
+<div class="toolbar">
+    <div class="date-nav">
+        <button class="btn-nav" (click)="shiftDay(-1)">&#8249;</button>
+        <span class="date-label">{{ selectedDate | date:'EEEE, d MMMM yyyy' : '' : 'uk' }}</span>
+        <button class="btn-nav" (click)="shiftDay(1)">&#8250;</button>
+    </div>
+    <button class="btn-today" (click)="setToday()">Сьогодні</button>
+
+    <select class="slc-filter" [(ngModel)]="selectedStatus">
+        <option [ngValue]="undefined"                  >Всі статуси</option>
+        <option [ngValue]="AppointmentStatus.Pending"  >Очікується</option>
+        <option [ngValue]="AppointmentStatus.Arrived"  >Прибув</option>
+        <option [ngValue]="AppointmentStatus.Completed">Завершено</option>
+        <option [ngValue]="AppointmentStatus.Cancelled">Скасовано</option>
+    </select>
+</div>
+
+<div class="table-panel">
+    <div class="table">
+        <span class="col-header">Час</span>
+        <span class="col-header">Пацієнт</span>
+        <span class="col-header">Мета візиту</span>
+        <span class="col-header">Статус</span>
+        <span class="col-header"></span>
+
+        @for (app of filteredAppointments; track $index)
+        {
+            <div class="list-row">
+                <span class="single" [class.past-time]="isPast(app.visitTime)">{{ app.visitTime | date:'HH:mm' }}</span>
+
+                @if (app.patientMiddleName != null)
+                {
+                    <div class="cell-stack">
+                        <span class="maintext">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
+                        <span class="subtext">{{ app.patientMiddleName }}</span>
+                    </div>
+                }
+                @else 
+                {
+                    <span class="single">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
+                }
+
+                <span class="single">{{ getPurposeLabel(app.purpose) }}</span>
+
+                <span class="single">{{ getStatusLabel(app.status) }}</span>
+
+                <div class="col-action">
+                    @if (app.purpose === AppointmentPurpose.FirstVisit
+                         && app.status === AppointmentStatus.Arrived)
+                    {
+                        <button class="btn-action btn-order">+ Замовлення</button>
+                    }
+                    @else if (app.purpose === AppointmentPurpose.Sample
+                              && app.status === AppointmentStatus.Arrived) 
+                    {
+                        <button class="btn-action btn-sample">Зібрати зразок</button>
+                    }
+
+                    <button 
+                        class="btn-action btn-advance" 
+                        [title]="app.status === AppointmentStatus.Completed ? 'Завершено' : 'Підтвердити візит'"
+                        [disabled]="app.status === AppointmentStatus.Completed
+                                    || app.status === AppointmentStatus.Cancelled">
+                        &#10003;
+                    </button>
+                    
+                    <button
+                        class="btn-action btn-cancel" 
+                        title="Скасувати запис"
+                        [disabled]="app.status !== AppointmentStatus.Pending">
+                        &#10006;
+                    </button>
+                </div>
+            </div>
+        }
+        @empty
+        {
+            <div class="empty-state">Записів на цей день немає</div>
+        }
+    </div>
+</div>
