@@ -5,6 +5,7 @@ export interface Patient
     lastName: string;
     middleName?: string;
     birthDate: Date;
+    gender: string;
     phone?: string;
     email?: string;
 }

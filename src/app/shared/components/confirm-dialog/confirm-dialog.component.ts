@@ -14,8 +14,8 @@ export class ConfirmDialogComponent
     @Input() cancelText: string = 'Ні';
     @Input() confirmText: string = 'Так';
 
-    @Output() cancel = new EventEmitter();
-    @Output() confirm = new EventEmitter();
+    @Output() cancel = new EventEmitter<void>();
+    @Output() confirm = new EventEmitter<void>();
 
     onDialogCancel(): void
     {

@@ -31,13 +31,13 @@
         </div>    
         
         <div class="form-block right-align">
-            <button type="submit" [disabled]="loginForm.invalid" id="submit">Увійти</button>
+            <button type="submit" [disabled]="loginForm.invalid" class="btn-submit">Увійти</button>
         </div>
         
         <div class="form-block center-align">
             @if (loginError)
             {
-                <span class="error" id="loginError">Неправильний Email або пароль</span>
+                <span class="error login-error">Неправильний Email або пароль</span>
             }
         </div>   
     </form>
