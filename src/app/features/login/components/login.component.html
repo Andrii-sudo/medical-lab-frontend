@@ -1,5 +1,5 @@
 <main class="wrapper">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form class="app-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <p class="form-title">Вхід в систему</p>
         <div class="form-block">
             <label for="email">Email</label>
@@ -7,11 +7,11 @@
             
             @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
             {
-                <span class="error">Email обов'язковий</span>
+                <span class="form-error">Email обов'язковий</span>
             }
             @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
             {
-                <span class="error">Неправильний формат email</span>
+                <span class="form-error">Неправильний формат email</span>
             }
         </div>
         <div class="form-block">
@@ -22,22 +22,22 @@
             </div>
             @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required'))
             {   
-                <span class="error">Пароль обов'язковий</span>
+                <span class="form-error">Пароль обов'язковий</span>
             }    
             @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength'))
             {
-                <span class="error">Мінімум 6 символів</span>
+                <span class="form-error">Мінімум 6 символів</span>
             }
         </div>    
         
-        <div class="form-block right-align">
+        <div class="form-block form-buttons">
             <button type="submit" [disabled]="loginForm.invalid" class="btn-submit">Увійти</button>
         </div>
         
-        <div class="form-block center-align">
+        <div class="login-error">
             @if (loginError)
             {
-                <span class="error login-error">Неправильний Email або пароль</span>
+                <span class="form-error">Неправильний Email або пароль</span>
             }
         </div>   
     </form>
