@@ -46,7 +46,6 @@
 
 .btn-today
 {
-    border: 1px solid #374151;
     background-color: #1f2937;
     color: #a0c4f1;
     border: 1px solid #374151;
@@ -75,9 +74,9 @@
     outline: none;
 }
 
-.table
+.app-table
 {
-    grid-template-columns: 5rem 1.5fr 1.5fr 1fr auto;;
+    grid-template-columns: 5rem 1.5fr 1.5fr 1fr auto;
 }
 
 .past-time

@@ -1,0 +1,20 @@
+.app-form
+{
+    padding: 1.25rem;
+    width: 35rem;
+}
+
+.form-date-gender-row /* Для того щоб не змінювати в @media */
+{
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 0.5rem;
+}
+
+.contact-error
+{
+    display: flex;
+    justify-content: center;
+    margin-top: -0.75rem;
+    margin-bottom: 1rem;
+}

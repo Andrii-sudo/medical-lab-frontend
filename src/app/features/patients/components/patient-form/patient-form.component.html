@@ -1,0 +1,95 @@
+<div class="backdrop" (click)="onCancelClick()"></div>
+
+<form class="app-form" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    <h3 class="form-title">Додати нового пацієнта</h3>
+    <div class="form-row">
+        <div class="form-block">
+            <label for="first-name">Ім'я</label>
+            <input formControlName="firstName" type="text" id="first-name" placeholder="Вкажіть ім'я пацієнта" />
+        
+            @if (patientForm.get('firstName')?.touched && patientForm.get('firstName')?.hasError('required'))
+            {
+                <span class="form-error">Ім'я обов'язкове</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="last-name">Прізвище</label>
+            <input formControlName="lastName" type="text" id="last-name" placeholder="Вкажіть прізвище пацієнта" />
+            
+            @if (patientForm.get('lastName')?.touched && patientForm.get('lastName')?.hasError('required'))
+            {
+                <span class="form-error">Прізвище обов'язкове</span>
+            }
+        </div>
+    </div>
+    <div class="form-block">
+        <label for="middle-name">По батькові</label>
+        <input formControlName="middleName" type="text" id="middle-name" placeholder="Вкажіть по батькові пацієнта" />
+    </div>
+    <div class="form-date-gender-row">
+        <div class="form-block">
+            <label for="birth-date">Дата народження</label>
+            <input formControlName="birthDate" type="date" id="birth-date" />
+        
+            @if (patientForm.get('birthDate')?.touched && patientForm.get('birthDate')?.hasError('required'))
+            {
+                <span class="form-error">Дата народження обов'язкова</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="gender">Стать</label>
+            <select formControlName="gender" id="gender">
+                <option value="" disabled selected>Оберіть стать</option>
+                <option value="Ч">Чоловіча</option>
+                <option value="Ж">Жіноча</option>
+            </select>
+            
+            @if (patientForm.get('gender')?.touched && patientForm.get('gender')?.hasError('required'))
+            {
+                <span class="form-error">Стать обов'язкова</span>
+            }
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-block">
+            <label for="phone">Номер телефону</label>
+            <input formControlName="phone" type="tel" id="phone" placeholder="Вкажіть номер пацієнта" />
+            
+            @if (patientForm.get('phone')?.touched && patientForm.get('phone')?.hasError('pattern'))
+            {
+                <span class="form-error">Неправильний формат номера телефону</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="email">Email</label>
+            <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email пацієнта" />
+            
+            @if (patientForm.get('email')?.touched && patientForm.get('email')?.hasError('email'))
+            {
+                <span class="form-error">Неправильний формат email</span>
+            }
+        </div>
+    </div>
+    <div class="contact-error">
+        @if (patientForm.hasError('contactRequired') && (patientForm.get('phone')?.touched || patientForm.get('email')?.touched))
+        {
+            <span class="form-error">Вкажіть телефон або email</span>
+        }
+    </div>
+
+    <div class="form-block form-buttons">
+        <button type="button" class="btn-cancel" (click)="onCancelClick()">Скасувати</button>
+        <button 
+            type="submit" 
+            [disabled]="patientForm.invalid" 
+            class="btn-submit" 
+            (mouseenter)="patientForm.markAllAsTouched()">Додати</button>
+    </div>
+
+    <div>
+        @if (patientError)
+        {
+            <span class="form-error">Помилка додавання</span>
+        }
+    </div>
+</form>
