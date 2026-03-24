@@ -2,6 +2,8 @@ import { Patient } from "../interfaces/patient.interface";
 import { Appointment } from "../interfaces/appointment.interface";
 import { AppointmentPurpose } from "../enums/appointment-purpose.enum";
 import { AppointmentStatus } from "../enums/appointment-status.enum";
+import { Office } from "src/app/office.interface";
+import { OfficeType } from "src/app/office-type";
 
 export const patientList: Patient[] = [
   {
@@ -85,4 +87,13 @@ export const appointments: Appointment[] = [
     status: AppointmentStatus.Cancelled,
     purpose: AppointmentPurpose.Sample
   }
+];
+
+export const offices: Office[] = [
+    { id: 1, number: 1, city: 'Львів',  address: 'вул. Городоцька, 34',  type: OfficeType.Mixed      },
+    { id: 2, number: 2, city: 'Львів',  address: 'вул. Наукова, 7',      type: OfficeType.Collection },
+    { id: 3, number: 3, city: 'Київ',   address: 'вул. Хрещатик, 15',    type: OfficeType.Mixed      },
+    { id: 4, number: 4, city: 'Київ',   address: 'просп. Перемоги, 42',  type: OfficeType.Analysis   },
+    { id: 5, number: 5, city: 'Харків', address: 'вул. Сумська, 21',     type: OfficeType.Collection },
+    { id: 6, number: 6, city: 'Харків', address: 'вул. Пушкінська, 10',  type: OfficeType.Mixed      },
 ];

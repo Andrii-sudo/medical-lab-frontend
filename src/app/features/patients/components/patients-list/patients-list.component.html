@@ -43,7 +43,8 @@
                 }  
                 
                 <div class="col-action">
-                    <button class="btn-action">Записати</button>
+                    <button 
+                        class="btn-action" (click)="onAddApointmentClick(patient)">Записати</button>
                 </div>
             </div>
         }
@@ -61,4 +62,13 @@
     <app-patient-form 
         (cancel)="showPatientForm = false" 
         (confirm)="addPatient($event)" />
+}
+
+@if (showAppointmentForm)
+{
+    <app-appointment-form 
+        [patientId]="selectedPatient.id" 
+        [patientFirstName]="selectedPatient.firstName" 
+        [patientLastName]="selectedPatient.lastName"
+        (cancel)="showAppointmentForm = false"/>
 }

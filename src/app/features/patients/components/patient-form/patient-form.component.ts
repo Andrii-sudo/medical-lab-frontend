@@ -23,7 +23,8 @@ export class PatientFormComponent
     
     patientForm: FormGroup;
     patientError = false;
-
+    today = new Date().toISOString().split('T')[0];
+    
     constructor(private fb: FormBuilder)
     {
         this.patientForm = this.fb.group({
@@ -44,7 +45,11 @@ export class PatientFormComponent
 
     onSubmit(): void
     {
-        if (this.patientForm.valid)
+        if (!this.patientForm.valid)
+        {
+            this.patientForm.markAllAsTouched();
+        }
+        else
         {
             const value = {
                 ...this.patientForm.value,
