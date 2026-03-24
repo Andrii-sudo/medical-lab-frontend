@@ -1,0 +1,92 @@
+<div class="backdrop" (click)="onCancelClick()"></div>
+
+<form class="app-form" [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+    <h3 class="form-title">
+        Записати пацієнта <span>{{ patientLastName }} {{ patientFirstName }}</span>
+    </h3>
+    <div class="form-block">
+        <label for="visit-purpose">Мета візиту</label>
+        <select formControlName="visitPurpose" id="visit-purpose">
+            <option value="" disabled selected>Оберіть мету візиту</option>
+            <option [value]="appointmentPurpose.FirstVisit">Перший візит</option>
+            <option [value]="appointmentPurpose.Sample">Здача зразка</option>
+            <option [value]="appointmentPurpose.Results">Забрати результати</option>
+        </select>
+            
+        @if (appointmentForm.get('visitPurpose')?.touched && appointmentForm.get('visitPurpose')?.hasError('required'))
+        {
+            <span class="form-error">Мета візиту обов'язкова</span>
+        }
+    </div>
+    <div class="form-row">
+        <div class="form-block">
+            <label for="city">Місто</label>
+            <select formControlName="city" id="city">
+                <option value="" disabled selected>Оберіть місто</option>
+                @for (city of cities; track city)
+                {
+                    <option [value]="city">{{ city }}</option>
+                }
+            </select>
+        
+            @if (appointmentForm.get('city')?.touched && appointmentForm.get('city')?.hasError('required'))
+            {
+                <span class="form-error">Місто обов'язкове</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="office-id">Відділення</label>
+            <select formControlName="officeId" id="office-id">
+                <option value="" disabled selected>Оберіть відділення</option>
+                @for (office of filteredOffices; track office.id)
+                {
+                    <option [value]="office.id">№{{ office.number }} - {{ office.address }}</option>
+                }
+                @empty 
+                {
+                    <option value="" disabled>Відділень немає</option>
+                }
+            </select>
+            
+            @if (appointmentForm.get('officeId')?.touched && appointmentForm.get('officeId')?.hasError('required'))
+            {
+                <span class="form-error">Відділення обов'язкове</span>
+            }
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-block">
+            <label for="visit-date">Дата візиту</label>
+            <input formControlName="visitDate" type="date" [min]="today" id="visit-date" placeholder="Вкажіть дату візиту" />
+        
+            @if (appointmentForm.get('visitDate')?.touched && appointmentForm.get('visitDate')?.hasError('required'))
+            {
+                <span class="form-error">Дата візиту обов'язкова</span>
+            }
+        </div>
+        <div class="form-block">
+            <label for="visit-time">Час візиту</label>
+            <select formControlName="visitTime" id="visit-time">
+                <option value="" disabled selected>Оберіть час візиту</option>
+                @for (time of availableSlots; track time)
+                {
+                    <option [value]="time">{{ time }}</option>
+                }
+                @empty 
+                {
+                    <option value="" disabled>Вільного часу немає</option>
+                }
+            </select>
+            
+            @if (appointmentForm.get('visitTime')?.touched && appointmentForm.get('visitTime')?.hasError('required'))
+            {
+                <span class="form-error">Час візиту обов'язковий</span>
+            }
+        </div>
+    </div>
+
+    <div class="form-block form-buttons">
+        <button type="button" class="btn-cancel" (click)="onCancelClick()">Скасувати</button>
+        <button type="submit" class="btn-submit">Записати</button>
+    </div>
+</form>

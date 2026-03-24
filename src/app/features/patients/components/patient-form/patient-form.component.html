@@ -29,7 +29,7 @@
     <div class="form-date-gender-row">
         <div class="form-block">
             <label for="birth-date">Дата народження</label>
-            <input formControlName="birthDate" type="date" id="birth-date" />
+            <input formControlName="birthDate" type="date" [max]="today" id="birth-date" />
         
             @if (patientForm.get('birthDate')?.touched && patientForm.get('birthDate')?.hasError('required'))
             {
@@ -79,11 +79,7 @@
 
     <div class="form-block form-buttons">
         <button type="button" class="btn-cancel" (click)="onCancelClick()">Скасувати</button>
-        <button 
-            type="submit" 
-            [disabled]="patientForm.invalid" 
-            class="btn-submit" 
-            (mouseenter)="patientForm.markAllAsTouched()">Додати</button>
+        <button type="submit" class="btn-submit">Додати</button>
     </div>
 
     <div>
