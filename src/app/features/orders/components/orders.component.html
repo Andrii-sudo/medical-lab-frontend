@@ -1,0 +1,96 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Замовлення</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input type="text" placeholder="Пошук замовлення" />
+            <img src="icons/search.svg" class="search-icon" />
+        </div>
+        <select class="slc-filter">
+            <option>Пошук за номером</option>
+            <option>Пошук за ім'ям пацієнта</option>
+        </select>
+        <button class="btn-add" (click)="showOrderForm = true">+ Нове замовлення</button>
+    </div>
+
+    <div class="table-panel">
+        <div class="app-table">
+            <span class="col-header">Пацієнт</span>
+            <span class="col-header">Номер</span>
+            <span class="col-header">Дата створення</span>
+            <span class="col-header">Аналізи</span>
+            <span class="col-header">Вартість</span>
+            <span class="col-header">Статус</span>
+            <span class="col-header"></span>
+        
+
+            @for (order of orders; track order.number)
+            {
+                <div class="list-row">
+                    @if (order.patientMiddleName != null)
+                    {
+                        <div class="cell-stack">
+                            <span class="maintext">{{ order.patientLastName }} {{ order.patientFirstName }}</span>
+                            <span class="subtext">{{ order.patientMiddleName }}</span>
+                        </div>
+                    }
+                    @else 
+                    {
+                        <span class="single">{{ order.patientLastName }} {{ order.patientFirstName }}</span>
+                    }
+
+                    <span class="single">{{ order.number }}</span>
+                    <span class="single">{{ order.createdDate | date:'mediumDate' }}</span>
+                    <span class="single">{{ order.analyses }}</span>
+                    <span class="single">{{ order.price }}</span>
+                    <span class="single">{{ getStatusLabel(order.status) }}</span>
+                    
+                    <div class="col-action">
+                        @if (order.status === OrderStatus.Unpaid)
+                        {
+                            <button class="btn-action btn-pay">Оплатити</button>
+                        } 
+                        @else if (order.status === OrderStatus.Pending)
+                        {
+                            <button class="btn-action btn-sample">Здати зразки</button>
+                        }
+                        @else if (order.status === OrderStatus.InProgress)
+                        {
+                            <button class="btn-action btn-result">Внести результати</button>
+                        }
+
+                        <button
+                            class="btn-action btn-cancel" 
+                            title="Скасувати запис"
+                            [disabled]="order.status === OrderStatus.Cancelled"
+                            (click)="onCancelClick(order.number)">
+                            &#10006;
+                        </button>
+                    </div>
+                </div>
+            }
+            @empty
+            {
+                <div class="empty-state">Замовлень не знайдено</div>
+            }
+        </div>
+    </div>
+</main>
+
+@if (showOrderForm)
+{
+
+}
+
+@if (showCancelDialog)
+{
+    <app-confirm-dialog 
+        [title]="dialogTitle"
+        [description]="dialogDescription"
+        (cancel)="showCancelDialog = false"
+        (confirm)="cancelOrder(selectedOrderNumber)" />
+}

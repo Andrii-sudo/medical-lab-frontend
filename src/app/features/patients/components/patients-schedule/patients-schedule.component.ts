@@ -108,7 +108,7 @@ export class PatientsScheduleComponent
             this.selectedAppId = appId;
             this.dialogTitle = 'Змінити статус візиту';
             this.dialogDescription = `Перевесити візит пацієнта ${app.patientLastName} ${app.patientFirstName} \
-                                      у статус ${this.getStatusLabel(this.getNextStatus(app.status)!)}`;
+                                      у статус ${this.getStatusLabel(this.getNextStatus(app.status)!)}?`;
             this.showAdvanceDialog = true;
         }
     }
