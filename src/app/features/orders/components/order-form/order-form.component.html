@@ -1,0 +1,65 @@
+<div class="backdrop" (click)="onCancelClick()"></div>
+
+<form class="app-form" [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <h3 class="form-title">Реєстрація замовлення</h3>
+    <div class="form-block">
+        <label for="patient">Пацієнт</label>
+        <div class="patient-search-wrapper">
+            <input 
+                type="text" 
+                formControlName="patientName"
+                (input)="onSearchChange($event)" 
+                placeholder="Почніть вводити прізвище..." />
+            
+            @if (filteredPatients.length > 0) 
+            {
+                <ul class="patient-dropdown">
+                    @for (p of filteredPatients; track p.id) 
+                    {
+                        <li class="patient-option" (click)="selectPatient(p)">
+                            <div class="maintext">{{ p.lastName }} {{ p.firstName }} {{ p.middleName ?? '' }}</div>
+                            <div class="subtext">Д/Н: {{ p.birthDate | date:'mediumDate' }}</div>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="form-block">
+        <label>Аналізи</label>
+        <div class="patient-search-wrapper">
+            <input
+                type="text"
+                formControlName="analysisSearch"
+                (input)="onAnalysisSearchChange($event)"
+                placeholder="Почніть вводити назву аналізу..." />
+
+            @if (filteredAnalyses.length > 0)
+            {
+                <ul class="patient-dropdown">
+                    @for (a of filteredAnalyses; track a.id)
+                    {
+                        <li class="patient-option" (click)="selectAnalysis(a)">
+                            <div class="maintext">{{ a.name }}</div>
+                            <div class="subtext">{{ a.price }} грн</div>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+        <div class="selected-analyses">
+            @for (a of selectedAnalyses; track a.id)
+            {
+                <div class="selected-tag">
+                    <span>{{ a.name }}</span>
+                    <button type="button" (click)="removeAnalysis(a.id)">&#10006;</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-block form-buttons">
+        <button type="button" class="btn-cancel" (click)="onCancelClick()">Скасувати</button>
+        <button type="submit" class="btn-submit">Додати</button>
+    </div>
+</form>
+

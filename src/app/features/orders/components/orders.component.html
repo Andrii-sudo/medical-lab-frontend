@@ -83,7 +83,9 @@
 
 @if (showOrderForm)
 {
-
+    <app-order-form 
+        (cancel)="showOrderForm = false"
+        (confirm)="addOrder()"/>
 }
 
 @if (showCancelDialog)

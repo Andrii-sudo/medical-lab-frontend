@@ -4,10 +4,12 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
 import { Order } from '../interfaces/order.interface';
 import { OrderStatus } from '../enums/order-status.enum';
 import { DatePipe } from '@angular/common';
+import { OrderFormComponent } from './order-form/order-form.component';
+
 
 @Component({
     selector: 'app-orders',
-    imports: [NavbarComponent, ConfirmDialogComponent, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, OrderFormComponent, DatePipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
@@ -107,5 +109,10 @@ export class OrdersComponent
         }
 
         this.showCancelDialog = false;
+    }
+
+    addOrder(): void
+    {
+
     }
 }

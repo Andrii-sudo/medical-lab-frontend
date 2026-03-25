@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Patient } from '../../interfaces/patient.interface';
 
