@@ -1,0 +1,91 @@
+.app-form
+{
+    padding: 1.25rem;
+    width: 35rem;
+}
+
+.patient-search-wrapper
+{
+    position: relative;
+    width: 100%;
+}
+
+.patient-search-wrapper input
+{
+    width: 100%;
+}
+
+.patient-dropdown
+{
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    right: 0; 
+    background: #1e293b; 
+    border: 1px solid #15376e;
+    border-top: none;
+    border-radius: 0 0 0.45rem 0.45rem;
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+ 
+.patient-option
+{
+    padding: 0.6rem 0.75rem;
+    cursor: pointer; 
+    border-bottom: 1px solid #334155;
+    transition: background-color 0.15s;
+}
+ 
+.patient-option:last-child
+{
+    border-bottom: none;
+    border-radius: 0 0 0.45rem 0.45rem;
+}
+ 
+.patient-option:hover
+{
+    background-color: #243349;
+}
+
+.selected-analyses
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.selected-tag
+{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: #1a2f4a;
+    border: 1px solid #2d4f7a;
+    border-radius: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 13px;
+    color: #a0c4f1;
+}
+
+.selected-tag button
+{
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+}
+
+.selected-tag button:hover
+{
+    color: #f87171;
+}

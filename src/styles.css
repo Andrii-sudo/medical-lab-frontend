@@ -199,14 +199,40 @@ body
     margin: 0;
 }
 
+.form-header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
 .form-title
 {
     font-size: 19px;
     font-weight: bold;
 
     margin: 0;
-    margin-bottom: 1.5rem;
     color: #e2e8f0;
+}
+
+.form-close
+{
+    background-color: #334155;
+    color: #cbd5f5;
+    border: 1px solid #475569;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.form-close:hover
+{
+    background-color: #475569;
+    color: white;
+    border-color: #64748b;
 }
 
 .form-row
