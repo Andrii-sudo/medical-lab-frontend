@@ -1,9 +1,3 @@
-.app-form
-{
-    padding: 1.25rem;
-    width: 35rem;
-}
-
 .form-date-gender-row /* Для того щоб не змінювати в @media */
 {
     display: grid; 

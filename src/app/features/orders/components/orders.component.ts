@@ -98,7 +98,6 @@ export class OrdersComponent
 
     cancelOrder(orderNumber: number): void
     {
-        const order = this.orders.find(o => o.number === orderNumber);
         for (let i = 0; i < this.orders.length; i++)
         {
             if (this.orders[i].number === orderNumber)

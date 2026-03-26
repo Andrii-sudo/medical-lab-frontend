@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Patient } from '../../interfaces/patient.interface';
+import { ModalComponent } from "@shared/components/modal/modal.component";
 
 function atLeastOneContact(group: AbstractControl): ValidationErrors | null 
 {
@@ -12,7 +13,7 @@ function atLeastOneContact(group: AbstractControl): ValidationErrors | null
 
 @Component({
     selector: 'app-patient-form',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, ModalComponent],
     templateUrl: './patient-form.component.html',
     styleUrl: './patient-form.component.css'
 })
@@ -38,7 +39,7 @@ export class PatientFormComponent
         }, { validators: atLeastOneContact});
     }
 
-    onCancelClick(): void
+    onCancel(): void
     {
         this.cancel.emit();
     }

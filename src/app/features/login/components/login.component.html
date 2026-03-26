@@ -1,46 +1,39 @@
 <main class="wrapper">
-    <form class="app-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-header">
-            <h2 class="form-title">Вхід в систему</h2>
-        </div>
-        <div class="form-block">
-            <label for="email">Email</label>
-            <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>
-            
-            @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
-            {
-                <span class="form-error">Email обов'язковий</span>
-            }
-            @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
-            {
-                <span class="form-error">Неправильний формат email</span>
-            }
-        </div>
-        <div class="form-block">
-            <label for="password">Пароль</label>
-            <div class="password-wrapper">
-                <input formControlName="password" [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Вкажіть пароль" />
-                <img [src]="showPassword ? '/icons/eye-off.svg' : '/icons/eye.svg'" class="eye-icon" (click)="togglePassword()"/>
+    <app-modal 
+        formId="login-form" 
+        title="Вхід в систему" 
+        submitText="Увійти"
+        [errorText]="loginError ? 'Неправильний Email або пароль' : ''" 
+        width="25rem">
+        <form id="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-block">
+                <label for="email">Email</label>
+                <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>
+                
+                @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
+                {
+                    <span class="form-error">Email обов'язковий</span>
+                }
+                @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
+                {
+                    <span class="form-error">Неправильний формат email</span>
+                }
             </div>
-            @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required'))
-            {   
-                <span class="form-error">Пароль обов'язковий</span>
-            }    
-            @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength'))
-            {
-                <span class="form-error">Мінімум 6 символів</span>
-            }
-        </div>    
-        
-        <div class="form-block form-buttons">
-            <button type="submit" [disabled]="loginForm.invalid" class="btn-submit">Увійти</button>
-        </div>
-        
-        <div class="login-error">
-            @if (loginError)
-            {
-                <span class="form-error">Неправильний Email або пароль</span>
-            }
-        </div>   
-    </form>
+            <div class="form-block">
+                <label for="password">Пароль</label>
+                <div class="password-wrapper">
+                    <input formControlName="password" [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Вкажіть пароль" />
+                    <img [src]="showPassword ? '/icons/eye-off.svg' : '/icons/eye.svg'" class="eye-icon" (click)="togglePassword()"/>
+                </div>
+                @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required'))
+                {   
+                    <span class="form-error">Пароль обов'язковий</span>
+                }    
+                @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength'))
+                {
+                    <span class="form-error">Мінімум 6 символів</span>
+                }
+            </div>       
+        </form>
+    </app-modal>
 </main>

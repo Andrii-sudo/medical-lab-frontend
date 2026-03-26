@@ -1,0 +1,31 @@
+@if (cancel.observed) 
+{
+    <div class="backdrop" (click)="onCancelClick()"></div>
+}
+
+<div class="modal" [style.width]="width">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ title }}</h3>
+        @if (cancel.observed)
+        {
+            <button class="modal-close" (click)="onCancelClick()">&#10006;</button>
+        }
+    </div>
+
+    <ng-content></ng-content>
+
+    <div class="modal-buttons">
+        @if (cancel.observed)
+        {
+            <button type="button" class="btn-cancel" (click)="onCancelClick()">{{ cancelText }}</button>
+        }
+        <button type="submit" [attr.form]="formId" class="btn-submit">{{ submitText }}</button>
+    </div>
+
+    @if (errorText) 
+    {
+        <div class="modal-error">
+            <span>{{ errorText }}</span>
+        </div>
+    }
+</div>
