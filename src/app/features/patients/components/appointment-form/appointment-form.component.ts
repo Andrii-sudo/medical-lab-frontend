@@ -4,9 +4,11 @@ import { NewAppointment } from '../../interfaces/appointment.interface';
 import { AppointmentPurpose } from '../../enums/appointment-purpose.enum';
 import { Office } from 'src/app/office.interface';
 import { offices } from '../dummy';
+import { ModalComponent } from "@shared/components/modal/modal.component";
+
 @Component({
     selector: 'app-appointment-form',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, ModalComponent],
     templateUrl: './appointment-form.component.html',
     styleUrl: './appointment-form.component.css'
 })
@@ -102,7 +104,7 @@ export class AppointmentFormComponent implements OnInit
         }
     }
 
-    onCancelClick()
+    onCancel()
     {
         this.cancel.emit();
     }

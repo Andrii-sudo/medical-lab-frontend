@@ -4,12 +4,6 @@
     background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
 }
 
-.app-form
-{
-    width: 25rem;
-    padding: 1.5rem 2rem;
-}
-
 .password-wrapper
 {
     position: relative;
@@ -39,16 +33,4 @@
 .eye-icon:hover 
 {
     opacity: 1;
-}
-
-.login-error
-{
-    display: flex;
-    justify-content: center;
-    margin-top: 0.1rem;
-}
-
-.login-error .form-error
-{
-    font-size: 14px;   
 }

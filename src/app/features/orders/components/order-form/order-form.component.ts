@@ -3,9 +3,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { PatientLookup } from '../../interfaces/patient-lookup.interface';
 import { DatePipe } from '@angular/common';
 import { Analysis } from '../../interfaces/analysis';
+import { ModalComponent } from "@shared/components/modal/modal.component";
 @Component({
     selector: 'app-order-form',
-    imports: [ReactiveFormsModule, DatePipe],
+    imports: [ReactiveFormsModule, DatePipe, ModalComponent],
     templateUrl: './order-form.component.html',
     styleUrl: './order-form.component.css'
 })
@@ -95,7 +96,7 @@ export class OrderFormComponent
         this.selectedAnalyses = this.selectedAnalyses.filter(a => a.id !== id);
     }
 
-    onCancelClick(): void
+    onCancel(): void
     {
         this.cancel.emit();
     }
