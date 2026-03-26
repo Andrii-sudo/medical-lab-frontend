@@ -1,9 +1,12 @@
 <div class="backdrop" (click)="onCancelClick()"></div>
 
 <form class="app-form" [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-    <h3 class="form-title">
-        Записати пацієнта <span>{{ patientLastName }} {{ patientFirstName }}</span>
-    </h3>
+    <div class="form-header">
+        <h3 class="form-title">
+            Записати пацієнта <span>{{ patientLastName }} {{ patientFirstName }}</span>
+        </h3>
+        <button class="form-close" (click)="onCancelClick()">&#10006;</button>
+    </div>
     <div class="form-block">
         <label for="visit-purpose">Мета візиту</label>
         <select formControlName="visitPurpose" id="visit-purpose">

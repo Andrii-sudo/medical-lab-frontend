@@ -1,15 +1,19 @@
 <div class="backdrop" (click)="onCancelClick()"></div>
 
 <form class="app-form" [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <h3 class="form-title">Реєстрація замовлення</h3>
+    <div class="form-header">
+        <h3 class="form-title">Реєстрація замовлення</h3>
+        <button class="form-close" (click)="onCancelClick()">&#10006;</button>
+    </div>
     <div class="form-block">
         <label for="patient">Пацієнт</label>
         <div class="patient-search-wrapper">
             <input 
+                formControlName="patientName"    
                 type="text" 
-                formControlName="patientName"
-                (input)="onSearchChange($event)" 
-                placeholder="Почніть вводити прізвище..." />
+                id="patient"
+                placeholder="Почніть вводити прізвище..."
+                (input)="onSearchChange($event)" />
             
             @if (filteredPatients.length > 0) 
             {
@@ -26,13 +30,14 @@
         </div>
     </div>
     <div class="form-block">
-        <label>Аналізи</label>
+        <label for="analyses">Аналізи</label>
         <div class="patient-search-wrapper">
             <input
+                formControlName="analysisSearch"    
                 type="text"
-                formControlName="analysisSearch"
-                (input)="onAnalysisSearchChange($event)"
-                placeholder="Почніть вводити назву аналізу..." />
+                id="analyses"
+                placeholder="Почніть вводити назву аналізу..."
+                (input)="onAnalysisSearchChange($event)" />
 
             @if (filteredAnalyses.length > 0)
             {

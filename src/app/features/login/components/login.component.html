@@ -1,6 +1,8 @@
 <main class="wrapper">
     <form class="app-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <p class="form-title">Вхід в систему</p>
+        <div class="form-header">
+            <h2 class="form-title">Вхід в систему</h2>
+        </div>
         <div class="form-block">
             <label for="email">Email</label>
             <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>

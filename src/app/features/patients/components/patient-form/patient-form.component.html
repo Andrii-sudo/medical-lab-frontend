@@ -1,7 +1,11 @@
 <div class="backdrop" (click)="onCancelClick()"></div>
 
 <form class="app-form" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
-    <h3 class="form-title">Додати нового пацієнта</h3>
+    <div class="form-header">
+        <h3 class="form-title">Додати нового пацієнта</h3>
+        <button class="form-close" (click)="onCancelClick()">&#10006;</button>
+    </div>
+    
     <div class="form-row">
         <div class="form-block">
             <label for="first-name">Ім'я</label>
