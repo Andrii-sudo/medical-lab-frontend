@@ -27,6 +27,11 @@
                         }
                     </ul>
                 }
+
+                @if (orderForm.get('patientId')?.touched && orderForm.get('patientId')?.hasError('required'))
+                {
+                    <span class="form-error">Потрібно обрати пацієнта</span>
+                }
             </div>
         </div>
         <div class="form-block">
@@ -62,6 +67,11 @@
                     </div>
                 }
             </div>
+
+            @if (orderForm.get('analysisSearch')?.touched && selectedAnalyses.length === 0)
+            {
+                <span class="form-error">Потрібно обрати хоча б 1 аналіз</span>
+            }
         </div>
     </form>
 </app-modal>

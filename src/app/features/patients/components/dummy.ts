@@ -50,6 +50,7 @@ export const appointments: Appointment[] = [
     visitTime: new Date(new Date().setHours(9, 0, 0)),
     patientFirstName: 'Олена',
     patientLastName: 'Коваленко',
+    patientId: 3,
     status: AppointmentStatus.Completed,
     purpose: AppointmentPurpose.FirstVisit
   },
@@ -59,6 +60,7 @@ export const appointments: Appointment[] = [
     patientFirstName: 'Іван',
     patientLastName: 'Петренко',
     patientMiddleName: 'Миколайович',
+    patientId: 5,
     status: AppointmentStatus.Arrived,
     purpose: AppointmentPurpose.Sample
   },
@@ -67,6 +69,7 @@ export const appointments: Appointment[] = [
     visitTime: new Date(new Date().setHours(12, 0, 0)),
     patientFirstName: 'Марія',
     patientLastName: 'Сидоренко',
+    patientId: 7,
     status: AppointmentStatus.Pending,
     purpose: AppointmentPurpose.Results
   },
@@ -76,6 +79,7 @@ export const appointments: Appointment[] = [
     patientFirstName: 'Олександр',
     patientLastName: 'Ткаченко',
     patientMiddleName: 'Васильович',
+    patientId: 6,
     status: AppointmentStatus.Arrived,
     purpose: AppointmentPurpose.FirstVisit
   },
@@ -84,6 +88,7 @@ export const appointments: Appointment[] = [
     visitTime: new Date(new Date().setHours(19, 45, 0)),
     patientFirstName: 'Анна',
     patientLastName: 'Мороз',
+    patientId: 9,
     status: AppointmentStatus.Cancelled,
     purpose: AppointmentPurpose.Sample
   }
