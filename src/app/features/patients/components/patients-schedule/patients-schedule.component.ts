@@ -5,8 +5,9 @@ import { AppointmentStatus } from '../../enums/appointment-status.enum';
 import { Appointment } from '@features/patients/interfaces/appointment.interface';
 import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose.enum';
 
-import { appointments } from '../dummy';
+import { appointments, patientList } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,6 +32,10 @@ export class PatientsScheduleComponent
     dialogTitle = '';
     dialogDescription = '';
 
+    constructor(private router: Router)
+    {
+
+    }
 
     shiftDay(delta: number): void
     {
@@ -97,6 +102,21 @@ export class PatientsScheduleComponent
             default:                          
                 return null;
         }
+    }
+
+    onCreateOrderClick(app: Appointment): void
+    {
+        this.router.navigate(['orders'], 
+        {
+            state:
+            {
+                id: app.patientId,
+                firstName: app.patientFirstName,
+                lastName: app.patientLastName,
+                middleName: app.patientMiddleName,
+                birthDate: new Date() // Неважливо
+            }
+        });
     }
 
     onAdvanceClick(appId: number): void

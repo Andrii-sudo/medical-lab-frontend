@@ -8,6 +8,7 @@ export interface Appointment
     patientFirstName: string;
     patientLastName: string;
     patientMiddleName?: string;
+    patientId: number;
     status: AppointmentStatus;
     purpose: AppointmentPurpose;
 }

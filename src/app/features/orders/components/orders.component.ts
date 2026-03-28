@@ -5,7 +5,8 @@ import { Order } from '../interfaces/order.interface';
 import { OrderStatus } from '../enums/order-status.enum';
 import { DatePipe } from '@angular/common';
 import { OrderFormComponent } from './order-form/order-form.component';
-
+import { PatientLookup } from '../interfaces/patient-lookup.interface';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-orders',
@@ -18,8 +19,9 @@ export class OrdersComponent
     OrderStatus = OrderStatus;
     
     showOrderForm = false;
+
     showCancelDialog = false;
-    selectedOrderNumber = -1;
+    selectedOrder?: Order;
     dialogTitle = '';
     dialogDescription = '';
 
@@ -66,6 +68,20 @@ export class OrdersComponent
         }
     ];
 
+    preselectedPatient?: PatientLookup;
+
+    constructor(private router: Router)
+    {
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras.state as PatientLookup;
+
+        if (state)
+        {
+            this.preselectedPatient = state;
+            this.showOrderForm = true;
+        }
+    }
+
     getStatusLabel(orderStatus: OrderStatus): string
     {
         switch (orderStatus)
@@ -83,17 +99,23 @@ export class OrdersComponent
         }
     }
 
-    onCancelClick(orderNumber: number): void
+    onCancelClick(order: Order): void
     {
-        const order = this.orders.find(o => o.number === orderNumber);
-        
-        if (order)
+        this.selectedOrder = order;
+        this.dialogTitle = 'Скасувати замовлення';
+        this.dialogDescription = `Скасувати замовлення пацієнта ${order.patientLastName} ${order.patientFirstName}?`;
+        this.showCancelDialog = true;    
+    }
+
+    onCollectSampleClick(order: Order)
+    {
+        this.router.navigate(['samples'], 
         {
-            this.selectedOrderNumber = orderNumber;
-            this.dialogTitle = 'Скасувати замовлення';
-            this.dialogDescription = `Скасувати замовлення пацієнта ${order.patientLastName} ${order.patientFirstName}?`;
-            this.showCancelDialog = true;
-        }
+            state:
+            {
+                orderNumber: order.number
+            }
+        });
     }
 
     cancelOrder(orderNumber: number): void

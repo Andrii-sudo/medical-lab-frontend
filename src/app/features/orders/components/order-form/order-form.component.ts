@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientLookup } from '../../interfaces/patient-lookup.interface';
 import { DatePipe } from '@angular/common';
-import { Analysis } from '../../interfaces/analysis';
+import { Analysis } from '../../interfaces/analysis.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
 @Component({
     selector: 'app-order-form',
@@ -10,8 +10,10 @@ import { ModalComponent } from "@shared/components/modal/modal.component";
     templateUrl: './order-form.component.html',
     styleUrl: './order-form.component.css'
 })
-export class OrderFormComponent 
+export class OrderFormComponent implements OnInit
 {
+    @Input() initialPatient?: PatientLookup;
+
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<void>();
 
@@ -29,6 +31,19 @@ export class OrderFormComponent
             patientName: [''],
             analysisSearch: ['']
         });
+    }
+
+    ngOnInit()
+    {
+        if (this.initialPatient)
+        {
+            const name = `${this.initialPatient.lastName} ${this.initialPatient.firstName}` +
+                         `${this.initialPatient.middleName ? ' '+ this.initialPatient.middleName : ''}`;
+            this.orderForm.patchValue({
+                patientId: this.initialPatient.id,
+                patientName: name 
+            });
+        }
     }
 
     onSearchChange(event: any): void 
@@ -103,12 +118,13 @@ export class OrderFormComponent
 
     onSubmit(): void
     {
-        if (!this.orderForm.valid)
+        if (!this.orderForm.valid || this.selectedAnalyses.length === 0)
         {
             this.orderForm.markAllAsTouched();
         }
         else
         {
+            console.log(this.orderForm.value);
             // ХЗ
             this.confirm.emit();
         }

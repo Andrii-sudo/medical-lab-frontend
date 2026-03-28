@@ -1,0 +1,90 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Зразки</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input type="text" placeholder="Пошук зразків" [(ngModel)]="searchQuery"/>
+            <img src="icons/search.svg" class="search-icon" />
+        </div>
+        <select class="slc-filter">
+            <option>Пошук за номером замовлення</option>
+            <option>Пошук за ім'ям пацієнта</option>
+        </select>
+    </div>
+
+    <div class="table-panel">
+        <div class="app-table">
+            <span class="col-header">Пацієнт</span>
+            <span class="col-header">Номер замовлення</span>
+            <span class="col-header">Зразок</span>
+            <span class="col-header">Статус</span>
+            <span class="col-header">Дата збору-придатності</span>
+            <span class="col-header"></span>
+
+            @for (sample of samples; track sample.id)
+            {
+                <div class="list-row">
+                    @if (sample.patientMiddleName != null)
+                    {
+                        <div class="cell-stack">
+                            <span class="maintext">{{ sample.patientLastName }} {{ sample.patientFirstName }}</span>
+                            <span class="subtext">{{ sample.patientMiddleName }}</span>
+                        </div>
+                    }
+                    @else 
+                    {
+                        <span class="single">{{ sample.patientLastName }} {{ sample.patientFirstName }}</span>
+                    }
+
+                    <span class="single">{{ sample.orderNumber }}</span>
+                    <span class="single">{{ sample.type }}</span>
+                    <span class="single">{{ getStatusLabel(sample.status) }}</span>
+
+                    @if (sample.collectionDate && sample.expiryDate) 
+                    {
+                        <div class="cell-stack">
+                            <span class="maintext">{{ sample.collectionDate | date:'mediumDate' }}</span>
+                            <span class="subtext">{{ sample.expiryDate |  date:'mediumDate' }}</span>
+                        </div>
+                    }
+                    @else 
+                    {
+                        <span class="single">-</span>
+                    }   
+                    
+                    <div class="col-action">
+                        @if (sample.status === SampleStatus.Waiting)
+                        {
+                            <button class="btn-action btn-collect" (click)="onCollectClick(sample)">Зібрати</button>
+                        }
+                        @else if (sample.status === SampleStatus.Collected)
+                        {
+                            <button class="btn-action btn-enter-result">Внести результати</button>
+                        }
+                        @else if (sample.status === SampleStatus.Analyzed)
+                        {
+                            <button class="btn-action btn-result">Результати</button>
+                        }
+                    </div>
+                </div>
+            }
+            @empty 
+            {
+                <div class="empty-state">Зразків не знайдено</div>
+            }
+        </div>
+    </div>
+</main>
+
+@if (showCollectDialog)
+{
+    <app-confirm-dialog 
+        [title]="dialogTitle"
+        [description]="dialogDescription"
+        (cancel)="showCollectDialog = false"
+        (confirm)="collectSample(selectedSample!.id)" />
+}
