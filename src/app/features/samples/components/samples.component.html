@@ -10,9 +10,9 @@
             <input type="text" placeholder="Пошук зразків" [(ngModel)]="searchQuery"/>
             <img src="icons/search.svg" class="search-icon" />
         </div>
-        <select class="slc-filter">
-            <option>Пошук за номером замовлення</option>
-            <option>Пошук за ім'ям пацієнта</option>
+        <select class="slc-filter" [(ngModel)]="searchType">
+            <option value="order">Пошук за номером замовлення</option>
+            <option value="patient">Пошук за ім'ям пацієнта</option>
         </select>
     </div>
 
@@ -63,11 +63,11 @@
                         }
                         @else if (sample.status === SampleStatus.Collected)
                         {
-                            <button class="btn-action btn-enter-result">Внести результати</button>
+                            <button class="btn-action btn-enter-result" (click)="onEnterResultClick(sample)">Внести результати</button>
                         }
                         @else if (sample.status === SampleStatus.Analyzed)
                         {
-                            <button class="btn-action btn-result">Результати</button>
+                            <button class="btn-action btn-result" (click)="onResultClick(sample)">Результати</button>
                         }
                     </div>
                 </div>

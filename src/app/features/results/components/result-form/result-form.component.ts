@@ -108,6 +108,8 @@ export class ResultFormComponent implements OnInit
 
     onSubmit()
     {
+        // if (this.result.status) ... 
+        
         if (!this.resultForm.valid)
         {
             this.showError = true;

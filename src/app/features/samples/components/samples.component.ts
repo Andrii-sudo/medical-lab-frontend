@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NavigationState } from '../interfaces/navigation-state.interface';
 
 @Component({
     selector: 'app-samples',
@@ -18,6 +19,7 @@ export class SamplesComponent
     SampleStatus = SampleStatus;
 
     searchQuery = '';
+    searchType: string = 'order';
 
     showCollectDialog = false;
     selectedSample?: Sample;
@@ -61,11 +63,20 @@ export class SamplesComponent
     constructor(private router: Router)
     {
         const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras.state as { orderNumber: number };
+        let state = navigation?.extras.state as NavigationState;
 
         if (state)
         {
-            this.searchQuery = state.orderNumber.toString();
+            if (state.orderNumber)
+            {
+                this.searchQuery = state.orderNumber.toString();
+                this.searchType = 'order';
+            }
+            else if (state.patientName)
+            {
+                this.searchQuery = state.patientName;
+                this.searchType = 'patient';
+            }
         }
     }
 
@@ -106,5 +117,30 @@ export class SamplesComponent
         this.dialogTitle = 'Зібрати зразок';
         this.dialogDescription = `Зібрати зразок пацієнта ${sample.patientLastName} ${sample.patientFirstName}?`;
         this.showCollectDialog = true;
+    }
+
+    onEnterResultClick(sample: Sample)
+    {
+        this.router.navigate(['results'], 
+        {
+            state:
+            {
+                orderNumber: sample.orderNumber
+                //
+            }
+        });
+    }
+
+    onResultClick(sample: Sample)
+    {
+
+        this.router.navigate(['results'], 
+        {
+            state:
+            {
+                orderNumber: sample.orderNumber
+                //
+            }
+        });
     }
 }

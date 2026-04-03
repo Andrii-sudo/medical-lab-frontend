@@ -118,6 +118,17 @@ export class OrdersComponent
         });
     }
 
+    onEnterResultClick(order: Order)
+    {
+        this.router.navigate(['results'], 
+        {
+            state:
+            {
+                orderNumber: order.number
+            }
+        });
+    }
+
     cancelOrder(orderNumber: number): void
     {
         for (let i = 0; i < this.orders.length; i++)

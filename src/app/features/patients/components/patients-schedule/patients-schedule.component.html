@@ -53,7 +53,7 @@
                     @else if (app.purpose === AppointmentPurpose.Sample
                               && app.status === AppointmentStatus.Arrived) 
                     {
-                        <button class="btn-action btn-sample">Зібрати зразоки</button>
+                        <button class="btn-action btn-sample" (click)="onCollectSampleClick(app)">Зібрати зразки</button>
                     }
 
                     <button 

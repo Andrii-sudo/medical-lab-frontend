@@ -60,13 +60,14 @@
                         }
                         @else if (order.status === OrderStatus.InProgress)
                         {
-                            <button class="btn-action btn-result">Внести результати</button>
+                            <button class="btn-action btn-result" (click)="onEnterResultClick(order)">Внести результати</button>
                         }
 
                         <button
                             class="btn-action btn-cancel" 
                             title="Скасувати запис"
-                            [disabled]="order.status === OrderStatus.Cancelled"
+                            [disabled]="order.status === OrderStatus.Cancelled 
+                                     || order.status === OrderStatus.Completed"
                             (click)="onCancelClick(order)">
                             &#10006;
                         </button>

@@ -4,6 +4,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { Result } from '../interfaces/result.interface';
 import { ResultStatus } from '../enums/result-status.enum';
 import { ResultFormComponent } from './result-form/result-form.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-results',
@@ -70,6 +71,17 @@ export class ResultsComponent
             ]
         }
     ];
+
+    constructor(private router: Router)
+    {
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras.state as { orderNumber: number }; 
+
+        if (state)
+        {
+            this.searchQuery = state.orderNumber.toString();
+        }
+    }
 
     getStatusLabel(resultStatus: ResultStatus)
     {
