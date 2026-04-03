@@ -15,7 +15,7 @@
     <ng-content></ng-content>
 
     <div class="modal-buttons">
-        @if (cancel.observed)
+        @if (cancel.observed && cancelText)
         {
             <button type="button" class="btn-cancel" (click)="onCancelClick()">{{ cancelText }}</button>
         }

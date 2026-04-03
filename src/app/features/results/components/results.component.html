@@ -1,0 +1,72 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Результати</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input type="text" placeholder="Пошук результатів" [(ngModel)]="searchQuery"/>
+            <img src="icons/search.svg" class="search-icon" />
+        </div>
+        <select class="slc-filter">
+            <option>Пошук за номером замовлення</option>
+            <option>Пошук за ім'ям пацієнта</option>
+        </select>
+    </div>
+
+    <div class="table-panel">
+        <div class="app-table">
+            <span class="col-header">Пацієнт</span>
+            <span class="col-header">Номер замовлення</span>
+            <span class="col-header">Зразок</span>
+            <span class="col-header">Статус</span>
+            <span class="col-header"></span>
+
+            @for (result of results; track result.id)
+            {
+                <div class="list-row">
+                    @if (result.patientMiddleName != null)
+                    {
+                        <div class="cell-stack">
+                            <span class="maintext">{{ result.patientLastName }} {{ result.patientFirstName }}</span>
+                            <span class="subtext">{{ result.patientMiddleName }}</span>
+                        </div>
+                    }
+                    @else 
+                    {
+                        <span class="single">{{ result.patientLastName }} {{ result.patientFirstName }}</span>
+                    }
+
+                    <span class="single">{{ result.orderNumber }}</span>
+                    <span class="single">{{ result.sampleType }}</span>
+                    <span class="single">{{ getStatusLabel(result.status) }}</span>
+
+                    <div class="col-action">
+                        @if (result.status === ResultStatus.Pending)
+                        {
+                            <button class="btn-action btn-enter-result" (click)="onEnterResult(result)">Внести результати</button>
+                        }
+                        @else if (result.status === ResultStatus.Normal || result.status === ResultStatus.Abnormal) 
+                        {
+                            <button class="btn-action btn-reveiw" (click)="onReveiwResult(result)">Переглянути</button>
+                        }
+                    </div>
+                </div>
+            }
+            @empty 
+            {
+                <div class="empty-state">Зразків не знайдено</div>
+            }
+        </div>
+    </div>
+</main>
+
+@if (showResultForm)
+{
+    <app-result-form 
+        [result]="selectedResult"
+        (cancel)="showResultForm = false"
+        (confirm)="showResultForm = false" />
+}

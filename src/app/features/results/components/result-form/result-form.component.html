@@ -1,0 +1,28 @@
+<app-modal 
+    formId="result-form" 
+    [title]="title" 
+    [cancelText]="cancelText"
+    [submitText]="submitText" 
+    [errorText]="showError ? 'Потрібно заповнити всі показники' : ''"
+    (cancel)="onCancel()">
+    <form id="result-form" [formGroup]="resultForm" (ngSubmit)="onSubmit()">
+        <div formArrayName="parameters">
+            <div class="param-table">
+                <div class="param-headers">
+                    <div class="param-header">Показник</div>
+                    <div class="param-header">Значення</div>
+                    <div class="param-header">Норма</div>
+                </div>
+                
+                @for (parameter of parameters.controls; track $index)
+                {
+                    <div [formGroupName]="$index" class="param-row">
+                        <label for="value{{$index}}">{{ parameter.get('name')?.value }}</label>
+                        <input formControlName="value" type="number" id="value{{$index}}" />
+                        <span class="param-norm">{{ normValueLabel(parameter.get('normMin')?.value, parameter.get('normMax')?.value, parameter.get('unit')?.value) }}</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</app-modal>

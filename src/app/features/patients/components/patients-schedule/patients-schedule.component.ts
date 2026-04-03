@@ -119,6 +119,17 @@ export class PatientsScheduleComponent
         });
     }
 
+    onCollectSampleClick(app: Appointment): void
+    {
+        this.router.navigate(['samples'], 
+        {
+            state:
+            {
+                patientName: `${app.patientFirstName} ${app.patientLastName}`
+            }
+        });
+    }
+
     onAdvanceClick(appId: number): void
     {
         const app = this.appointments.find((a) => a.id === appId);
