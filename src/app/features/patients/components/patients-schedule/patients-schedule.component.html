@@ -82,6 +82,12 @@
     </div>
 </div>
 
+<app-pagination 
+        [selectedPage]="selectedPage"
+        [pageCount]="pageCount" 
+        (changePage)="loadPage($event)" />
+
+
 @if (showAdvanceDialog)
 {
     <app-confirm-dialog 

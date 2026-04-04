@@ -7,10 +7,11 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NavigationState } from '../interfaces/navigation-state.interface';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-samples',
-    imports: [NavbarComponent, ConfirmDialogComponent, FormsModule, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, FormsModule, DatePipe],
     templateUrl: './samples.component.html',
     styleUrl: './samples.component.css'
 })
@@ -25,6 +26,9 @@ export class SamplesComponent
     selectedSample?: Sample;
     dialogTitle = '';
     dialogDescription = '';
+
+    selectedPage = 1;
+    pageCount = 7;
 
     samples: Sample[] = 
     [
@@ -142,5 +146,11 @@ export class SamplesComponent
                 //
             }
         });
+    }
+
+    loadPage(page: number): void
+    {
+        this.selectedPage = page;
+        // ...
     }
 }

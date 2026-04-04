@@ -5,10 +5,11 @@ import { AppointmentFormComponent } from '../appointment-form/appointment-form.c
 
 import { patientList } from '../dummy'
 import { Patient } from '../../interfaces/patient.interface';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-patients-list',
-    imports: [DatePipe, PatientFormComponent, AppointmentFormComponent],
+    imports: [DatePipe, PatientFormComponent, AppointmentFormComponent, PaginationComponent],
     templateUrl: './patients-list.component.html',
     styleUrl: './patients-list.component.css'
 })
@@ -20,6 +21,9 @@ export class PatientsListComponent
 
     selectedPatient!: Patient;
 
+    selectedPage = 1;
+    pageCount = 7;
+
     addPatient(p: Patient): void
     {
         this.patients.push(p);
@@ -30,5 +34,11 @@ export class PatientsListComponent
     {
         this.selectedPatient = patient;
         this.showAppointmentForm = true;
+    }
+
+    loadPage(page: number): void
+    {
+        this.selectedPage = page;
+        // ...
     }
 }

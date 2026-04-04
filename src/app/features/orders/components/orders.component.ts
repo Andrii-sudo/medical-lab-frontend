@@ -7,10 +7,11 @@ import { DatePipe } from '@angular/common';
 import { OrderFormComponent } from './order-form/order-form.component';
 import { PatientLookup } from '../interfaces/patient-lookup.interface';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-orders',
-    imports: [NavbarComponent, ConfirmDialogComponent, OrderFormComponent, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, OrderFormComponent, DatePipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
@@ -24,6 +25,9 @@ export class OrdersComponent
     selectedOrder?: Order;
     dialogTitle = '';
     dialogDescription = '';
+
+    selectedPage = 1;
+    pageCount = 7;
 
     orders: Order[] = 
     [
@@ -146,5 +150,11 @@ export class OrdersComponent
     addOrder(): void
     {
 
+    }
+
+    loadPage(page: number): void
+    {
+        this.selectedPage = page;
+        // ...
     }
 }

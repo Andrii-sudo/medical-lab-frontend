@@ -61,6 +61,11 @@
             }
         </div>
     </div>
+
+    <app-pagination 
+        [selectedPage]="selectedPage"
+        [pageCount]="pageCount" 
+        (changePage)="loadPage($event)" />
 </main>
 
 @if (showResultForm)
