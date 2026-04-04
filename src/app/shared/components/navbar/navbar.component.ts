@@ -10,10 +10,20 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavbarComponent 
 {
+    isOpen = false;
+
     constructor(private router : Router)
     {
 
     }
 
+    openMenu(): void
+    {
+        this.isOpen = true;
+    }
 
+    closeMenu(): void
+    {
+        this.isOpen = false;
+    }
 }

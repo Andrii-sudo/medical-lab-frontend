@@ -6,6 +6,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+    z-index: 2;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 dialog
@@ -15,12 +17,15 @@ dialog
     border-radius: 1rem;
     padding: 1.25rem;
     width: 25rem;
+    max-width: 90%;
     box-shadow: 0 1px 4px rgb(0, 0, 0, 0.3);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
+    z-index: 3;
+    animation: slideDown 0.3s ease-in-out;
 }
 
 .dialog-header
@@ -112,10 +117,28 @@ dialog
     background-color: #1e40af;
 }
 
-@media (max-width: 550px) 
+@keyframes slideDown
 {
-    dialog
+    from
     {
-        width: 90%;
+        opacity: 0;
+        transform: translate(-50%, -80%);
+    }
+    to
+    {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeIn
+{
+    from
+    {
+        opacity: 0;
+    }
+    to
+    {
+        opacity: 1;
     }
 }

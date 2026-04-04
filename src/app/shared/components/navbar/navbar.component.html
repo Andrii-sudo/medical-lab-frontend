@@ -1,9 +1,12 @@
-<nav>
+<button class="btn-navbar-open" [class.hide]="isOpen" (click)="openMenu()"><img src="/icons/menu.svg"></button>
+
+<nav [class.open]="isOpen">
+    <button class="btn-navbar-close" (click)="closeMenu()">&#8592;</button>
     <ul class="nav-links">
-        <li><a routerLink="/dashboard" routerLinkActive="active">Інформаційна панель</a></li>
-        <li><a routerLink="/patients"  routerLinkActive="active">Пацієнти</a></li>
-        <li><a routerLink="/orders"    routerLinkActive="active">Замовлення</a></li>
-        <li><a routerLink="/samples"   routerLinkActive="active">Зразки</a></li>
-        <li><a routerLink="/results"   routerLinkActive="active">Результати</a></li>
+        <li><a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Інформаційна панель</a></li>
+        <li><a routerLink="/patients"  routerLinkActive="active" (click)="closeMenu()">Пацієнти</a></li>
+        <li><a routerLink="/orders"    routerLinkActive="active" (click)="closeMenu()">Замовлення</a></li>
+        <li><a routerLink="/samples"   routerLinkActive="active" (click)="closeMenu()">Зразки</a></li>
+        <li><a routerLink="/results"   routerLinkActive="active" (click)="closeMenu()">Результати</a></li>
     </ul>
 </nav>
