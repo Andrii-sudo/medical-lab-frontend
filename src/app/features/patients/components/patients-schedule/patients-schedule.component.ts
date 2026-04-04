@@ -8,11 +8,12 @@ import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose
 import { appointments, patientList } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
 import { Router } from '@angular/router';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 
 @Component({
     selector: 'app-patients-schedule',
-    imports: [DatePipe, FormsModule, ConfirmDialogComponent],
+    imports: [DatePipe, FormsModule, ConfirmDialogComponent, PaginationComponent],
     templateUrl: './patients-schedule.component.html',
     styleUrl: './patients-schedule.component.css'
 })
@@ -31,6 +32,9 @@ export class PatientsScheduleComponent
     selectedAppId = -1;
     dialogTitle = '';
     dialogDescription = '';
+
+    selectedPage = 1;
+    pageCount = 7;
 
     constructor(private router: Router)
     {
@@ -185,5 +189,11 @@ export class PatientsScheduleComponent
         }
 
         this.showCancelDialog = false;
+    }
+
+    loadPage(page: number): void
+    {
+        this.selectedPage = page;
+        // ...
     }
 }

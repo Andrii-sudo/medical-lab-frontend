@@ -5,10 +5,11 @@ import { Result } from '../interfaces/result.interface';
 import { ResultStatus } from '../enums/result-status.enum';
 import { ResultFormComponent } from './result-form/result-form.component';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-results',
-    imports: [NavbarComponent, ResultFormComponent, FormsModule],
+    imports: [NavbarComponent, ResultFormComponent, PaginationComponent, FormsModule],
     templateUrl: './results.component.html',
     styleUrl: './results.component.css'
 })
@@ -19,6 +20,9 @@ export class ResultsComponent
 
     showResultForm = false;
     selectedResult!: Result;
+
+    selectedPage = 1;
+    pageCount = 7;
 
     results: Result[] = 
     [
@@ -106,5 +110,11 @@ export class ResultsComponent
     {
         this.selectedResult = result;        
         this.showResultForm = true; 
+    }
+
+    loadPage(page: number): void
+    {
+        this.selectedPage = page;
+        // ...
     }
 }
