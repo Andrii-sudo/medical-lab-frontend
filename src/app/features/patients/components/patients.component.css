@@ -13,14 +13,14 @@
 .tab 
 {
     flex: 1;
-    padding: 8px 20px;
+    padding: 0.5rem 1.25rem;
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
     color: #6b8cba;
-    font-size: 14px;
+    font-size: 0.88rem;
     cursor: pointer;
-    margin-bottom: -1px;
+    margin-bottom: -0.06rem;
     transition: color 0.15s ease-in-out, border-bottom-color 0.2s ease-in-out;
 }
 

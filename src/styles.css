@@ -32,6 +32,23 @@ body
     margin: 0;
 }
 
+@media (max-width: 1160px) 
+{
+    .content
+    {
+        margin-left: 12rem;
+    }
+}
+
+@media (max-width: 770px) 
+{
+    .content
+    {
+        margin-left: 0;
+        padding: 1.5rem;
+    }
+}
+
 /*--------------------------------------------------------------------*/
 /* Стилі таблиць */
 
@@ -51,11 +68,12 @@ body
     /* Потрібно визначити свій grid-template-columns */
     grid-template-rows: auto;
     grid-auto-rows: 1fr;
+    overflow-x: auto;
 }
 
 .col-header
 {
-    font-size: 11px;
+    font-size: 0.69rem;
     color: #6b8cba;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -92,24 +110,25 @@ body
     display: flex;
     flex-direction: column;
     align-items: start !important;
+    justify-content: center;
     gap: 0.2rem;
 }
 
 .maintext
 {
-    font-size: 14px;
+    font-size: 0.88rem;
     color: #a0c4f1;
 }
 
 .subtext
 {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #6b8cba;
 }
 
 .single
 {
-    font-size: 14px;
+    font-size: 0.88rem;
     color: #a0c4f1;
 }
 
@@ -126,10 +145,9 @@ body
     border: 1px solid #4a90e2;
     padding: 0.35rem 0.65rem;
     border-radius: 0.4rem;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
-    white-space: nowrap;
     transition: background-color 0.2s, color 0.2s;
 }
 
@@ -161,7 +179,76 @@ body
     padding: 2rem 0.75rem;
     text-align: center;
     color: #6b8cba;
-    font-size: 14px;
+    font-size: 0.88rem;
+}
+
+@media (max-width: 950px) 
+{
+    .col-header
+    {
+        font-size: 0.69rem;
+        padding: 0.5rem 0.5rem;
+    }
+
+    .list-row > *
+    {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .maintext
+    {
+        font-size: 0.75rem;
+    }
+
+    .subtext
+    {
+        font-size: 0.69rem;
+    }
+
+    .single
+    {
+        font-size: 0.75rem;
+    }
+
+    .btn-action
+    {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.69rem;
+    }
+}
+
+@media (max-width: 600px) 
+{
+    .col-header
+    {
+        font-size: 0.69rem;
+        padding: 0.5rem 0.4rem;
+    }
+
+    .list-row > *
+    {
+        padding: 0.75rem 0.4rem;
+    }
+
+    .maintext
+    {
+        font-size: 0.69rem;
+    }
+
+    .subtext
+    {
+        font-size: 0.62rem;
+    }
+
+    .single
+    {
+        font-size: 0.69rem;
+    }
+
+    .btn-action
+    {
+        font-size: 0.62rem;
+    }
 }
 
 /*--------------------------------------------------------------------*/
@@ -185,7 +272,7 @@ body
 {
     font-weight: 600;
     margin-bottom: 0.4rem;
-    font-size: 15px;
+    font-size: 0.94rem;
     color: #cbd5f5;
 }
 
@@ -196,7 +283,7 @@ body
     border: 1px solid #15376e;
     border-radius: 0.45rem;
     padding: 0.5rem 0.75rem;
-    font-size: 15px;
+    font-size: 0.94rem;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -208,7 +295,7 @@ body
     border: 1px solid #15376e;
     border-radius: 0.45rem;
     padding: 0.5rem 0.75rem;
-    font-size: 15px;
+    font-size: 94rem;
     outline: none;
 }
 
@@ -225,7 +312,7 @@ body
 
 .form-error
 {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #ef4444;
     margin-top: 0.25rem;
 }
@@ -241,22 +328,5 @@ body
     {
         grid-template-columns: 1fr;
         gap: 0;
-    }
-}
-
-@media (max-width: 1160px) 
-{
-    .content
-    {
-        margin-left: 12rem;
-    }
-}
-
-@media (max-width: 770px) 
-{
-    .content
-    {
-        margin-left: 0;
-        padding: 1.5rem;
     }
 }

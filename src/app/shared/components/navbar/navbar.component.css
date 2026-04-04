@@ -33,7 +33,7 @@
     width: 2rem;
     height: 2rem;
     padding: 0 0.05rem 0.1rem 0;
-    font-size: 22px;
+    font-size: 1.37rem;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -79,7 +79,7 @@ nav
     display: block;
     color: #a0c4f1;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.88rem;
     padding: 0.8rem 0 0.8rem 1rem;
     border-left: 2px solid transparent;
     border-radius: 0 6px 6px 0;
