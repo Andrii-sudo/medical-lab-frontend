@@ -6,6 +6,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+    animation: fadeIn 0.3s ease-in-out;
+    z-index: 2;
 }
 
 .modal
@@ -23,6 +25,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
+    animation: slideDown 0.3s ease-in-out;
+    z-index: 3;
 }
 
 .modal-header
@@ -35,7 +39,7 @@
 
 .modal-title
 {
-    font-size: 19px;
+    font-size: 1.19rem;
     font-weight: bold;
 
     margin: 0;
@@ -127,5 +131,31 @@
     display: flex;
     justify-content: center;
     margin-top: 0.25rem;
-    font-size: 14px;    
+    font-size: 0.88rem;    
+}
+
+@keyframes slideDown
+{
+    from
+    {
+        opacity: 0;
+        transform: translate(-50%, -80%);
+    }
+    to
+    {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeIn
+{
+    from
+    {
+        opacity: 0;
+    }
+    to
+    {
+        opacity: 1;
+    }
 }

@@ -14,7 +14,7 @@
 
 .param-header
 {
-    font-size: 11px;
+    font-size: 0.69rem;
     color: #6b8cba;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -44,7 +44,7 @@
 
 .param-row > label
 {
-    font-size: 14px;
+    font-size: 0.88rem;
     color: #a0c4f1;
     font-weight: 600;
     margin: 0;
@@ -58,7 +58,7 @@
     border: 1px solid #15376e;
     border-radius: 0.45rem;
     padding: 0.5rem 0.75rem;
-    font-size: 15px;
+    font-size: 0.94rem;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -76,7 +76,7 @@
 
 .param-norm
 {
-    font-size: 13px;
+    font-size: 0.81rem;
     color: #6b8cba;
 }
 

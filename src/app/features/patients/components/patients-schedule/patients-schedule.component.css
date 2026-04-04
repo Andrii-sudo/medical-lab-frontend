@@ -22,7 +22,7 @@
     border-radius: 0.3rem;
     width: 2rem;
     height: 2rem;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -37,7 +37,7 @@
 
 .date-label
 {
-    font-size: 14px;
+    font-size: 0.88rem;
     font-weight: 600;
     color: #e2e8f0;
     min-width: 12rem;
@@ -52,7 +52,7 @@
     height: 2rem;   
     border-radius: 0.3rem;
     padding: 0.35rem 0.75rem;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
@@ -70,7 +70,7 @@
     border: 1px solid #374151;
     border-radius: 0.3rem;
     padding: 0.4rem 0.75rem;
-    font-size: 14px;
+    font-size: 0.88rem;
     outline: none;
 }
 
@@ -100,4 +100,12 @@
 {
     background-color: #4a90e2;
     color: #f87171;
+}
+
+@media (max-width: 1000px) 
+{
+    .app-table
+    {
+        grid-template-columns: 3.25rem 1.5fr 1.5fr 1fr auto;
+    }
 }

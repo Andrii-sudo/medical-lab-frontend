@@ -23,7 +23,7 @@
     padding: 0; 
     margin: 0; 
     z-index: 10;
-    max-height: 220px;
+    max-height: 13.75rem;
     overflow-y: auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
@@ -64,7 +64,7 @@
     border: 1px solid #2d4f7a;
     border-radius: 0.4rem;
     padding: 0.25rem 0.6rem;
-    font-size: 13px;
+    font-size: 0.81rem;
     color: #a0c4f1;
 }
 
@@ -73,7 +73,7 @@
     background: none;
     border: none;
     color: #64748b;
-    font-size: 11px;
+    font-size: 0.69rem;
     cursor: pointer;
     padding: 0;
     transition: color 0.15s;
