@@ -3,7 +3,7 @@
         <input type="text" placeholder="Введіть ім'я або номер пацієнта" />
         <img src="icons/search.svg" class="search-icon" />
     </div>
-    <button class="btn-add" (click)="showPatientForm = true">+ Новий пацієнт</button>
+    <button class="btn-add" (click)="onAddPatientClick()">+ Новий пацієнт</button>
 </div>
 
 <div class="table-panel">
@@ -39,12 +39,20 @@
                 }
                 @else
                 {
-                    <span class="single">{{ patient.email ?? patient.phone }}</span>
+                    <span class="single">{{ patient.phone }}</span>
                 }  
                 
                 <div class="col-action">
                     <button 
-                        class="btn-action" (click)="onAddApointmentClick(patient)">Записати</button>
+                        class="btn-action" 
+                        (click)="onAddApointmentClick(patient)">
+                        Записати
+                    </button>
+                    <button 
+                        class="btn-action btn-edit" 
+                        (click)="onEditPatientClick(patient)">
+                        <img src="icons/edit.svg" />
+                    </button>
                 </div>
             </div>
         }
@@ -62,11 +70,19 @@
         [pageCount]="pageCount" 
         (changePage)="loadPage($event)" />
 
-@if (showPatientForm)
+@if (showAddPatientForm)
 {
     <app-patient-form 
-        (cancel)="showPatientForm = false" 
+        (cancel)="showAddPatientForm = false" 
         (confirm)="addPatient($event)" />
+}
+
+@if (showEditPatientForm)
+{
+    <app-patient-form 
+        [patient]="selectedPatient"
+        (cancel)="showEditPatientForm = false" 
+        (confirm)="editPatient($event)" />
 }
 
 @if (showAppointmentForm)
@@ -75,5 +91,5 @@
         [patientId]="selectedPatient.id" 
         [patientFirstName]="selectedPatient.firstName" 
         [patientLastName]="selectedPatient.lastName"
-        (cancel)="showAppointmentForm = false"/>
+        (cancel)="showAppointmentForm = false" />
 }

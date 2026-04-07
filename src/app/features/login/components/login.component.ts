@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,10 @@ export class LoginComponent
 	showPassword = false;
 	loginError = false;
 
-	constructor(private fb: FormBuilder, private router: Router)
+	private fb = inject(FormBuilder);
+	private router = inject(Router);
+
+	constructor()
 	{
 		this.loginForm = this.fb.group({
 			email: ['', [Validators.required, Validators.email]],
@@ -30,17 +33,16 @@ export class LoginComponent
 		if (!this.loginForm.valid)
 		{
 			this.loginForm.markAllAsTouched();
+			return;
 		}
-		else
-		{
-			console.log(this.loginForm.value);
-			
-			this.router.navigate(['/dashboard']);
-		}
+		
+		console.log(this.loginForm.value);	
+		this.router.navigate(['/dashboard']);
+		
 	}
 
 	togglePassword()
 	{
-		this.showPassword = !this.showPassword;		
+		this.showPassword = !this.showPassword;
 	}
 }

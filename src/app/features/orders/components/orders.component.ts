@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { Order } from '../interfaces/order.interface';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-orders',
-    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, OrderFormComponent, FormsModule, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, OrderFormComponent, PaginationComponent, FormsModule, DatePipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
@@ -28,7 +28,7 @@ export class OrdersComponent
     dialogDescription = '';
 
     searchQuery = '';
-    searchType = 'number';
+    searchType: 'number' | 'patient' = 'number';
 
     selectedPage = 1;
     pageCount = 7;
@@ -79,7 +79,9 @@ export class OrdersComponent
 
     preselectedPatient?: PatientLookup;
 
-    constructor(private router: Router)
+    private router = inject(Router);
+
+    constructor()
     {
         const navigation = this.router.getCurrentNavigation();
         const state = navigation?.extras.state as PatientLookup;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Sample } from '../interfaces/sample.interface';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { SampleStatus } from '../enums/sample-status.enum';
@@ -65,7 +65,9 @@ export class SamplesComponent
         }
     ];
     
-    constructor(private router: Router)
+    private router = inject(Router)
+
+    constructor()
     {
         const navigation = this.router.getCurrentNavigation();
         let state = navigation?.extras.state as NavigationState;

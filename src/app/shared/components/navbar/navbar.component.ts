@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component
@@ -11,11 +11,6 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 export class NavbarComponent 
 {
     isOpen = false;
-
-    constructor(private router : Router)
-    {
-
-    }
 
     openMenu(): void
     {

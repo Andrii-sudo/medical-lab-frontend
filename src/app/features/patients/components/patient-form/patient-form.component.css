@@ -4,11 +4,3 @@
     grid-template-columns: 1fr 1fr; 
     gap: 0.5rem;
 }
-
-.contact-error
-{
-    display: flex;
-    justify-content: center;
-    margin-top: -0.75rem;
-    margin-bottom: 1rem;
-}

@@ -16,7 +16,8 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
 export class PatientsListComponent 
 {
     patients: Patient[] = patientList;
-    showPatientForm = false;
+    showAddPatientForm = false;
+    showEditPatientForm = false;
     showAppointmentForm = false;
 
     selectedPatient!: Patient;
@@ -24,16 +25,33 @@ export class PatientsListComponent
     selectedPage = 1;
     pageCount = 7;
 
+    onAddPatientClick(): void
+    {
+        this.showAddPatientForm = true;
+    }
+
+    onAddApointmentClick(p: Patient): void
+    {
+        this.selectedPatient = p;
+        this.showAppointmentForm = true;
+    }
+
+    onEditPatientClick(p: Patient): void
+    {
+        this.selectedPatient = p;
+        this.showEditPatientForm = true;
+    }
+
     addPatient(p: Patient): void
     {
         this.patients.push(p);
-        this.showPatientForm = false;
+        this.showAddPatientForm = false;
     }
 
-    onAddApointmentClick(patient: Patient): void
+    editPatient(p: Patient): void
     {
-        this.selectedPatient = patient;
-        this.showAppointmentForm = true;
+        //...
+        this.showEditPatientForm = false;
     }
 
     loadPage(page: number): void

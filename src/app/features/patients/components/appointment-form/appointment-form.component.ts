@@ -1,14 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewAppointment } from '../../interfaces/appointment.interface';
 import { AppointmentPurpose } from '../../enums/appointment-purpose.enum';
 import { Office } from 'src/app/office.interface';
 import { offices } from '../dummy';
 import { ModalComponent } from "@shared/components/modal/modal.component";
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-appointment-form',
     imports: [ReactiveFormsModule, ModalComponent],
+    providers: [DatePipe],
     templateUrl: './appointment-form.component.html',
     styleUrl: './appointment-form.component.css'
 })
@@ -24,22 +26,26 @@ export class AppointmentFormComponent implements OnInit
     appointmentPurpose = AppointmentPurpose;
 
     appointmentForm: FormGroup;
-    today = new Date().toISOString().split('T')[0];
+    today: string;
 
     cities: string[] = [];
     filteredOffices: Office[] = [];
     availableSlots: string[] = [];
     private allOffices: Office[] = offices;
 
-    constructor(fb: FormBuilder)
+    private fb = inject(FormBuilder);
+    private dp = inject(DatePipe);
+
+    constructor()
     {
-        this.appointmentForm = fb.group({
+        this.appointmentForm = this.fb.group({
             visitDate: ['', Validators.required],
             visitTime: ['', Validators.required],
             city: ['', Validators.required],
             officeId: ['', Validators.required],
             visitPurpose: ['', Validators.required]
         });
+        this.today = this.dp.transform(new Date(), 'yyyy-MM-dd') ?? '';
     }
 
     ngOnInit(): void
@@ -114,16 +120,15 @@ export class AppointmentFormComponent implements OnInit
         if (!this.appointmentForm.valid)
         {
             this.appointmentForm.markAllAsTouched();
+            return;
         }
-        else
-        {
-            const value = this.appointmentForm.value;
-            this.confirm.emit({
-                patientId: this.patientId,
-                officeId: value.officeId,
-                visitTime: new Date(`${value.visitDate}T${value.visitTime}`),
-                purpose: value.visitPurpose
-            });
-        }
+
+        const value = this.appointmentForm.value;
+        this.confirm.emit({
+            patientId: this.patientId,
+            officeId: value.officeId,
+            visitTime: new Date(`${value.visitDate}T${value.visitTime}`),
+            purpose: value.visitPurpose
+        });
     }
 }

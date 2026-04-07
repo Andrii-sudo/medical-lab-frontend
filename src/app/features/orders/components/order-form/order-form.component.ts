@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientLookup } from '../../interfaces/patient-lookup.interface';
 import { Analysis } from '../../interfaces/analysis.interface';
@@ -23,8 +23,9 @@ export class OrderFormComponent implements OnInit
     filteredAnalyses: Analysis[] = [];
     selectedAnalyses: Analysis[] = [];
 
-
-    constructor(private fb: FormBuilder)
+    private fb = inject(FormBuilder);
+    
+    constructor()
     {
         this.orderForm = this.fb.group({
             patientId: ['', Validators.required],
@@ -122,12 +123,11 @@ export class OrderFormComponent implements OnInit
         if (!this.orderForm.valid || this.selectedAnalyses.length === 0)
         {
             this.orderForm.markAllAsTouched();
+            return;
         }
-        else
-        {
-            console.log(this.orderForm.value);
-            // ХЗ
-            this.confirm.emit();
-        }
+    
+        console.log(this.orderForm.value);
+        // ХЗ
+        this.confirm.emit();    
     }
 }
