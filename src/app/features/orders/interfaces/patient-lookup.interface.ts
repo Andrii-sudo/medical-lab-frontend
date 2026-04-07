@@ -4,5 +4,5 @@ export interface PatientLookup
     firstName: string;
     lastName: string;
     middleName?: string;
-    birthDate: Date;
+    phone: string;
 }

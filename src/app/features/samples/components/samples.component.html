@@ -7,12 +7,12 @@
 
     <div class="toolbar">
         <div class="search-wrapper">
-            <input type="text" placeholder="Пошук зразків" [(ngModel)]="searchQuery"/>
+            <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery" />
             <img src="icons/search.svg" class="search-icon" />
         </div>
         <select class="slc-filter" [(ngModel)]="searchType">
-            <option value="order">Пошук за номером замовлення</option>
-            <option value="patient">Пошук за ім'ям пацієнта</option>
+            <option value="order">Пошук за замовленням</option>
+            <option value="patient">Пошук за пацієнтом</option>
         </select>
     </div>
 
@@ -28,18 +28,12 @@
             @for (sample of samples; track sample.id)
             {
                 <div class="list-row">
-                    @if (sample.patientMiddleName != null)
-                    {
-                        <div class="cell-stack">
-                            <span class="maintext">{{ sample.patientLastName }} {{ sample.patientFirstName }}</span>
-                            <span class="subtext">{{ sample.patientMiddleName }}</span>
-                        </div>
-                    }
-                    @else 
-                    {
-                        <span class="single">{{ sample.patientLastName }} {{ sample.patientFirstName }}</span>
-                    }
-
+                    
+                    <div class="cell-stack">
+                        <span class="maintext">{{ sample.patientLastName }} {{ sample.patientFirstName }}</span>
+                        <span class="subtext">{{ sample.patientPhone }}</span>
+                    </div>
+                    
                     <span class="single">{{ sample.orderNumber }}</span>
                     <span class="single">{{ sample.type }}</span>
                     <span class="single">{{ getStatusLabel(sample.status) }}</span>

@@ -6,7 +6,7 @@ export interface Result
     id: number;
     patientFirstName: string;
     patientLastName: string;
-    patientMiddleName?: string;
+    patientPhone: string;
     orderNumber: number;
     sampleType: string;
     status: ResultStatus;

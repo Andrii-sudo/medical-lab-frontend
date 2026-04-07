@@ -1,6 +1,6 @@
 <div class="toolbar">
     <div class="search-wrapper">
-        <input type="text" placeholder="Введіть ім'я пацієнта" />
+        <input type="text" placeholder="Введіть ім'я або номер пацієнта" />
         <img src="icons/search.svg" class="search-icon" />
     </div>
     <button class="btn-add" (click)="showPatientForm = true">+ Новий пацієнт</button>
@@ -30,7 +30,7 @@
 
                 <span class="single">{{ patient.birthDate | date:'dd.MM.yyyy' }}</span>
 
-                @if (patient.phone != null && patient.email != null)
+                @if (patient.email != null)
                 {  
                     <div class="cell-stack">
                         <span class="maintext">{{ patient.phone }}</span>

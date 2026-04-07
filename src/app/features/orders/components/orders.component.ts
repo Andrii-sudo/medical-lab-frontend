@@ -8,10 +8,11 @@ import { OrderFormComponent } from './order-form/order-form.component';
 import { PatientLookup } from '../interfaces/patient-lookup.interface';
 import { Router } from '@angular/router';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-orders',
-    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, OrderFormComponent, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, OrderFormComponent, FormsModule, DatePipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
@@ -26,6 +27,9 @@ export class OrdersComponent
     dialogTitle = '';
     dialogDescription = '';
 
+    searchQuery = '';
+    searchType = 'number';
+
     selectedPage = 1;
     pageCount = 7;
 
@@ -34,7 +38,7 @@ export class OrdersComponent
         {
             patientFirstName: 'Олександр',
             patientLastName: 'Коваленко',
-            patientMiddleName: 'Сергійович',
+            patientPhone: '+380501234567',
             number: 10245,
             createdDate: new Date('2026-03-15'),
             analyses: ['Загальний аналіз крові', 'Глюкоза'],
@@ -44,6 +48,7 @@ export class OrdersComponent
         {
             patientFirstName: 'Марія',
             patientLastName: 'Петренко',
+            patientPhone: '+380679876543',
             number: 10246,
             createdDate: new Date('2026-03-20'),
             analyses: ['Тиреотропний гормон (ТТГ)'],
@@ -53,7 +58,7 @@ export class OrdersComponent
         {
             patientFirstName: 'Іван',
             patientLastName: 'Мазур',
-            patientMiddleName: 'Миколайович',
+            patientPhone: '+380931112233',
             number: 10247,
             createdDate: new Date('2026-03-24'),
             analyses: ['Вітамін D', 'Феритин', 'Магній'],
@@ -63,7 +68,7 @@ export class OrdersComponent
         {
             patientFirstName: 'Олена',
             patientLastName: 'Сидоренко',
-            patientMiddleName: 'Вікторівна',
+            patientPhone: '+380664445566',
             number: 10248,
             createdDate: new Date('2026-03-22'),
             analyses: ['ПЛР-тест на COVID-19'],
@@ -84,6 +89,18 @@ export class OrdersComponent
             this.preselectedPatient = state;
             this.showOrderForm = true;
         }
+    }
+
+    get searchPlaceholder()
+    {
+        switch (this.searchType)
+        {
+            case 'number':
+                return 'Введіть номер замовлення';
+            case 'patient':
+                return 'Введіть ім\'я або тел. номер пацієнта';
+        }
+        return 'Пошук замовлення';
     }
 
     getStatusLabel(orderStatus: OrderStatus): string

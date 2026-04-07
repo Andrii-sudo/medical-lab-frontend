@@ -36,7 +36,7 @@ export class SamplesComponent
             id: 1,
             patientFirstName: 'Олександр',
             patientLastName: 'Коваленко',
-            patientMiddleName: 'Сергійович',
+            patientPhone: '+380501234567',
             orderNumber: 10245,
             type: 'Кров',
             status: SampleStatus.Collected,
@@ -47,6 +47,7 @@ export class SamplesComponent
             id: 2,
             patientFirstName: 'Марія',
             patientLastName: 'Петренко',
+            patientPhone: '+380679876543',
             orderNumber: 10246,
             type: 'Сеча',
             status: SampleStatus.Waiting
@@ -55,7 +56,7 @@ export class SamplesComponent
             id: 3,
             patientFirstName: 'Іван',
             patientLastName: 'Мазур',
-            patientMiddleName: 'Миколайович',
+            patientPhone: '+380931112233',
             orderNumber: 10247,
             type: 'Кров',
             status: SampleStatus.Analyzed,
@@ -82,6 +83,18 @@ export class SamplesComponent
                 this.searchType = 'patient';
             }
         }
+    }
+
+    get searchPlaceholder()
+    {
+        switch (this.searchType)
+        {
+            case 'order':
+                return 'Введіть номер замовлення';
+            case 'patient':
+                return 'Введіть ім\'я або тел. номер пацієнта';
+        }
+        return 'Пошук зразка';
     }
 
     getStatusLabel(sampleStatus: SampleStatus): string

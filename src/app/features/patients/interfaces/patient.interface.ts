@@ -6,6 +6,6 @@ export interface Patient
     middleName?: string;
     birthDate: Date;
     gender: string;
-    phone?: string;
+    phone: string;
     email?: string;
 }

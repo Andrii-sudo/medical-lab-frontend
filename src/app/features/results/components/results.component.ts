@@ -16,10 +16,12 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
 export class ResultsComponent 
 {
     ResultStatus = ResultStatus;
-    searchQuery = '';
 
     showResultForm = false;
     selectedResult!: Result;
+
+    searchQuery = '';
+    searchType = 'number';
 
     selectedPage = 1;
     pageCount = 7;
@@ -30,7 +32,7 @@ export class ResultsComponent
             id: 1,
             patientFirstName: 'Олександр',
             patientLastName: 'Коваленко',
-            patientMiddleName: 'Сергійович',
+            patientPhone: '+380501234567',
             orderNumber: 10245,
             sampleType: 'Загальний аналіз крові',
             status: ResultStatus.Abnormal,
@@ -47,6 +49,7 @@ export class ResultsComponent
             id: 2,
             patientFirstName: 'Марія',
             patientLastName: 'Петренко',
+            patientPhone: '+380679876543',
             orderNumber: 10246,
             sampleType: 'Загальний аналіз сечі',
             status: ResultStatus.Normal,
@@ -61,7 +64,7 @@ export class ResultsComponent
             id: 3,
             patientFirstName: 'Іван',
             patientLastName: 'Мазур',
-            patientMiddleName: 'Миколайович',
+            patientPhone: '+380931112233',
             orderNumber: 10247,
             sampleType: 'Загальний аналіз крові',
             status: ResultStatus.Pending,
@@ -85,6 +88,18 @@ export class ResultsComponent
         {
             this.searchQuery = state.orderNumber.toString();
         }
+    }
+
+    get searchPlaceholder()
+    {
+        switch (this.searchType)
+        {
+            case 'number':
+                return 'Введіть номер замовлення';
+            case 'patient':
+                return 'Введіть ім\'я або тел. номер пацієнта';
+        }
+        return 'Пошук замовлення';
     }
 
     getStatusLabel(resultStatus: ResultStatus)
