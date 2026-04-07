@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppointmentStatus } from '../../enums/appointment-status.enum';
@@ -13,7 +13,7 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
 
 @Component({
     selector: 'app-patients-schedule',
-    imports: [DatePipe, FormsModule, ConfirmDialogComponent, PaginationComponent],
+    imports: [DatePipe, FormsModule, ConfirmDialogComponent],
     templateUrl: './patients-schedule.component.html',
     styleUrl: './patients-schedule.component.css'
 })
@@ -33,13 +33,7 @@ export class PatientsScheduleComponent
     dialogTitle = '';
     dialogDescription = '';
 
-    selectedPage = 1;
-    pageCount = 7;
-
-    constructor(private router: Router)
-    {
-
-    }
+    private router = inject(Router);
 
     shiftDay(delta: number): void
     {
@@ -189,11 +183,5 @@ export class PatientsScheduleComponent
         }
 
         this.showCancelDialog = false;
-    }
-
-    loadPage(page: number): void
-    {
-        this.selectedPage = page;
-        // ...
     }
 }

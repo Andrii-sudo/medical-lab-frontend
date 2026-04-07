@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Result } from '../../interfaces/result.interface';
 import { ModalComponent } from '@shared/components/modal/modal.component';
@@ -20,7 +20,9 @@ export class ResultFormComponent implements OnInit
     resultForm: FormGroup;
     showError = false;
 
-    constructor(private fb: FormBuilder)
+    private fb = inject(FormBuilder);
+
+    constructor()
     {
         this.resultForm = this.fb.group({
             parameters: this.fb.array([])

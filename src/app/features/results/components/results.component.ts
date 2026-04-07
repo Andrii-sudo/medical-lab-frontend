@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { Result } from '../interfaces/result.interface';
@@ -79,7 +79,9 @@ export class ResultsComponent
         }
     ];
 
-    constructor(private router: Router)
+    private router = inject(Router);
+    
+    constructor()
     {
         const navigation = this.router.getCurrentNavigation();
         const state = navigation?.extras.state as { orderNumber: number }; 

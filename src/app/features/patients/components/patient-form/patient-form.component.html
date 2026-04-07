@@ -1,7 +1,7 @@
 <app-modal 
     formId="patient-form" 
-    title="Додати нового пацієнта" 
-    submitText="Додати" 
+    [title]="patient ? 'Редагувати пацієнта' : 'Додати нового пацієнта'" 
+    [submitText]="patient ? 'Зберегти' : 'Додати'" 
     (cancel)="onCancel()">
     <form id="patient-form" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
@@ -57,7 +57,12 @@
                 <label for="phone">Номер телефону</label>
                 <input formControlName="phone" type="tel" id="phone" placeholder="Вкажіть номер пацієнта" />
                 
-                @if (patientForm.get('phone')?.touched && patientForm.get('phone')?.hasError('pattern'))
+                @if (patientForm.get('phone')?.touched && patientForm.get('phone')?.hasError('required'))
+                {
+                    
+                    <span class="form-error">Номер обов'язковий</span>
+                }
+                @else if (patientForm.get('phone')?.touched && patientForm.get('phone')?.hasError('pattern'))
                 {
                     <span class="form-error">Неправильний формат номера телефону</span>
                 }
@@ -71,12 +76,6 @@
                     <span class="form-error">Неправильний формат email</span>
                 }
             </div>
-        </div>
-        <div class="contact-error">
-            @if (patientForm.hasError('contactRequired') && (patientForm.get('phone')?.touched || patientForm.get('email')?.touched))
-            {
-                <span class="form-error">Вкажіть телефон або email</span>
-            }
         </div>
     </form>
 </app-modal>

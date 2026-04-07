@@ -1,6 +1,6 @@
 <app-modal 
     formId="order-form" 
-    title="Реєстрація замовлення" 
+    [title]="'Реєстрація замовлення'" 
     submitText="Додати" 
     (cancel)="onCancel()">
     <form id="order-form" [formGroup]="orderForm" (ngSubmit)="onSubmit()">
