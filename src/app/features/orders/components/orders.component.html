@@ -7,12 +7,12 @@
 
     <div class="toolbar">
         <div class="search-wrapper">
-            <input type="text" placeholder="Пошук замовлення" />
+            <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery"/>
             <img src="icons/search.svg" class="search-icon" />
         </div>
-        <select class="slc-filter">
-            <option>Пошук за номером</option>
-            <option>Пошук за ім'ям пацієнта</option>
+        <select class="slc-filter" [(ngModel)]="searchType">
+            <option value="number">Пошук за номером замовлення</option>
+            <option value="patient">Пошук за пацієнтом</option>
         </select>
         <button class="btn-add" (click)="showOrderForm = true">+ Нове замовлення</button>
     </div>
@@ -31,17 +31,10 @@
             @for (order of orders; track order.number)
             {
                 <div class="list-row">
-                    @if (order.patientMiddleName != null)
-                    {
-                        <div class="cell-stack">
-                            <span class="maintext">{{ order.patientLastName }} {{ order.patientFirstName }}</span>
-                            <span class="subtext">{{ order.patientMiddleName }}</span>
-                        </div>
-                    }
-                    @else 
-                    {
-                        <span class="single">{{ order.patientLastName }} {{ order.patientFirstName }}</span>
-                    }
+                    <div class="cell-stack">
+                        <span class="maintext">{{ order.patientLastName }} {{ order.patientFirstName }}</span>
+                        <span class="subtext">{{ order.patientPhone }}</span>
+                    </div>
 
                     <span class="single">{{ order.number }}</span>
                     <span class="single">{{ order.createdDate | date:'mediumDate' }}</span>

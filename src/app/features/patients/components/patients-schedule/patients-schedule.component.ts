@@ -129,7 +129,7 @@ export class PatientsScheduleComponent
         {
             state:
             {
-                patientName: `${app.patientFirstName} ${app.patientLastName}`
+                patientName: `${app.patientLastName} ${app.patientFirstName}`
             }
         });
     }

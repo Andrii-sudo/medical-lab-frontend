@@ -22,6 +22,7 @@ export const patientList: Patient[] = [
     lastName: "Мельник",
     birthDate: new Date(1972, 10, 4), // 10 = листопад
     gender: 'Ч',
+    phone: "+38 067 123 67 67",
     email: "v.melnyk@gmail.com"
   },
   {

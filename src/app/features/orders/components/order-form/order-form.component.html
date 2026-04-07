@@ -12,7 +12,7 @@
                     type="text" 
                     id="patient"
                     autocomplete="off"
-                    placeholder="Почніть вводити прізвище..."
+                    placeholder="Почніть вводити прізвище або номер..."
                     (input)="onSearchChange($event)" />
                 
                 @if (filteredPatients.length > 0) 
@@ -22,7 +22,7 @@
                         {
                             <li class="patient-option" (click)="selectPatient(p)">
                                 <div class="maintext">{{ p.lastName }} {{ p.firstName }} {{ p.middleName ?? '' }}</div>
-                                <div class="subtext">Д/Н: {{ p.birthDate | date:'mediumDate' }}</div>
+                                <div class="subtext">Номер: {{ p.phone }}</div>
                             </li>
                         }
                     </ul>

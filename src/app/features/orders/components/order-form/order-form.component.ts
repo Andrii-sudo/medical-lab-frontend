@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientLookup } from '../../interfaces/patient-lookup.interface';
-import { DatePipe } from '@angular/common';
 import { Analysis } from '../../interfaces/analysis.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
+
 @Component({
     selector: 'app-order-form',
-    imports: [ReactiveFormsModule, DatePipe, ModalComponent],
+    imports: [ReactiveFormsModule, ModalComponent],
     templateUrl: './order-form.component.html',
     styleUrl: './order-form.component.css'
 })
@@ -59,12 +59,13 @@ export class OrderFormComponent implements OnInit
 
         const mockPatients: PatientLookup[] = 
         [
-            { id: 1, lastName: 'Коваленко', firstName: 'Олександр', middleName: 'Сергійович', birthDate: new Date('1985-05-20') },
-            { id: 2, lastName: 'Петренко', firstName: 'Марія', birthDate: new Date('1990-10-12') }
+            { id: 1, lastName: 'Коваленко', firstName: 'Олександр', middleName: 'Сергійович', phone: '+380679876543', },
+            { id: 2, lastName: 'Петренко', firstName: 'Марія', phone: '+380501234567' }
         ];
 
         this.filteredPatients = mockPatients.filter(p => 
-            p.lastName.toLowerCase().includes(query)
+            p.lastName.toLowerCase().includes(query) ||
+            p.phone.includes(query)
         );
     }
 

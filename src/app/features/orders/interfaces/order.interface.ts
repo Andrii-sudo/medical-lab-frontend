@@ -4,7 +4,7 @@ export interface Order
 {
     patientFirstName: string;
     patientLastName: string;
-    patientMiddleName?: string;
+    patientPhone: string;
     number: number;
     createdDate: Date;
     analyses: string[];
