@@ -11,6 +11,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class NavbarComponent 
 {
     isOpen = false;
+    currentOffice: string = 'Львів, Відділення №1';
 
     openMenu(): void
     {
@@ -20,5 +21,10 @@ export class NavbarComponent
     closeMenu(): void
     {
         this.isOpen = false;
+    }
+
+    logout(): void
+    {
+        
     }
 }
