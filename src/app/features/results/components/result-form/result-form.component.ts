@@ -17,17 +17,12 @@ export class ResultFormComponent implements OnInit
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<Result>();
 
-    resultForm: FormGroup;
-    showError = false;
-
     private fb = inject(FormBuilder);
 
-    constructor()
-    {
-        this.resultForm = this.fb.group({
-            parameters: this.fb.array([])
-        });
-    }
+    resultForm = this.fb.group({
+        parameters: this.fb.array([])
+    });;
+    showError = false;
 
     ngOnInit(): void 
     {

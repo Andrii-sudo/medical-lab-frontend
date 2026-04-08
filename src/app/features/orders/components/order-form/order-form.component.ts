@@ -17,22 +17,18 @@ export class OrderFormComponent implements OnInit
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<void>();
 
-    orderForm: FormGroup;
+    private fb = inject(FormBuilder);
+    
+    orderForm = this.fb.group({
+        patientId: this.fb.control<number | null>(null, Validators.required),
+        patientName: [''],
+        analysisSearch: ['']
+    });
+
     filteredPatients: PatientLookup[] = [];
     
     filteredAnalyses: Analysis[] = [];
     selectedAnalyses: Analysis[] = [];
-
-    private fb = inject(FormBuilder);
-    
-    constructor()
-    {
-        this.orderForm = this.fb.group({
-            patientId: ['', Validators.required],
-            patientName: [''],
-            analysisSearch: ['']
-        });
-    }
 
     ngOnInit()
     {
@@ -47,11 +43,11 @@ export class OrderFormComponent implements OnInit
         }
     }
 
-    onSearchChange(event: any): void 
+    onSearchChange(e: Event): void 
     {
-        this.orderForm.patchValue({ patientId: '' });
+        this.orderForm.patchValue({ patientId: null });
 
-        const query = event.target.value.toLowerCase();
+        const query = (e.target as HTMLInputElement).value.toLowerCase();
         if (query.length < 2) 
         {
             this.filteredPatients = [];
@@ -77,9 +73,9 @@ export class OrderFormComponent implements OnInit
         this.filteredPatients = [];
     }
 
-    onAnalysisSearchChange(event: any): void
+    onAnalysisSearchChange(e: Event): void
     {
-        const query = (event.target.value as string).toLowerCase();
+        const query = (e.target as HTMLInputElement).value.toLowerCase();
         if (query.length < 2)
         {
             this.filteredAnalyses = [];

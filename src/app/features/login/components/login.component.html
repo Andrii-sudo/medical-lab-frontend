@@ -22,8 +22,16 @@
             <div class="form-block">
                 <label for="password">Пароль</label>
                 <div class="password-wrapper">
-                    <input formControlName="password" [type]="showPassword ? 'text' : 'password'" id="password" placeholder="Вкажіть пароль" />
-                    <img [src]="showPassword ? '/icons/eye-off.svg' : '/icons/eye.svg'" class="eye-icon" (click)="togglePassword()"/>
+                    <input 
+                        formControlName="password" 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        id="password" 
+                        placeholder="Вкажіть пароль" />
+                    <img 
+                        [src]="showPassword ? '/icons/eye-off.svg' : '/icons/eye.svg'" 
+                        [attr.aria-label]="showPassword ? 'Сховати пароль' : 'Показати пароль'"
+                        class="eye-icon" 
+                        (click)="togglePassword()" />
                 </div>
                 @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required'))
                 {   

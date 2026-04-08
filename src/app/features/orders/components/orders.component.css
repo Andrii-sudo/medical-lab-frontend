@@ -59,7 +59,7 @@
 
 .btn-add
 {
-    background-color: #4a90e2 !important;
+    background-color: #4a90e2;
     color: white;
     border: none;
     padding: 0.6rem 0.75rem;
@@ -68,6 +68,11 @@
     flex-shrink: 0;
     cursor: pointer;
     transition: background-color 0.2s;
+}
+
+.btn-add:hover
+{
+    background-color: #357abd;
 }
 
 .slc-filter

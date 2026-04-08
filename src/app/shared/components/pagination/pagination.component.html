@@ -1,14 +1,30 @@
 <div class="pagination">
-    <button [disabled]="selectedPage() === 1" (click)="onChangePageClick(selectedPage() - 1)">&#8249;</button>
+    <button 
+        [disabled]="selectedPage() === 1"
+        aria-label="Попередня сторінка" 
+        (click)="onChangePageClick(selectedPage() - 1)">
+        &#8249;
+    </button>
     
-    @for (p of visablePages(); track $index)
+    @for (p of visiblePages(); track p)
     {
-        @if ($index > 0 && visablePages()[$index - 1] !== p - 1)
+        @if ($index > 0 && visiblePages()[$index - 1] !== p - 1)
         {
             <button disabled>...</button>
         }
-        <button [class.current-page]="selectedPage() === p" (click)="onChangePageClick(p)">{{ p }}</button>
+        <button 
+            [class.current-page]="selectedPage() === p" 
+            [disabled]="selectedPage() === p"
+            [attr.aria-label]="'Сторінка ' + p"
+            (click)="onChangePageClick(p)">
+                {{ p }}
+        </button>
     }
 
-    <button [disabled]="selectedPage() === pageCount()" (click)="onChangePageClick(selectedPage() + 1)">&#8250;</button>
+    <button 
+        [disabled]="selectedPage() === pageCount()" 
+        aria-label="Наступна сторінка"
+        (click)="onChangePageClick(selectedPage() + 1)">
+        &#8250;
+    </button>
 </div>

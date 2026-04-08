@@ -99,9 +99,9 @@ export class SamplesComponent
         return 'Пошук зразка';
     }
 
-    getStatusLabel(sampleStatus: SampleStatus): string
+    getStatusLabel(ss: SampleStatus): string
     {
-        switch (sampleStatus)
+        switch (ss)
         {
             case SampleStatus.Waiting:
                 return "Очікує збору";
@@ -114,11 +114,11 @@ export class SamplesComponent
         }
     }
 
-    collectSample(sampleId: number): void
+    collectSample(sId: number): void
     {
         for (let i = 0; i < this.samples.length; i++)
         {
-            if (this.samples[i].id === sampleId)
+            if (this.samples[i].id === sId)
             {
                 this.samples[i].status = SampleStatus.Collected;
                 this.samples[i].collectionDate = new Date();
@@ -130,34 +130,34 @@ export class SamplesComponent
         this.showCollectDialog = false;
     }
 
-    onCollectClick(sample: Sample): void
+    onCollectClick(s: Sample): void
     {
-        this.selectedSample = sample;    
+        this.selectedSample = s;    
         this.dialogTitle = 'Зібрати зразок';
-        this.dialogDescription = `Зібрати зразок пацієнта ${sample.patientLastName} ${sample.patientFirstName}?`;
+        this.dialogDescription = `Зібрати зразок пацієнта ${s.patientLastName} ${s.patientFirstName}?`;
         this.showCollectDialog = true;
     }
 
-    onEnterResultClick(sample: Sample)
+    onEnterResultClick(s: Sample)
     {
         this.router.navigate(['results'], 
         {
             state:
             {
-                orderNumber: sample.orderNumber
+                orderNumber: s.orderNumber
                 //
             }
         });
     }
 
-    onResultClick(sample: Sample)
+    onResultClick(s: Sample)
     {
 
         this.router.navigate(['results'], 
         {
             state:
             {
-                orderNumber: sample.orderNumber
+                orderNumber: s.orderNumber
                 //
             }
         });

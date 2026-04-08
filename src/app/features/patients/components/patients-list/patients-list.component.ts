@@ -30,7 +30,7 @@ export class PatientsListComponent
         this.showAddPatientForm = true;
     }
 
-    onAddApointmentClick(p: Patient): void
+    onAddAppointmentClick(p: Patient): void
     {
         this.selectedPatient = p;
         this.showAppointmentForm = true;

@@ -15,5 +15,4 @@ export class PatientsComponent
 {
     PatientTab = PatientTab; // Для доступу з HTML
     activeTab: PatientTab = PatientTab.All;
-    
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { Shift } from '../interfaces/shift.interface';
 import { Sample } from '../interfaces/sample.interface';
@@ -10,7 +10,7 @@ import { shifts, samples } from '../dummy'
 
 @Component({
     selector: 'app-dashboard',
-    imports: [NavbarComponent, CommonModule],
+    imports: [NavbarComponent, NgClass],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'
 })
@@ -18,24 +18,13 @@ export class DashboardComponent
 {
     today = new Date().toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    plannedVisitors:   number;
-    pendingSamples:    number;
-    processingSamples: number;
-    completedResults:  number;
-
-    shifts : Shift[];
-    samples : Sample[];
-
-    constructor()
-    {
-        this.plannedVisitors = 12;
-        this.pendingSamples = 4;
-        this.processingSamples = 6;
-        this.completedResults = 3;
+    plannedVisitors = 12;
+    pendingSamples = 4;
+    processingSamples = 6;
+    completedResults = 3;
     
-        this.shifts = shifts;
-        this.samples = samples;
-    }
+    shifts = shifts;
+    samples = samples;
 
     getSampleStatus(sampleExpiryDate: Date): string
     {
