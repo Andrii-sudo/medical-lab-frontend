@@ -13,4 +13,15 @@
         <li><a routerLink="/samples"   routerLinkActive="active" (click)="closeMenu()">Зразки</a></li>
         <li><a routerLink="/results"   routerLinkActive="active" (click)="closeMenu()">Результати</a></li>
     </ul>
+
+    <div class="nav-footer">
+        <div class="current-office">
+            <span class="office-label">Поточне відділення:</span>
+            <span class="office-value">{{ currentOffice }}</span>
+        </div>
+        
+        <button class="btn-logout" (click)="logout()">
+            Вийти
+        </button>
+    </div>
 </nav>
