@@ -1,4 +1,8 @@
-<button class="btn-navbar-open" [class.hide]="isOpen" (click)="openMenu()"><img src="/icons/menu.svg"></button>
+<button 
+    class="btn-navbar-open" 
+    [class.hide]="isOpen"
+    aria-label="Відкрити меню" 
+    (click)="openMenu()"><img src="/icons/menu.svg" alt="Меню"></button>
 
 <nav [class.open]="isOpen">
     <button class="btn-navbar-close" (click)="closeMenu()">&#8592;</button>

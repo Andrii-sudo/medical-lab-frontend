@@ -8,8 +8,6 @@ import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose
 import { appointments, patientList } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
 import { Router } from '@angular/router';
-import { PaginationComponent } from '@shared/components/pagination/pagination.component';
-
 
 @Component({
     selector: 'app-patients-schedule',
@@ -61,9 +59,9 @@ export class PatientsScheduleComponent
         return appointmentDate.getTime() < now.getTime();
     }
 
-    getPurposeLabel(ap: AppointmentPurpose): string
+    getPurposeLabel(app: AppointmentPurpose): string
     {
-        switch (ap)
+        switch (app)
         {
             case AppointmentPurpose.FirstVisit:
                 return 'Перший візит';
@@ -112,7 +110,7 @@ export class PatientsScheduleComponent
                 firstName: app.patientFirstName,
                 lastName: app.patientLastName,
                 middleName: app.patientMiddleName,
-                birthDate: new Date() // Неважливо
+                phone: ''
             }
         });
     }

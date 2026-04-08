@@ -105,9 +105,9 @@ export class OrdersComponent
         return 'Пошук замовлення';
     }
 
-    getStatusLabel(orderStatus: OrderStatus): string
+    getStatusLabel(os: OrderStatus): string
     {
-        switch (orderStatus)
+        switch (os)
         {
             case OrderStatus.Unpaid:
                 return 'Очікує оплату';
@@ -122,32 +122,32 @@ export class OrdersComponent
         }
     }
 
-    onCancelClick(order: Order): void
+    onCancelClick(o: Order): void
     {
-        this.selectedOrder = order;
+        this.selectedOrder = o;
         this.dialogTitle = 'Скасувати замовлення';
-        this.dialogDescription = `Скасувати замовлення пацієнта ${order.patientLastName} ${order.patientFirstName}?`;
+        this.dialogDescription = `Скасувати замовлення пацієнта ${o.patientLastName} ${o.patientFirstName}?`;
         this.showCancelDialog = true;    
     }
 
-    onCollectSampleClick(order: Order)
+    onCollectSampleClick(o: Order)
     {
         this.router.navigate(['samples'], 
         {
             state:
             {
-                orderNumber: order.number
+                orderNumber: o.number
             }
         });
     }
 
-    onEnterResultClick(order: Order)
+    onEnterResultClick(o: Order)
     {
         this.router.navigate(['results'], 
         {
             state:
             {
-                orderNumber: order.number
+                orderNumber: o.number
             }
         });
     }

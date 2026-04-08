@@ -13,20 +13,16 @@ import { ModalComponent } from "@shared/components/modal/modal.component";
 })
 export class LoginComponent 
 {
-	loginForm: FormGroup;
-	showPassword = false;
-	loginError = false;
-
 	private fb = inject(FormBuilder);
 	private router = inject(Router);
 
-	constructor()
-	{
-		this.loginForm = this.fb.group({
-			email: ['', [Validators.required, Validators.email]],
-			password: ['', [Validators.required, Validators.minLength(6)]]
-		});
-	}
+	loginForm = this.fb.group({
+		email: ['', [Validators.required, Validators.email]],
+		password: ['', [Validators.required, Validators.minLength(6)]]
+	});
+	
+	showPassword = false;
+	loginError = false;
 
 	onSubmit()
 	{

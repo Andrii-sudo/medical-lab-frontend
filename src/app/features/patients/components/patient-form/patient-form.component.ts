@@ -19,11 +19,11 @@ export class PatientFormComponent implements OnInit
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<Patient>();
 
-    patientForm!: FormGroup;
-    today!: string;
-
     private fb = inject(FormBuilder);
     private dp = inject(DatePipe);
+
+    patientForm!: FormGroup;
+    today!: string;
 
     ngOnInit(): void 
     {
@@ -55,6 +55,7 @@ export class PatientFormComponent implements OnInit
         if (!this.patientForm.valid)
         {
             this.patientForm.markAllAsTouched();
+            return;
         }
          
         // Add / edit logic...

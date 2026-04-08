@@ -1,7 +1,7 @@
 <div class="toolbar">
     <div class="search-wrapper">
         <input type="text" placeholder="Введіть ім'я або номер пацієнта" />
-        <img src="icons/search.svg" class="search-icon" />
+        <img src="icons/search.svg" alt="" class="search-icon" />
     </div>
     <button class="btn-add" (click)="onAddPatientClick()">+ Новий пацієнт</button>
 </div>
@@ -13,7 +13,7 @@
         <span class="col-header">Контакти</span>
         <span class="col-header"></span>
 
-        @for (patient of patients; track $index) 
+        @for (patient of patients; track patient.id) 
         { 
             <div class="list-row">
                 @if (patient.middleName != null)
@@ -45,7 +45,7 @@
                 <div class="col-action">
                     <button 
                         class="btn-action" 
-                        (click)="onAddApointmentClick(patient)">
+                        (click)="onAddAppointmentClick(patient)">
                         Записати
                     </button>
                     <button 

@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, input, Output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 @Component({
     selector: 'app-pagination',
@@ -11,9 +11,9 @@ export class PaginationComponent
     selectedPage = input.required<number>();
     pageCount = input.required<number>();
 
-    @Output() changePage = new EventEmitter<number>();
+    changePage = output<number>();
 
-    visablePages = computed(() =>
+    visiblePages = computed(() =>
     {
         const pages = new Set<number>();
         
@@ -21,6 +21,9 @@ export class PaginationComponent
         const selc = this.selectedPage();
         const next = this.selectedPage() + 1;
         const cnt = this.pageCount();
+
+        if (cnt <= 0) return [];
+        if (cnt === 1) return [1];
 
         pages.add(1);
         if (prev > 1) 

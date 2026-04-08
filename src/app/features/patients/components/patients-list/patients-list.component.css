@@ -54,7 +54,7 @@
 
 .btn-add
 {
-    background-color: #4a90e2 !important;
+    background-color: #4a90e2;
     color: white;
     border: none;
     padding: 0.6rem 0.75rem;
@@ -67,7 +67,7 @@
 
 .btn-add:hover
 {
-    background-color: #357abd !important;
+    background-color: #357abd;
 }
 
 .app-table

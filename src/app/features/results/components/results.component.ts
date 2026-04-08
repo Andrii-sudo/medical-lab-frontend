@@ -104,9 +104,9 @@ export class ResultsComponent
         return 'Пошук замовлення';
     }
 
-    getStatusLabel(resultStatus: ResultStatus)
+    getStatusLabel(rs: ResultStatus)
     {
-        switch (resultStatus)
+        switch (rs)
         {
             case ResultStatus.Pending:
                 return 'Очікує внесення';
@@ -117,15 +117,15 @@ export class ResultsComponent
         }        
     }
 
-    onEnterResult(result: Result)
+    onEnterResult(r: Result)
     {
-        this.selectedResult = result;
+        this.selectedResult = r;
         this.showResultForm = true; 
     }
 
-    onReveiwResult(result: Result)
+    onReveiwResult(r: Result)
     {
-        this.selectedResult = result;        
+        this.selectedResult = r;        
         this.showResultForm = true; 
     }
 

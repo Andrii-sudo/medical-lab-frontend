@@ -23,30 +23,24 @@ export class AppointmentFormComponent implements OnInit
     @Output() cancel = new EventEmitter<void>();
     @Output() confirm = new EventEmitter<NewAppointment>();
 
+    private fb = inject(FormBuilder);
+    private dp = inject(DatePipe);
+
     appointmentPurpose = AppointmentPurpose;
 
-    appointmentForm: FormGroup;
-    today: string;
+    appointmentForm = this.fb.group({
+        visitDate: ['', Validators.required],
+        visitTime: ['', Validators.required],
+        city: ['', Validators.required],
+        officeId: ['', Validators.required],
+        visitPurpose: ['', Validators.required]
+    });
+    today = this.dp.transform(new Date(), 'yyyy-MM-dd') ?? '';
 
     cities: string[] = [];
     filteredOffices: Office[] = [];
     availableSlots: string[] = [];
     private allOffices: Office[] = offices;
-
-    private fb = inject(FormBuilder);
-    private dp = inject(DatePipe);
-
-    constructor()
-    {
-        this.appointmentForm = this.fb.group({
-            visitDate: ['', Validators.required],
-            visitTime: ['', Validators.required],
-            city: ['', Validators.required],
-            officeId: ['', Validators.required],
-            visitPurpose: ['', Validators.required]
-        });
-        this.today = this.dp.transform(new Date(), 'yyyy-MM-dd') ?? '';
-    }
 
     ngOnInit(): void
     {
@@ -123,12 +117,12 @@ export class AppointmentFormComponent implements OnInit
             return;
         }
 
-        const value = this.appointmentForm.value;
+        const value = this.appointmentForm.getRawValue();
         this.confirm.emit({
             patientId: this.patientId,
-            officeId: value.officeId,
+            officeId: Number(value.officeId),
             visitTime: new Date(`${value.visitDate}T${value.visitTime}`),
-            purpose: value.visitPurpose
+            purpose: Number(value.visitPurpose) as AppointmentPurpose
         });
     }
 }

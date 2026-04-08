@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, HostListener } from '@angular/core';
 import { Input, Output } from '@angular/core';
 
 @Component({
@@ -25,5 +25,10 @@ export class ConfirmDialogComponent
     onDialogConfirm(): void
     {
         this.confirm.emit();
+    }
+
+    @HostListener('document:keydown.escape')
+    onEscapeKey(): void {
+        this.onDialogCancel();
     }
 }

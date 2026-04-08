@@ -8,7 +8,7 @@
         <h3 class="modal-title">{{ title }}</h3>
         @if (cancel.observed)
         {
-            <button class="modal-close" (click)="onCancelClick()">&#10006;</button>
+            <button class="modal-close" aria-label="Закрити" (click)="onCancelClick()">&#10006;</button>
         }
     </div>
 

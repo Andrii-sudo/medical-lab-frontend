@@ -2,7 +2,7 @@
 <dialog open>
     <div class="dialog-header">
         <h3 class="dialog-title">{{ title }}</h3>
-        <button class="dialog-close" (click)="onDialogCancel()">&#10006;</button>
+        <button class="dialog-close" aria-label="Закрити" (click)="onDialogCancel()">&#10006;</button>
     </div>
     <p class="dialog-description">{{ description }}</p>
     <div class="dialog-actions">
