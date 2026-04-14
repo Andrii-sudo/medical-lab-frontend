@@ -2,8 +2,8 @@ import { Patient } from "../interfaces/patient.interface";
 import { Appointment } from "../interfaces/appointment.interface";
 import { AppointmentPurpose } from "../enums/appointment-purpose.enum";
 import { AppointmentStatus } from "../enums/appointment-status.enum";
-import { Office } from "src/app/office.interface";
-import { OfficeType } from "src/app/office-type";
+import { Office } from "@core/interfaces/office.interface";
+import { OfficeType } from "@core/enums/office-type";
 
 export const patientList: Patient[] = [
   {

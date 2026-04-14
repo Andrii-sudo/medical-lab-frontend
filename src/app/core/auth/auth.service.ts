@@ -6,7 +6,9 @@ import { User } from "./interfaces/user.interface";
 import { Observable, tap } from "rxjs";
 import { UserRole } from "./user-role.enum";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ 
+    providedIn: 'root' 
+})
 export class AuthService
 {
     private http = inject(HttpClient);
@@ -16,7 +18,7 @@ export class AuthService
 
     userId = computed(() => this.currentUser()?.id);
     userRole = computed(() => this.currentUser()?.role);
-    
+
     constructor()
     {
         const savedUser = localStorage.getItem(this.lcName);

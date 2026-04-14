@@ -16,8 +16,15 @@
 
     <div class="nav-footer">
         <div class="current-office">
-            <span class="office-label">Поточне відділення:</span>
-            <span class="office-value">{{ currentOffice }}</span>
+            <label for="office-select" class="office-label">Поточне відділення:</label>
+            <select name="office-select" class="office-select" (change)="onOfficeChange($event)">
+                @for (office of availableOffices; track office.id) 
+                {
+                    <option [value]="office.id" [selected]="office.id === selectedOffice()?.id">
+                        {{ office.city }}, Відділення №{{ office.number }}
+                    </option>
+                }
+            </select>
         </div>
         
         <button class="btn-logout" (click)="logout()">
