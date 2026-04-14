@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { environment } from "@env/environment";
 import { AuthResponse } from "./interfaces/auth-response";
 import { User } from "./interfaces/user.interface";
@@ -14,6 +14,9 @@ export class AuthService
     private lcName = 'user_info';
     currentUser = signal<User | null>(null);
 
+    userId = computed(() => this.currentUser()?.id);
+    userRole = computed(() => this.currentUser()?.role);
+    
     constructor()
     {
         const savedUser = localStorage.getItem(this.lcName);
