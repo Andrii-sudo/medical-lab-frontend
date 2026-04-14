@@ -3,7 +3,7 @@
         formId="login-form" 
         title="Вхід в систему" 
         submitText="Увійти"
-        [errorText]="loginError ? 'Неправильний Email або пароль' : ''" 
+        [errorText]="errorMessage" 
         width="25rem">
         <form id="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-block">
