@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewAppointment } from '../../interfaces/appointment.interface';
 import { AppointmentPurpose } from '../../enums/appointment-purpose.enum';
-import { Office } from 'src/app/office.interface';
+import { Office } from '@core/interfaces/office.interface';
 import { offices } from '../dummy';
 import { ModalComponent } from "@shared/components/modal/modal.component";
 import { DatePipe } from '@angular/common';
