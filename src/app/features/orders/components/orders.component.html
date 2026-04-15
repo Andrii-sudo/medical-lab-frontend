@@ -49,11 +49,15 @@
                         } 
                         @else if (order.status === OrderStatus.Pending)
                         {
-                            <button class="btn-action btn-sample" (click)="onCollectSampleClick(order)">Здати зразки</button>
+                            <button class="btn-action btn-sample"
+                                [routerLink]="['/samples']" 
+                                [state]="{ orderNumber: order.number }">Здати зразки</button>
                         }
                         @else if (order.status === OrderStatus.InProgress)
                         {
-                            <button class="btn-action btn-result" (click)="onEnterResultClick(order)">Внести результати</button>
+                            <button class="btn-action btn-result" 
+                                [routerLink]="['/results']" 
+                                [state]="{ orderNumber: order.number }">Внести результати</button>
                         }
 
                         <button

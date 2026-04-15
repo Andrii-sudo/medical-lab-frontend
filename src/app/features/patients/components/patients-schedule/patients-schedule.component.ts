@@ -7,11 +7,11 @@ import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose
 
 import { appointments, patientList } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-patients-schedule',
-    imports: [DatePipe, FormsModule, ConfirmDialogComponent],
+    imports: [ConfirmDialogComponent, DatePipe, FormsModule, RouterLink],
     templateUrl: './patients-schedule.component.html',
     styleUrl: './patients-schedule.component.css'
 })
@@ -30,8 +30,6 @@ export class PatientsScheduleComponent
     selectedAppId = -1;
     dialogTitle = '';
     dialogDescription = '';
-
-    private router = inject(Router);
 
     shiftDay(delta: number): void
     {
@@ -91,39 +89,13 @@ export class PatientsScheduleComponent
     {
         switch (current)
         {
-            case AppointmentStatus.Pending:   
+            case AppointmentStatus.Pending:
                 return AppointmentStatus.Arrived;
-            case AppointmentStatus.Arrived:   
+            case AppointmentStatus.Arrived:
                 return AppointmentStatus.Completed;
-            default:                          
+            default:
                 return null;
         }
-    }
-
-    onCreateOrderClick(app: Appointment): void
-    {
-        this.router.navigate(['orders'], 
-        {
-            state:
-            {
-                id: app.patientId,
-                firstName: app.patientFirstName,
-                lastName: app.patientLastName,
-                middleName: app.patientMiddleName,
-                phone: ''
-            }
-        });
-    }
-
-    onCollectSampleClick(app: Appointment): void
-    {
-        this.router.navigate(['samples'], 
-        {
-            state:
-            {
-                patientName: `${app.patientLastName} ${app.patientFirstName}`
-            }
-        });
     }
 
     onAdvanceClick(appId: number): void

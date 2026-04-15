@@ -85,7 +85,8 @@
 }
 
 .btn-order,
-.btn-sample
+.btn-sample,
+.btn-result
 {
     flex: 1;
 }
