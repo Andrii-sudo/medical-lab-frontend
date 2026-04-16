@@ -11,51 +11,66 @@
                 <span class="card-label">Заплановані відвідувачі</span>
                 <span class="card-sub">на сьогодні</span>
             </div>
-            <span class="card-value">{{ plannedVisitors }}</span>
+            <span class="card-value">{{ employeeStats?.plannedVisitors }}</span>
         </div>
         <div class="card">
             <div class="card-text">
                 <span class="card-label">Очікують здачі зразка</span>
                 <span class="card-sub">пацієнти</span>
             </div>
-            <span class="card-value">{{ pendingSamples }}</span>
+            <span class="card-value">{{ employeeStats?.pendingSamples }}</span>
         </div>
         <div class="card">
             <div class="card-text">
                 <span class="card-label">Зразків в лабораторії</span>
                 <span class="card-sub">в обробці</span>
             </div>
-            <span class="card-value">{{ processingSamples }}</span>
+            <span class="card-value">{{ employeeStats?.processingSamples }}</span>
         </div>
         <div class="card">
             <div class="card-text">
                 <span class="card-label">Готових результатів</span>
                 <span class="card-sub">на сьогодні</span>
             </div>
-            <span class="card-value">{{ completedResults }}</span>
+            <span class="card-value">{{ employeeStats?.completedResults }}</span>
         </div>
     </div>
     <div class="schedule-samples">
         <div class="panel">
             <p class="panel-title">Мій графік</p>
-            @for (shift of shifts; track $index)
+            @for (shift of employeeShifts; track $index)
             {
                 <div class="panel-item">
-                    <span class="panel-item-day">{{ shift.day }}</span>
-                    <span class="panel-item-office">{{ shift.city }}, Відділення №{{ shift.officeNumber }}</span>
-                    <span class="panel-item-time">{{ shift.startTime }}-{{ shift.endTime }}</span>
+                    <span class="panel-item-day">{{ getDayOfWeekLabel(shift.dayOfWeek) }}</span>
+                    @if (shift.city && shift.officeNumber)
+                    {
+                        <span class="panel-item-office">{{ shift.city }}, Відділення №{{ shift.officeNumber }}</span>
+                    }
+                    @else if (shift.leaveReason) 
+                    {
+                        <span class="panel-item-reason">{{ shift.leaveReason }}</span>
+                    }
+
+                    @if (shift.startTime && shift.endTime)
+                    {
+                        <span class="panel-item-time">{{ shift?.startTime | slice:0:5 }}-{{ shift?.endTime | slice:0:5 }}</span>
+                    }
                 </div>
             }
         </div>
         <div class="panel">
             <p class="panel-title">Зразки, що скоро прострочаться</p>
-            @for (sample of samples; track $index)
+            @for (sample of employeeSamples; track $index)
             {
-                <div class="panel-item">
+                <a class="panel-item clickable-row" 
+                    [routerLink]="['/samples']" 
+                    [state]="{ orderNumber: sample.orderNumber }">
+             
                     <span class="panel-item-dot" [ngClass]="getSampleStatus(sample.expiresAt)"></span>
                     <span class="panel-item-sample">{{ sample.type }}</span>
-                    <span class="panel-item-datetime">{{ formatExpiryDate(sample.expiresAt) }}</span>
-                </div>
+                    <span class="panel-item-datetime">{{ sample.expiresAt | expiryDatePipe}}</span>
+                    <span class="panel-item-arrow">→</span>
+                </a>
             }
         </div>
     </div>

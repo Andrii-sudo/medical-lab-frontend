@@ -55,7 +55,7 @@ export class AuthService
         this.http.post(`${this.apiUrl}Logout`, 
             null, 
             { withCredentials: true })
-            .subscribe({ next: () => this.RemoveCurrentUser() });
+            .subscribe({ next: () => this.removeCurrentUser() });
     }
 
     private setCurrentUser(ar: AuthResponse): void
@@ -64,7 +64,7 @@ export class AuthService
         localStorage.setItem(this.lcName, JSON.stringify(this.currentUser()));
     }
 
-    private RemoveCurrentUser(): void
+    removeCurrentUser(): void
     {
         localStorage.removeItem(this.lcName);
         this.currentUser.set(null);
