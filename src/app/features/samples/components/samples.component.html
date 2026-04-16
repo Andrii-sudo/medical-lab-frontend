@@ -57,11 +57,19 @@
                         }
                         @else if (sample.status === SampleStatus.Collected)
                         {
-                            <button class="btn-action btn-enter-result" (click)="onEnterResultClick(sample)">Внести результати</button>
+                            <button class="btn-action btn-enter-result" 
+                                [routerLink]="['/results']"
+                                [state]="{
+                                    orderNumber: sample.orderNumber
+                                }">Внести результати</button>
                         }
                         @else if (sample.status === SampleStatus.Analyzed)
                         {
-                            <button class="btn-action btn-result" (click)="onResultClick(sample)">Результати</button>
+                            <button class="btn-action btn-result"
+                                [routerLink]="['/results']"
+                                [state]="{
+                                    orderNumber: sample.orderNumber
+                                }">Результати</button>
                         }
                     </div>
                 </div>

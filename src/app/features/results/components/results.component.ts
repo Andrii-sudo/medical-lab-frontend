@@ -84,11 +84,20 @@ export class ResultsComponent
     constructor()
     {
         const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras.state as { orderNumber: number }; 
+        const state = navigation?.extras.state as { orderNumber?: number, patientName?: string}; 
 
         if (state)
         {
-            this.searchQuery = state.orderNumber.toString();
+            if (state.orderNumber)
+            {
+                this.searchQuery = state.orderNumber.toString();
+                this.searchType = 'order';
+            }
+            else if (state.patientName)
+            {
+                this.searchQuery = state.patientName;
+                this.searchType = 'patient';
+            }
         }
     }
 

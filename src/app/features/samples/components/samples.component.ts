@@ -4,19 +4,21 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { SampleStatus } from '../enums/sample-status.enum';
 import { DatePipe } from '@angular/common';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NavigationState } from '../interfaces/navigation-state.interface';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
     selector: 'app-samples',
-    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, FormsModule, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, PaginationComponent, FormsModule, RouterLink, DatePipe],
     templateUrl: './samples.component.html',
     styleUrl: './samples.component.css'
 })
 export class SamplesComponent 
 {
+    private router = inject(Router);
+
     SampleStatus = SampleStatus;
 
     searchQuery = '';
@@ -64,8 +66,6 @@ export class SamplesComponent
             expiryDate: new Date('2026-03-25')
         }
     ];
-    
-    private router = inject(Router)
 
     constructor()
     {
@@ -136,31 +136,6 @@ export class SamplesComponent
         this.dialogTitle = 'Зібрати зразок';
         this.dialogDescription = `Зібрати зразок пацієнта ${s.patientLastName} ${s.patientFirstName}?`;
         this.showCollectDialog = true;
-    }
-
-    onEnterResultClick(s: Sample)
-    {
-        this.router.navigate(['results'], 
-        {
-            state:
-            {
-                orderNumber: s.orderNumber
-                //
-            }
-        });
-    }
-
-    onResultClick(s: Sample)
-    {
-
-        this.router.navigate(['results'], 
-        {
-            state:
-            {
-                orderNumber: s.orderNumber
-                //
-            }
-        });
     }
 
     loadPage(page: number): void

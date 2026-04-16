@@ -48,12 +48,31 @@
                     @if (app.purpose === AppointmentPurpose.FirstVisit
                          && app.status === AppointmentStatus.Arrived)
                     {
-                        <button class="btn-action btn-order" (click)="onCreateOrderClick(app)">+ Замовлення</button>
+                        <button class="btn-action btn-order" 
+                            [routerLink]="['/orders']"
+                            [state]="{ 
+                                id: app.patientId,
+                                firstName: app.patientFirstName,
+                                lastName: app.patientLastName,
+                                middleName: app.patientMiddleName,
+                                phone: '' 
+                            }">+ Замовлення</button>
                     }
                     @else if (app.purpose === AppointmentPurpose.Sample
                               && app.status === AppointmentStatus.Arrived) 
                     {
-                        <button class="btn-action btn-sample" (click)="onCollectSampleClick(app)">Зібрати зразки</button>
+                        <button class="btn-action btn-sample" [routerLink]="['/samples']"
+                            [state]="{
+                                patientName: `${app.patientLastName} ${app.patientFirstName}` 
+                            }">Зібрати зразки</button>
+                    }
+                    @else if (app.purpose === AppointmentPurpose.Results
+                              && app.status === AppointmentStatus.Arrived) 
+                    {
+                        <button class="btn-action btn-result" [routerLink]="['/results']"
+                            [state]="{
+                                patientName: `${app.patientLastName} ${app.patientFirstName}` 
+                            }">Результати</button>
                     }
 
                     <button 

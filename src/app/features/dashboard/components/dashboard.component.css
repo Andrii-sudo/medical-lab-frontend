@@ -109,7 +109,8 @@
     text-align: center;
 }
 
-.panel-item-office
+.panel-item-office,
+.panel-item-reason
 {
     flex: 1;
 }
@@ -144,6 +145,34 @@
 {
     flex: 0 0 8rem;
     text-align: center;
+}
+
+a.panel-item.clickable-row 
+{
+    text-decoration: none;
+    color: inherit;       
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+a.panel-item.clickable-row:hover 
+{
+    background-color: rgba(77, 166, 255, 0.1);
+}
+
+.panel-item-arrow 
+{
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    color: #6b8cba;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+a.panel-item.clickable-row:hover .panel-item-arrow 
+{
+    transform: translateX(3px);
+    color: #4da6ff;
 }
 
 @media (max-width: 1050px) 

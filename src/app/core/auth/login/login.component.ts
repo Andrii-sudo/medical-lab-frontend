@@ -49,7 +49,7 @@ export class LoginComponent
 					{
 						this.router.navigate(['/dashboard']);
 					}, 
-					error: (err) => 
+					error: err => 
 					{
 						console.error(err);
 						this.errorMessage = err.error.msg;

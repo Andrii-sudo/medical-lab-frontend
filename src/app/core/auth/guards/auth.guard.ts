@@ -1,6 +1,5 @@
 import { inject } from "@angular/core";
 import { CanMatchFn, RedirectCommand, Router } from "@angular/router";
-import { routes } from "src/app/app.routes";
 import { AuthService } from "../auth.service";
 
 

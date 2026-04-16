@@ -6,18 +6,20 @@ import { OrderStatus } from '../enums/order-status.enum';
 import { DatePipe } from '@angular/common';
 import { OrderFormComponent } from './order-form/order-form.component';
 import { PatientLookup } from '../interfaces/patient-lookup.interface';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-orders',
-    imports: [NavbarComponent, ConfirmDialogComponent, OrderFormComponent, PaginationComponent, FormsModule, DatePipe],
+    imports: [NavbarComponent, ConfirmDialogComponent, OrderFormComponent, PaginationComponent, FormsModule, RouterLink, DatePipe],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
 export class OrdersComponent
 {
+    private router = inject(Router);
+
     OrderStatus = OrderStatus;
     
     showOrderForm = false;
@@ -79,8 +81,6 @@ export class OrdersComponent
 
     preselectedPatient?: PatientLookup;
 
-    private router = inject(Router);
-
     constructor()
     {
         const navigation = this.router.getCurrentNavigation();
@@ -128,28 +128,6 @@ export class OrdersComponent
         this.dialogTitle = 'Скасувати замовлення';
         this.dialogDescription = `Скасувати замовлення пацієнта ${o.patientLastName} ${o.patientFirstName}?`;
         this.showCancelDialog = true;    
-    }
-
-    onCollectSampleClick(o: Order)
-    {
-        this.router.navigate(['samples'], 
-        {
-            state:
-            {
-                orderNumber: o.number
-            }
-        });
-    }
-
-    onEnterResultClick(o: Order)
-    {
-        this.router.navigate(['results'], 
-        {
-            state:
-            {
-                orderNumber: o.number
-            }
-        });
     }
 
     cancelOrder(orderNumber: number): void

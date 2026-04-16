@@ -1,72 +1,111 @@
-import { Component } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { NgClass, SlicePipe } from '@angular/common';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
-import { Shift } from '../interfaces/shift.interface';
-import { Sample } from '../interfaces/sample.interface';
-
-//
-import { shifts, samples } from '../dummy'
-//
+import { EmployeeShift } from '../interfaces/employee-shift.interface';
+import { EmployeeSample } from '../interfaces/employee-sample.interface';
+import { ExpiryDatePipe } from '../pipes/expiry-date.pipe';
+import { RouterLink } from '@angular/router';
+import { EmployeeStats } from '../interfaces/employee-stat.interface';
+import { DashboardService } from '../services/dashboard.service';
+import { SelectedOfficeService } from '@core/services/selected-office.service';
+import { AuthService } from '@core/auth/auth.service';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [NavbarComponent, NgClass],
+    imports: [NavbarComponent, ExpiryDatePipe, NgClass, RouterLink, SlicePipe],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent
+export class DashboardComponent implements OnInit
 {
+    private dash = inject(DashboardService);
+    private selcOffice = inject(SelectedOfficeService);
+    private auth = inject(AuthService);
+
     today = new Date().toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    plannedVisitors = 12;
-    pendingSamples = 4;
-    processingSamples = 6;
-    completedResults = 3;
-    
-    shifts = shifts;
-    samples = samples;
+    employeeStats?: EmployeeStats;
+    employeeShifts: EmployeeShift[] = [];
+    employeeSamples: EmployeeSample[] = [];
 
-    getSampleStatus(sampleExpiryDate: Date): string
+    constructor()
     {
-        const now = new Date();
-        const diffInHours = (sampleExpiryDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+        effect(() =>
+        {
+            const office = this.selcOffice.selectedOffice();
+            
+            if (office)
+            {
+                this.dash.getEmployeeStats(office.id)
+                    .subscribe({ 
+                        next: empStats => this.employeeStats = empStats, 
+                        error: err => console.error(err)
+                    });
 
-        if (diffInHours <= 24) 
+                this.dash.getEmployeeSamples(office.id)
+                    .subscribe({ 
+                        next: empSamples => this.employeeSamples = empSamples, 
+                        error: err => console.error(err)
+                    });
+            }
+        });
+    }
+
+    ngOnInit(): void
+    {
+        const user = this.auth.currentUser();
+
+        if (user)
+        {
+            this.dash.getEmployeeShifts(user.id)
+                .subscribe({ 
+                    next: empShifts => this.employeeShifts = empShifts, 
+                    error: err => console.error(err)
+                });
+        }
+    }
+
+    getDayOfWeekLabel(dayOfWeek: number): string
+    {
+        switch(dayOfWeek)
+        {
+            case 0:
+                return 'Нд';
+            case 1:
+                return 'Пн';
+            case 2:
+                return 'Вт';
+            case 3:
+                return 'Ср';
+            case 4:
+                return 'Чт';
+            case 5:
+                return 'Пт';
+            case 6:
+                return 'Сб';    
+            default:
+                return '-';
+        }
+    }
+
+    getSampleStatus(sampleExpiryDate: string): string
+    {
+        const expiry = new Date(sampleExpiryDate);
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const diffInDays = Math.round((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+        if (diffInDays <= 1)
         {
             return 'dot-red';
         }
-        
-        if (diffInHours <= 72) 
+        else if (diffInDays <= 3) 
         {
             return 'dot-yellow';
         }
         
         return 'dot-green';
-    }
-
-    formatExpiryDate(sampleExpiryDate: Date): string
-    {
-        const today = new Date();
-        const tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 1);
-
-        const isSameDay = (d1: Date, d2: Date) => 
-            d1.getFullYear() === d2.getFullYear() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getDate() === d2.getDate();
-
-        const timeStr = `${sampleExpiryDate.getHours()}:${sampleExpiryDate.getMinutes().toString().padStart(2, '0')}`; 
-        
-        if (isSameDay(sampleExpiryDate, today)) 
-        {
-            return `Сьогодні о ${timeStr}`;
-        } 
-        
-        if (isSameDay(sampleExpiryDate, tomorrow)) 
-        {
-            return `Завтра о ${timeStr}`;
-        }
-
-        return sampleExpiryDate.toLocaleDateString('uk-UA');
     }
 }
