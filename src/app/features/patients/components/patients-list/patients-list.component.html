@@ -1,6 +1,6 @@
 <div class="toolbar">
     <div class="search-wrapper">
-        <input type="text" placeholder="Введіть ім'я або номер пацієнта" />
+        <input type="text" placeholder="Введіть ім'я або номер пацієнта" (input)="onSearchChange($event)" />
         <img src="icons/search.svg" alt="" class="search-icon" />
     </div>
     <button class="btn-add" (click)="onAddPatientClick()">+ Новий пацієнт</button>

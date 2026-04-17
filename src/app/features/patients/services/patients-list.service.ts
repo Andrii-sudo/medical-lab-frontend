@@ -1,0 +1,29 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '@env/environment';
+import { Observable } from 'rxjs';
+import { Patient } from '../interfaces/patient.interface';
+import { PatientPage } from '../interfaces/patient-page.interface';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PatientsListService 
+{
+    private http = inject(HttpClient);
+    private apiUrl = `${environment.apiUrl}/Patients/`;
+
+    getPatientsPage(page: number, pageSize: number, searchTerm?: string): Observable<PatientPage>
+    {
+        let params = new HttpParams()
+            .set("page", page)
+            .set("pageSize", pageSize);
+    
+        if (searchTerm)
+        {
+            params = params.set("searchTerm", searchTerm);
+        } 
+        
+        return this.http.get<PatientPage>(`${this.apiUrl}`, { params });
+    }
+}

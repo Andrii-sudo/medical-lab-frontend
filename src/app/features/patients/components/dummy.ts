@@ -5,45 +5,7 @@ import { AppointmentStatus } from "../enums/appointment-status.enum";
 import { Office } from "@core/interfaces/office.interface";
 import { OfficeType } from "@core/enums/office-type";
 
-export const patientList: Patient[] = [
-  {
-    id: 1,
-    firstName: "Тетяна",
-    lastName: "Шевченко",
-    middleName: "Михайлівна",
-    birthDate: new Date(1998, 6, 29), // Місяці в JS починаються з 0 (6 = липень)
-    gender: 'Ж',
-    phone: "+38 050 987 65 43",
-    email: "t.shevchenko@gmail.com"
-  },
-  {
-    id: 2,
-    firstName: "Василь",
-    lastName: "Мельник",
-    birthDate: new Date(1972, 10, 4), // 10 = листопад
-    gender: 'Ч',
-    phone: "+38 067 123 67 67",
-    email: "v.melnyk@gmail.com"
-  },
-  {
-    id: 3,
-    firstName: "Олена",
-    lastName: "Коваленко",
-    middleName: "Іванівна",
-    birthDate: new Date(1985, 2, 12), // 2 = березень
-    gender: 'Ж',
-    phone: "+38 067 123 45 67"
-  },
-  {
-    id: 4,
-    firstName: "Андрій",
-    lastName: "Бойко",
-    middleName: "Сергійович",
-    birthDate: new Date(1960, 1, 17), // 1 = лютий
-    gender: 'Ч',
-    phone: "+38 063 456 78 90"
-  }
-];
+
 
 export const appointments: Appointment[] = [
   {

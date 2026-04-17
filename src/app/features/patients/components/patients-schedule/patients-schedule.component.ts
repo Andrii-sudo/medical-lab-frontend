@@ -5,7 +5,7 @@ import { AppointmentStatus } from '../../enums/appointment-status.enum';
 import { Appointment } from '@features/patients/interfaces/appointment.interface';
 import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose.enum';
 
-import { appointments, patientList } from '../dummy';
+import { appointments } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
 import { Router, RouterLink } from '@angular/router';
 
