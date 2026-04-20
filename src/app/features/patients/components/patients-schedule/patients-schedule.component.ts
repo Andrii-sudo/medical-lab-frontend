@@ -1,29 +1,33 @@
-import { Component, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, effect, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppointmentStatus } from '../../enums/appointment-status.enum';
 import { Appointment } from '@features/patients/interfaces/appointment.interface';
 import { AppointmentPurpose } from '@features/patients/enums/appointment-purpose.enum';
 
-import { appointments, patientList } from '../dummy';
 import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confirm-dialog.component";
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { AppointmentService } from '@features/patients/services/appointment.service';
+import { SelectedOfficeService } from '@core/services/selected-office.service';
 
 @Component({
     selector: 'app-patients-schedule',
-    imports: [ConfirmDialogComponent, DatePipe, FormsModule, RouterLink],
+    imports: [ConfirmDialogComponent, FormsModule, CommonModule, RouterLink],
     templateUrl: './patients-schedule.component.html',
     styleUrl: './patients-schedule.component.css'
 })
 export class PatientsScheduleComponent 
 {
+    private appointmentService = inject(AppointmentService);
+    private selcOfficeService = inject(SelectedOfficeService);
+
     AppointmentStatus = AppointmentStatus;
     AppointmentPurpose = AppointmentPurpose;
 
-    appointments: Appointment[] = appointments; 
+    appointments: Appointment[] = []; 
 
     selectedDate = new Date();
-    selectedStatus?: AppointmentStatus;  
+    selectedStatus: AppointmentStatus | null = null;  
     
     showCancelDialog = false;
     showAdvanceDialog = false;
@@ -31,27 +35,60 @@ export class PatientsScheduleComponent
     dialogTitle = '';
     dialogDescription = '';
 
+    constructor() 
+    {
+        effect(() => 
+        {
+            const currentOffice = this.selcOfficeService.selectedOffice();
+            if (currentOffice)
+            {
+                this.loadAppointments();
+            }
+        });
+    }
+
+    loadAppointments(): void
+    {
+        const office = this.selcOfficeService.selectedOffice();
+        if (office)
+        {
+            this.appointmentService
+                .getDailyAppointments(office.id, this.selectedDate)
+                .subscribe(
+                {
+                    next: appointments => this.appointments = appointments,
+                    error: err => console.error(err)
+                });
+        }
+    }
+
     shiftDay(delta: number): void
     {
         const newDate = new Date(this.selectedDate);
         newDate.setDate(newDate.getDate() + delta);
 
         this.selectedDate = newDate;
+        this.loadAppointments();
     }
 
     setToday(): void
     {
         this.selectedDate = new Date();
+        this.loadAppointments();
     }
 
     get filteredAppointments(): Appointment[]
     {
-        return this.appointments.filter((a) => this.selectedStatus === undefined || a.status === this.selectedStatus);
+        return this.appointments.filter((a) => this.selectedStatus === null || a.status === this.selectedStatus);
     } 
 
-    isPast(date: Date | string): boolean 
+    isPast(visitTime: string): boolean 
     {
-        const appointmentDate = new Date(date);
+        const [hours, minutes] = visitTime.split(':').map(Number);
+    
+        const appointmentDate = new Date(this.selectedDate);
+        appointmentDate.setHours(hours, minutes, 0, 0);
+
         const now = new Date();
         
         return appointmentDate.getTime() < now.getTime();
@@ -114,18 +151,16 @@ export class PatientsScheduleComponent
 
     advanceAppointment(appId: number)
     {
-        for (let i = 0; i < this.appointments.length; i++)
-        {
-            if (this.appointments[i].id === appId)
+        this.appointmentService.advanceAppointment(appId)
+            .subscribe(
             {
-                const newStatus = this.getNextStatus(this.appointments[i].status);
-                if (newStatus)
-                    this.appointments[i].status = newStatus;
-                break;
-            }
-        }
-
-        this.showAdvanceDialog = false;
+                next: () => 
+                {
+                    this.loadAppointments();
+                    this.showAdvanceDialog = false;
+                },
+                error: err => console.error(err)
+            });
     }
 
     onCancelClick(appId: number): void
@@ -143,15 +178,15 @@ export class PatientsScheduleComponent
 
     cancelAppointment(appId: number): void
     {
-        for (let i = 0; i < this.appointments.length; i++)
-        {
-            if (this.appointments[i].id === appId)
+        this.appointmentService.cancelAppointment(appId)
+            .subscribe(
             {
-                this.appointments[i].status = AppointmentStatus.Cancelled;
-                break;
-            }
-        }
-
-        this.showCancelDialog = false;
+                next: () => 
+                {
+                    this.loadAppointments();
+                    this.showCancelDialog = false
+                },
+                error: err => console.error(err)
+            });
     }
 }

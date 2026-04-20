@@ -1,7 +1,9 @@
 <app-modal 
     formId="appointment-form" 
-    title="Записати пацієнта {{ patientLastName }} {{ patientFirstName }}" 
+    title="Записати пацієнта {{ patientLastName() }} {{ patientFirstName() }}" 
+    [errorText]="errorMessage"
     submitText="Записати" 
+    width="40rem"
     (cancel)="onCancel()">
     <form id="appointment-form" [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
         <div class="form-block">
@@ -38,7 +40,7 @@
                 <label for="office-id">Відділення</label>
                 <select formControlName="officeId" id="office-id">
                     <option value="" disabled selected>Оберіть відділення</option>
-                    @for (office of filteredOffices; track office.id)
+                    @for (office of offices; track office.id)
                     {
                         <option [value]="office.id">№{{ office.number }} - {{ office.address }}</option>
                     }
@@ -70,7 +72,7 @@
                     <option value="" disabled selected>Оберіть час візиту</option>
                     @for (time of availableSlots; track time)
                     {
-                        <option [value]="time">{{ time }}</option>
+                        <option [value]="time">{{ time.slice(0, 5) }}</option>
                     }
                     @empty 
                     {

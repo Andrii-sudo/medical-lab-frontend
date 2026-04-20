@@ -1,6 +1,5 @@
-export interface Patient 
+export interface NewPatient 
 {
-    id: number;
     firstName: string;
     lastName: string;
     middleName?: string;

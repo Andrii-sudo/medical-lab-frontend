@@ -44,7 +44,8 @@ export class LoginComponent
 		{
 			const data = this.loginForm.value;
 			this.authService.loginEmployee(data.email!, data.password!)
-				.subscribe({ 
+				.subscribe(
+				{ 
 					next: () => 
 					{
 						this.router.navigate(['/dashboard']);

@@ -18,7 +18,7 @@ import { AuthService } from '@core/auth/auth.service';
 })
 export class DashboardComponent implements OnInit
 {
-    private dash = inject(DashboardService);
+    private dashboardService = inject(DashboardService);
     private selcOffice = inject(SelectedOfficeService);
     private auth = inject(AuthService);
 
@@ -36,13 +36,13 @@ export class DashboardComponent implements OnInit
             
             if (office)
             {
-                this.dash.getEmployeeStats(office.id)
+                this.dashboardService.getEmployeeStats(office.id)
                     .subscribe({ 
                         next: empStats => this.employeeStats = empStats, 
                         error: err => console.error(err)
                     });
 
-                this.dash.getEmployeeSamples(office.id)
+                this.dashboardService.getEmployeeSamples(office.id)
                     .subscribe({ 
                         next: empSamples => this.employeeSamples = empSamples, 
                         error: err => console.error(err)
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit
 
         if (user)
         {
-            this.dash.getEmployeeShifts(user.id)
+            this.dashboardService.getEmployeeShifts(user.id)
                 .subscribe({ 
                     next: empShifts => this.employeeShifts = empShifts, 
                     error: err => console.error(err)

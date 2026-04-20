@@ -1,6 +1,6 @@
 <div class="toolbar">
     <div class="search-wrapper">
-        <input type="text" placeholder="Введіть ім'я або номер пацієнта" />
+        <input type="text" placeholder="Введіть ім'я або номер пацієнта" [value]="searchTerm" (input)="onSearchChange($event)" />
         <img src="icons/search.svg" alt="" class="search-icon" />
     </div>
     <button class="btn-add" (click)="onAddPatientClick()">+ Новий пацієнт</button>
@@ -74,7 +74,7 @@
 {
     <app-patient-form 
         (cancel)="showAddPatientForm = false" 
-        (confirm)="addPatient($event)" />
+        (confirm)="onAddPatient()" />
 }
 
 @if (showEditPatientForm)
@@ -82,7 +82,7 @@
     <app-patient-form 
         [patient]="selectedPatient"
         (cancel)="showEditPatientForm = false" 
-        (confirm)="editPatient($event)" />
+        (confirm)="onEditPatient()" />
 }
 
 @if (showAppointmentForm)
@@ -91,5 +91,6 @@
         [patientId]="selectedPatient.id" 
         [patientFirstName]="selectedPatient.firstName" 
         [patientLastName]="selectedPatient.lastName"
-        (cancel)="showAppointmentForm = false" />
+        (cancel)="showAppointmentForm = false"
+        (confirm)="showAppointmentForm = false" />
 }
