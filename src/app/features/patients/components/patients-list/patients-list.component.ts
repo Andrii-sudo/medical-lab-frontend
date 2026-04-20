@@ -5,7 +5,7 @@ import { AppointmentFormComponent } from '../appointment-form/appointment-form.c
 
 import { Patient } from '../../interfaces/patient.interface';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
-import { PatientsListService } from '@features/patients/services/patients-list.service';
+import { PatientService } from '@features/patients/services/patient.service';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 })
 export class PatientsListComponent implements OnInit, OnDestroy
 {
-    private patientsListService = inject(PatientsListService);
+    private patientService = inject(PatientService);
 
     patients: Patient[] = [];
     showAddPatientForm = false;
@@ -66,7 +66,7 @@ export class PatientsListComponent implements OnInit, OnDestroy
     loadPage(page: number): void
     {
         this.selectedPage = page;
-        this.patientsListService.getPatientsPage(this.selectedPage, this.pageSize, this.searchTerm)
+        this.patientService.getPatientsPage(this.selectedPage, this.pageSize, this.searchTerm)
             .subscribe(
             {   
                 next: patientPage => 

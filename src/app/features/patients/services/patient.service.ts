@@ -9,7 +9,7 @@ import { NewPatient } from '../interfaces/new-patient.interface';
 @Injectable({
     providedIn: 'root'
 })
-export class PatientsListService 
+export class PatientService 
 {
     private http = inject(HttpClient);
     private apiUrl = `${environment.apiUrl}/Patients`;

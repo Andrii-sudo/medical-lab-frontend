@@ -7,7 +7,7 @@
     <button class="btn-today" (click)="setToday()">Сьогодні</button>
 
     <select class="slc-filter" [(ngModel)]="selectedStatus">
-        <option [ngValue]="undefined"                  >Всі статуси</option>
+        <option [ngValue]="null"                       >Всі статуси</option>
         <option [ngValue]="AppointmentStatus.Pending"  >Очікується</option>
         <option [ngValue]="AppointmentStatus.Arrived"  >Прибув</option>
         <option [ngValue]="AppointmentStatus.Completed">Завершено</option>
@@ -26,20 +26,13 @@
         @for (app of filteredAppointments; track $index)
         {
             <div class="list-row">
-                <span class="single" [class.past-time]="isPast(app.visitTime)">{{ app.visitTime | date:'HH:mm' }}</span>
-
-                @if (app.patientMiddleName != null)
-                {
-                    <div class="cell-stack">
-                        <span class="maintext">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
-                        <span class="subtext">{{ app.patientMiddleName }}</span>
-                    </div>
-                }
-                @else 
-                {
-                    <span class="single">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
-                }
-
+                <span class="single" [class.past-time]="isPast(app.visitTime)">{{ app.visitTime | slice:0:5 }}</span>
+            
+                <div class="cell-stack">
+                    <span class="maintext">{{ app.patientLastName }} {{ app.patientFirstName }}</span>
+                    <span class="subtext">{{ app.patientPhone }}</span>
+                </div>
+               
                 <span class="single">{{ getPurposeLabel(app.purpose) }}</span>
 
                 <span class="single">{{ getStatusLabel(app.status) }}</span>
@@ -54,8 +47,7 @@
                                 id: app.patientId,
                                 firstName: app.patientFirstName,
                                 lastName: app.patientLastName,
-                                middleName: app.patientMiddleName,
-                                phone: '' 
+                                phone: app.patientPhone 
                             }">+ Замовлення</button>
                     }
                     @else if (app.purpose === AppointmentPurpose.Sample

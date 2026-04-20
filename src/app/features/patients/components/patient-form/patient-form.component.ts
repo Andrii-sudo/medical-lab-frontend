@@ -4,7 +4,7 @@ import { Validators } from '@angular/forms';
 import { Patient } from '../../interfaces/patient.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
 import { DatePipe } from '@angular/common';
-import { PatientsListService } from '@features/patients/services/patients-list.service';
+import { PatientService } from '@features/patients/services/patient.service';
 import { NewPatient } from '@features/patients/interfaces/new-patient.interface';
 
 @Component({
@@ -16,7 +16,7 @@ import { NewPatient } from '@features/patients/interfaces/new-patient.interface'
 })
 export class PatientFormComponent implements OnInit
 {
-    private patientsListService = inject(PatientsListService); 
+    private patientService = inject(PatientService); 
     private fb = inject(FormBuilder);
     private dp = inject(DatePipe);
 
@@ -66,7 +66,7 @@ export class PatientFormComponent implements OnInit
          
         if (!this.patient())
         {
-            this.patientsListService.createPatient(this.patientForm.value as NewPatient)
+            this.patientService.createPatient(this.patientForm.value as NewPatient)
                 .subscribe(
                 {
                     next: () => this.confirm.emit(), 
@@ -80,7 +80,7 @@ export class PatientFormComponent implements OnInit
         else
         {
             // edit
-            this.patientsListService.updatePatient(this.patientForm.value as Patient)
+            this.patientService.updatePatient(this.patientForm.value as Patient)
                 .subscribe(
                 {
                     next: () => this.confirm.emit(),
