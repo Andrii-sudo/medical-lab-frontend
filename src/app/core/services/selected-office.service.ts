@@ -16,11 +16,11 @@ export class SelectedOfficeService
 
     getCurrentEmployeeOffice(userId: number): Observable<Office | null>
     {
-        return this.http.get<Office | null>(`${this.apiUrl}/CurrentEmployeeOffice/`, { params: { employeeId: userId }});
+        return this.http.get<Office | null>(`${this.apiUrl}/employee/current`, { params: { employeeId: userId }});
     }
 
     getEmployeeOffices(userId: number): Observable<Office[] | null>
     {
-        return this.http.get<Office[] | null>(`${this.apiUrl}/EmployeeOffices/`, { params: { employeeId: userId }});
+        return this.http.get<Office[] | null>(`${this.apiUrl}/employee`, { params: { employeeId: userId }});
     }
 }

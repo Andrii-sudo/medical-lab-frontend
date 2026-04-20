@@ -75,7 +75,7 @@ export class NavbarComponent implements OnInit
 
     logout(): void
     {
-        this.authService.logout();
+        this.authService.logout().subscribe({ error: err => console.error(err) });
         this.selcOfficeService.selectedOffice.set(null);
         this.router.navigate(['/login']);
     }

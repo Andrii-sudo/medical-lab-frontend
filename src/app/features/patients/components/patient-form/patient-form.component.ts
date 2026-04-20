@@ -66,7 +66,7 @@ export class PatientFormComponent implements OnInit
          
         if (!this.patient())
         {
-            this.patientsListService.addPatient(this.patientForm.value as NewPatient)
+            this.patientsListService.createPatient(this.patientForm.value as NewPatient)
                 .subscribe(
                 {
                     next: () => this.confirm.emit(), 
@@ -80,7 +80,7 @@ export class PatientFormComponent implements OnInit
         else
         {
             // edit
-            this.patientsListService.editPatient(this.patientForm.value as Patient)
+            this.patientsListService.updatePatient(this.patientForm.value as Patient)
                 .subscribe(
                 {
                     next: () => this.confirm.emit(),

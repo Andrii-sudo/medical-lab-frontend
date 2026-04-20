@@ -30,7 +30,7 @@ export class AuthService
 
     loginEmployee(email: string, password: string): Observable<AuthResponse>
     {
-        return this.http.post<AuthResponse>(`${this.apiUrl}/LoginEmployee`, 
+        return this.http.post<AuthResponse>(`${this.apiUrl}/employee/login`, 
             {
                 email: email, 
                 password: password
@@ -41,7 +41,7 @@ export class AuthService
     
     loginPatient(phone: string, password: string): Observable<AuthResponse>
     {
-        return this.http.post<AuthResponse>(`${this.apiUrl}/LoginPatient`, 
+        return this.http.post<AuthResponse>(`${this.apiUrl}/patient/login`, 
             {
                 phone: phone, 
                 password: password
@@ -50,12 +50,10 @@ export class AuthService
             ));
     }
 
-    logout(): void
+    logout(): Observable<void>
     {
-        this.http.post(`${this.apiUrl}Logout`, 
-            null, 
-            { withCredentials: true })
-            .subscribe({ next: () => this.removeCurrentUser() });
+        return this.http.post<void>(`${this.apiUrl}/logout`, null)
+            .pipe(tap(() => this.removeCurrentUser()));
     }
 
     private setCurrentUser(ar: AuthResponse): void

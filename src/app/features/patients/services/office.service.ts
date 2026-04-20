@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 export class OfficeService 
 {
     private http = inject(HttpClient);
-    private apiUrl = environment.apiUrl;
+    private apiUrl = `${environment.apiUrl}/Offices`;
 
     getCities(): Observable<string[]>
     {
-        return this.http.get<string[]>(`${this.apiUrl}/Offices/Cities`);
+        return this.http.get<string[]>(`${this.apiUrl}/cities`);
     }
 
     getOffices(city: string, officeType: string | null): Observable<Office[]>
@@ -27,15 +27,11 @@ export class OfficeService
             params = params.set('officeType', officeType);
         }
 
-        return this.http.get<Office[]>(`${this.apiUrl}/Offices`, { params });
+        return this.http.get<Office[]>(`${this.apiUrl}`, { params });
     }
 
     getAvailableSlots(officeId: number, date: string): Observable<string[]> 
-    {
-        const params = new HttpParams()
-            .set('officeId', officeId)
-            .set('date', date);
-        
-        return this.http.get<string[]>(`${this.apiUrl}/Offices/AvailableSlots`, { params });
+    {   
+        return this.http.get<string[]>(`${this.apiUrl}/${officeId}/available-slots`, { params: { date: date }});
     }
 }

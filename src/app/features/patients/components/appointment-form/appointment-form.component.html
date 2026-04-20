@@ -1,6 +1,7 @@
 <app-modal 
     formId="appointment-form" 
     title="Записати пацієнта {{ patientLastName() }} {{ patientFirstName() }}" 
+    [errorText]="errorMessage"
     submitText="Записати" 
     width="40rem"
     (cancel)="onCancel()">

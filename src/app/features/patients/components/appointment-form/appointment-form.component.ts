@@ -31,6 +31,8 @@ export class AppointmentFormComponent implements OnInit
     cancel = output<void>();
     confirm = output<void>();
 
+    errorMessage = '';
+
     appointmentPurpose = AppointmentPurpose;
 
     appointmentForm = this.fb.group({
@@ -42,7 +44,7 @@ export class AppointmentFormComponent implements OnInit
     });
 
     today = this.dp.transform(new Date(), 'yyyy-MM-dd') ?? '';
-
+    
     cities: string[] = [];
     offices: Office[] = [];
     availableSlots: string[] = [];
@@ -200,7 +202,11 @@ export class AppointmentFormComponent implements OnInit
         }).subscribe(
         {
             next: () => this.confirm.emit(),
-            error: err => console.error(err)
+            error: err => 
+            {
+                console.error(err);
+                this.errorMessage = err.error.msg;
+            }
         });
     }
 }

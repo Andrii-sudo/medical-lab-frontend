@@ -28,13 +28,13 @@ export class PatientsListService
         return this.http.get<PatientPage>(`${this.apiUrl}`, { params });
     }
 
-    addPatient(p: NewPatient): Observable<void>
+    createPatient(p: NewPatient): Observable<void>
     {
-        return this.http.post<void>(`${this.apiUrl}/AddPatient`, p);
+        return this.http.post<void>(`${this.apiUrl}`, p);
     }
 
-    editPatient(p: Patient): Observable<void>
+    updatePatient(p: Patient): Observable<void>
     {
-        return this.http.put<void>(`${this.apiUrl}/EditPatient`, p);
+        return this.http.put<void>(`${this.apiUrl}`, p);
     }
 }
