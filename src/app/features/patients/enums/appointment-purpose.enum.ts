@@ -1,6 +1,6 @@
 export enum AppointmentPurpose 
 {
-    FirstVisit,
-    Sample,
-    Results
+    FirstVisit = 'first_visit',
+    Sample = 'sample',
+    Results = 'result'
 }

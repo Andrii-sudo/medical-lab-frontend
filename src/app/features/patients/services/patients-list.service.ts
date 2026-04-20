@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 import { Patient } from '../interfaces/patient.interface';
 import { PatientPage } from '../interfaces/patient-page.interface';
+import { NewPatient } from '../interfaces/new-patient.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,7 @@ import { PatientPage } from '../interfaces/patient-page.interface';
 export class PatientsListService 
 {
     private http = inject(HttpClient);
-    private apiUrl = `${environment.apiUrl}/Patients/`;
+    private apiUrl = `${environment.apiUrl}/Patients`;
 
     getPatientsPage(page: number, pageSize: number, searchTerm?: string): Observable<PatientPage>
     {
@@ -25,5 +26,15 @@ export class PatientsListService
         } 
         
         return this.http.get<PatientPage>(`${this.apiUrl}`, { params });
+    }
+
+    addPatient(p: NewPatient): Observable<void>
+    {
+        return this.http.post<void>(`${this.apiUrl}/AddPatient`, p);
+    }
+
+    editPatient(p: Patient): Observable<void>
+    {
+        return this.http.put<void>(`${this.apiUrl}/EditPatient`, p);
     }
 }

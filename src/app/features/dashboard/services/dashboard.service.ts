@@ -12,12 +12,12 @@ import { EmployeeShift } from '../interfaces/employee-shift.interface';
 export class DashboardService 
 {
     private http = inject(HttpClient);
-    private apiUrl = `${environment.apiUrl}/Dashboard/`;
+    private apiUrl = `${environment.apiUrl}/Dashboard`;
 
     getEmployeeStats(selectedOfficeId: number): Observable<EmployeeStats>
     {
         return this.http.get<EmployeeStats>(
-            `${this.apiUrl}EmployeeStats/`, 
+            `${this.apiUrl}/EmployeeStats/`, 
             { params: { officeId: selectedOfficeId } }
         );
     }
@@ -25,7 +25,7 @@ export class DashboardService
     getEmployeeShifts(employeeId: number): Observable<EmployeeShift[]>
     {
         return this.http.get<EmployeeShift[]>(
-            `${this.apiUrl}EmployeeShifts/`, 
+            `${this.apiUrl}/EmployeeShifts/`, 
             { params: { employeeId: employeeId } }
         );
     }
@@ -33,7 +33,7 @@ export class DashboardService
     getEmployeeSamples(selectedOfficeId: number): Observable<EmployeeSample[]>
     {
         return this.http.get<EmployeeSample[]>(
-            `${this.apiUrl}EmployeeSamples/`, 
+            `${this.apiUrl}/EmployeeSamples/`, 
             { params: { officeId: selectedOfficeId } }
         );
     }

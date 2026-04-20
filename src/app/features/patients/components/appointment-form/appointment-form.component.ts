@@ -1,11 +1,13 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NewAppointment } from '../../interfaces/appointment.interface';
+import { Component, inject, input, OnInit, output } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { NewAppointment } from '../../interfaces/new-appointment.interface';
 import { AppointmentPurpose } from '../../enums/appointment-purpose.enum';
-import { Office } from '@core/interfaces/office.interface';
-import { offices } from '../dummy';
+import { Office } from '../../interfaces/office.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
 import { DatePipe } from '@angular/common';
+import { OfficeService } from '@features/patients/services/office.service';
+import { OfficeType } from '@core/enums/office-type';
+import { AppointmentService } from '@features/patients/services/appointment.service';
 
 @Component({
     selector: 'app-appointment-form',
@@ -16,15 +18,18 @@ import { DatePipe } from '@angular/common';
 })
 export class AppointmentFormComponent implements OnInit
 {
-    @Input({ required: true }) patientId!: number;
-    @Input({ required: true }) patientFirstName!: string;
-    @Input({ required: true }) patientLastName!: string;
-    
-    @Output() cancel = new EventEmitter<void>();
-    @Output() confirm = new EventEmitter<NewAppointment>();
+    private officeService = inject(OfficeService);
+    private appointmentService = inject(AppointmentService);
 
     private fb = inject(FormBuilder);
     private dp = inject(DatePipe);
+
+    patientId = input.required<number>();
+    patientFirstName = input.required<string>();
+    patientLastName = input.required<string>();
+    
+    cancel = output<void>();
+    confirm = output<void>();
 
     appointmentPurpose = AppointmentPurpose;
 
@@ -35,74 +40,141 @@ export class AppointmentFormComponent implements OnInit
         officeId: ['', Validators.required],
         visitPurpose: ['', Validators.required]
     });
+
     today = this.dp.transform(new Date(), 'yyyy-MM-dd') ?? '';
 
     cities: string[] = [];
-    filteredOffices: Office[] = [];
+    offices: Office[] = [];
     availableSlots: string[] = [];
-    private allOffices: Office[] = offices;
 
     ngOnInit(): void
     {
-        this.cities = [...new Set(this.allOffices.map(o => o.city))].sort();
+        this.loadCities();
         
-        this.appointmentForm.get('city')!.disable();
-        this.appointmentForm.get('officeId')!.disable();
-        this.appointmentForm.get('visitDate')!.disable();
-        this.appointmentForm.get('visitTime')!.disable();   
+        this.appointmentForm.get('city')!.disable({ emitEvent: false });
+        this.appointmentForm.get('officeId')!.disable({ emitEvent: false });
+        this.appointmentForm.get('visitDate')!.disable({ emitEvent: false });
+        this.appointmentForm.get('visitTime')!.disable({ emitEvent: false }); 
 
         this.appointmentForm.get('visitPurpose')!.valueChanges.subscribe(() =>
         {
-            this.appointmentForm.get('city')!.enable();
-            this.appointmentForm.patchValue({ city: '', officeId: '', visitDate: '', visitTime: '' });
-            this.filteredOffices = [];
+            this.appointmentForm.get('city')!.enable({ emitEvent: false });
+            const currentCity = this.appointmentForm.get('city')!.value;
+
+            this.appointmentForm.patchValue({ officeId: '', visitDate: '', visitTime: '' }, { emitEvent: false });
+            this.offices = [];
             this.availableSlots = [];
-            this.appointmentForm.get('officeId')!.disable();
-            this.appointmentForm.get('visitDate')!.disable();
-            this.appointmentForm.get('visitTime')!.disable();
+            
+            this.appointmentForm.get('officeId')!.disable({ emitEvent: false });
+            this.appointmentForm.get('visitDate')!.disable({ emitEvent: false });
+            this.appointmentForm.get('visitTime')!.disable({ emitEvent: false });
+
+            if (currentCity) 
+            {
+                this.appointmentForm.get('officeId')!.enable({ emitEvent: false });
+                this.loadOffices(currentCity);
+            }
         });
 
         this.appointmentForm.get('city')!.valueChanges.subscribe(city =>
         {
-            this.filteredOffices = this.allOffices.filter(o => o.city === city);
-            this.appointmentForm.get('officeId')!.enable();
-            this.appointmentForm.patchValue({ officeId: '', visitDate: '', visitTime: '' });
+            this.appointmentForm.patchValue({ officeId: '', visitDate: '', visitTime: '' }, { emitEvent: false });
+            this.offices = [];
             this.availableSlots = [];
-            this.appointmentForm.get('visitDate')!.disable();
-            this.appointmentForm.get('visitTime')!.disable();
+            
+            this.appointmentForm.get('visitDate')!.disable({ emitEvent: false });
+            this.appointmentForm.get('visitTime')!.disable({ emitEvent: false });
+        
+            if (city)
+            {
+                this.appointmentForm.get('officeId')!.enable({ emitEvent: false });
+                this.loadOffices(city);
+            }
+            else 
+            {
+                this.appointmentForm.get('officeId')!.disable({ emitEvent: false });
+            }
         });
 
-        this.appointmentForm.get('officeId')!.valueChanges.subscribe(() =>
+        this.appointmentForm.get('officeId')!.valueChanges.subscribe(officeId =>
         {
-            this.appointmentForm.get('visitDate')!.enable();
-            this.appointmentForm.patchValue({ visitDate: '', visitTime: '' });
+            this.appointmentForm.patchValue({ visitDate: '', visitTime: '' }, { emitEvent: false });
             this.availableSlots = [];
-            this.appointmentForm.get('visitTime')!.disable();
+            this.appointmentForm.get('visitTime')!.disable({ emitEvent: false });
+
+            if (officeId) 
+            {
+                this.appointmentForm.get('visitDate')!.enable({ emitEvent: false });
+            } 
+            else 
+            {
+                this.appointmentForm.get('visitDate')!.disable({ emitEvent: false });
+            }
         });
 
-        this.appointmentForm.get('visitDate')!.valueChanges.subscribe(() => 
+        this.appointmentForm.get('visitDate')!.valueChanges.subscribe(visitDate => 
         {
-            this.appointmentForm.get('visitTime')!.enable(); 
-            this.updateSlots();
+            this.appointmentForm.patchValue({ visitTime: '' }, { emitEvent: false });
+            
+            if (visitDate)
+            {
+                this.appointmentForm.get('visitTime')!.enable({ emitEvent: false }); 
+                this.loadSlots();
+            }
+            else 
+            {
+                this.appointmentForm.get('visitTime')!.disable({ emitEvent: false }); 
+            }
         });
     }
     
-    private updateSlots(): void
+    private loadCities(): void
+    {
+        this.officeService.getCities().subscribe(
+        {
+            next: cities => this.cities = cities.sort(), 
+            error: err => console.error(err)
+        });
+    }
+
+    private loadOffices(city: string): void
+    {
+        const visitPurpose = this.appointmentForm.get('visitPurpose')!.value;
+        const officeType = this.mapAppointmentPurposeToOfficeType(visitPurpose! as AppointmentPurpose);
+            
+        this.officeService.getOffices(city!, officeType).subscribe(
+        {
+            next: offices => this.offices = offices,
+            error: err => console.error(err)
+        });
+    }
+
+    private loadSlots(): void
     {
         const date = this.appointmentForm.get('visitDate')!.value;
-        const office = this.appointmentForm.get('officeId')!.value;
+        const officeId = this.appointmentForm.get('officeId')!.value;
 
-        this.availableSlots = [];
-        this.appointmentForm.patchValue({ visitTime: '' });
+        this.officeService.getAvailableSlots(Number(officeId), date!)
+            .subscribe(
+            {
+                next: slots => this.availableSlots = slots,
+                error: err => console.error(err)
+            });
+    }
 
-        if (!date || !office) return;
-
-        for (let h = 9; h < 18; h++)
+    private mapAppointmentPurposeToOfficeType(ap: AppointmentPurpose): OfficeType | null
+    {
+        switch (ap)
         {
-            this.availableSlots.push(`${String(h).padStart(2, '0')}:00`);
-            this.availableSlots.push(`${String(h).padStart(2, '0')}:30`);
+            case AppointmentPurpose.FirstVisit:
+                return null;
+            case AppointmentPurpose.Sample:
+                return OfficeType.Collection;
+            case AppointmentPurpose.Results:
+                return null;
         }
     }
+
 
     onCancel()
     {
@@ -118,11 +190,17 @@ export class AppointmentFormComponent implements OnInit
         }
 
         const value = this.appointmentForm.getRawValue();
-        this.confirm.emit({
-            patientId: this.patientId,
+
+        this.appointmentService.createAppointment({
+            patientId: this.patientId(),
             officeId: Number(value.officeId),
-            visitTime: new Date(`${value.visitDate}T${value.visitTime}`),
-            purpose: Number(value.visitPurpose) as AppointmentPurpose
+            visitDate: value.visitDate!,
+            visitTime: value.visitTime!,
+            purpose: value.visitPurpose as AppointmentPurpose
+        }).subscribe(
+        {
+            next: () => this.confirm.emit(),
+            error: err => console.error(err)
         });
     }
 }

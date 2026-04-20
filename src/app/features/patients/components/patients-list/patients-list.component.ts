@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 })
 export class PatientsListComponent implements OnInit, OnDestroy
 {
-    private patList = inject(PatientsListService);
+    private patientsListService = inject(PatientsListService);
 
     patients: Patient[] = [];
     showAddPatientForm = false;
@@ -66,7 +66,7 @@ export class PatientsListComponent implements OnInit, OnDestroy
     loadPage(page: number): void
     {
         this.selectedPage = page;
-        this.patList.getPatientsPage(this.selectedPage, this.pageSize, this.searchTerm)
+        this.patientsListService.getPatientsPage(this.selectedPage, this.pageSize, this.searchTerm)
             .subscribe(
             {   
                 next: patientPage => 
@@ -83,6 +83,14 @@ export class PatientsListComponent implements OnInit, OnDestroy
         this.showAddPatientForm = true;
     }
 
+    onAddPatient(): void
+    {
+        this.showAddPatientForm = false;
+        
+        this.searchTerm = '';
+        this.loadPage(1);
+    }
+
     onAddAppointmentClick(p: Patient): void
     {
         this.selectedPatient = p;
@@ -95,16 +103,10 @@ export class PatientsListComponent implements OnInit, OnDestroy
         this.showEditPatientForm = true;
     }
 
-    addPatient(p: Patient): void
+    onEditPatient(): void
     {
-        this.showAddPatientForm = false;
-        this.loadPage(1);
-    }
-
-    editPatient(p: Patient): void
-    {
-        //...
         this.showEditPatientForm = false;
+
         this.loadPage(this.selectedPage);
     }
 }

@@ -12,11 +12,3 @@ export interface Appointment
     status: AppointmentStatus;
     purpose: AppointmentPurpose;
 }
-
-export interface NewAppointment 
-{
-    patientId: number;
-    officeId: number;
-    visitTime: Date;
-    purpose: AppointmentPurpose;
-}

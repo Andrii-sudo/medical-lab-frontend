@@ -1,7 +1,8 @@
 <app-modal 
     formId="patient-form" 
-    [title]="patient ? 'Редагувати пацієнта' : 'Додати нового пацієнта'" 
-    [submitText]="patient ? 'Зберегти' : 'Додати'" 
+    [title]="patient() ? 'Редагувати пацієнта' : 'Додати нового пацієнта'" 
+    [submitText]="patient() ? 'Зберегти' : 'Додати'"
+    [errorText]="errorMessage" 
     (cancel)="onCancel()">
     <form id="patient-form" [formGroup]="patientForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
@@ -42,8 +43,8 @@
                 <label for="gender">Стать</label>
                 <select formControlName="gender" id="gender">
                     <option value="" disabled selected>Оберіть стать</option>
-                    <option value="Ч">Чоловіча</option>
-                    <option value="Ж">Жіноча</option>
+                    <option value="M">Чоловіча</option>
+                    <option value="F">Жіноча</option>
                 </select>
                 
                 @if (patientForm.get('gender')?.touched && patientForm.get('gender')?.hasError('required'))

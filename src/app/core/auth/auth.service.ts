@@ -12,7 +12,7 @@ import { UserRole } from "./user-role.enum";
 export class AuthService
 {
     private http = inject(HttpClient);
-    private apiUrl = `${environment.apiUrl}/Auth/`;
+    private apiUrl = `${environment.apiUrl}/Auth`;
     private lcName = 'user_info';
     currentUser = signal<User | null>(null);
 
@@ -30,7 +30,7 @@ export class AuthService
 
     loginEmployee(email: string, password: string): Observable<AuthResponse>
     {
-        return this.http.post<AuthResponse>(`${this.apiUrl}LoginEmployee`, 
+        return this.http.post<AuthResponse>(`${this.apiUrl}/LoginEmployee`, 
             {
                 email: email, 
                 password: password
@@ -41,7 +41,7 @@ export class AuthService
     
     loginPatient(phone: string, password: string): Observable<AuthResponse>
     {
-        return this.http.post<AuthResponse>(`${this.apiUrl}LoginPatient`, 
+        return this.http.post<AuthResponse>(`${this.apiUrl}/LoginPatient`, 
             {
                 phone: phone, 
                 password: password

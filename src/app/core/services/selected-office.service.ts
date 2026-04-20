@@ -10,17 +10,17 @@ import { Office } from '@core/interfaces/office.interface';
 export class SelectedOfficeService 
 {
     private http = inject(HttpClient);
-    private apiUrl = `${environment.apiUrl}/Offices/`;
+    private apiUrl = `${environment.apiUrl}/Offices`;
 
     selectedOffice = signal<Office | null>(null);
 
     getCurrentEmployeeOffice(userId: number): Observable<Office | null>
     {
-        return this.http.get<Office | null>(`${this.apiUrl}CurrentEmployeeOffice/`, { params: { employeeId: userId }});
+        return this.http.get<Office | null>(`${this.apiUrl}/CurrentEmployeeOffice/`, { params: { employeeId: userId }});
     }
 
     getEmployeeOffices(userId: number): Observable<Office[] | null>
     {
-        return this.http.get<Office[] | null>(`${this.apiUrl}EmployeeOffices/`, { params: { employeeId: userId }});
+        return this.http.get<Office[] | null>(`${this.apiUrl}/EmployeeOffices/`, { params: { employeeId: userId }});
     }
 }
