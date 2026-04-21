@@ -2,6 +2,7 @@
     formId="order-form" 
     [title]="'Реєстрація замовлення'" 
     submitText="Додати" 
+    [errorText]="errorText"
     (cancel)="onCancel()">
     <form id="order-form" [formGroup]="orderForm" (ngSubmit)="onSubmit()">
         <div class="form-block">
@@ -13,12 +14,13 @@
                     id="patient"
                     autocomplete="off"
                     placeholder="Почніть вводити прізвище або номер..."
-                    (input)="onSearchChange($event)" />
+                    [value]="patientSearchTerm"
+                    (input)="onPatientSearchChange($event)" />
                 
-                @if (filteredPatients.length > 0) 
+                @if (patients.length > 0) 
                 {
                     <ul class="patient-dropdown">
-                        @for (p of filteredPatients; track p.id) 
+                        @for (p of patients; track p.id) 
                         {
                             <li class="patient-option" (click)="selectPatient(p)">
                                 <div class="maintext">{{ p.lastName }} {{ p.firstName }} {{ p.middleName ?? '' }}</div>
@@ -43,12 +45,13 @@
                     id="analyses"
                     autocomplete="off"
                     placeholder="Почніть вводити назву аналізу..."
+                    [value]="analysisSearchTerm"
                     (input)="onAnalysisSearchChange($event)" />
 
-                @if (filteredAnalyses.length > 0)
+                @if (analyses.length > 0)
                 {
                     <ul class="patient-dropdown">
-                        @for (a of filteredAnalyses; track a.id)
+                        @for (a of analyses; track a.id)
                         {
                             <li class="patient-option" (click)="selectAnalysis(a)">
                                 <div class="maintext">{{ a.name }}</div>

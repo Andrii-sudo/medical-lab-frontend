@@ -1,8 +1,12 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PatientLookup } from '../../interfaces/patient-lookup.interface';
+import { Component, inject, input, OnDestroy, OnInit, output, Output } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Patient } from '../../interfaces/patient.interface';
 import { Analysis } from '../../interfaces/analysis.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { OrderFormService } from '@features/orders/services/order-form.service';
+import { SelectedOfficeService } from '@core/services/selected-office.service';
+import { NewOrder } from '@features/orders/interfaces/new-order.interface';
 
 @Component({
     selector: 'app-order-form',
@@ -10,98 +14,143 @@ import { ModalComponent } from "@shared/components/modal/modal.component";
     templateUrl: './order-form.component.html',
     styleUrl: './order-form.component.css'
 })
-export class OrderFormComponent implements OnInit
+export class OrderFormComponent implements OnInit, OnDestroy
 {
-    @Input() initialPatient?: PatientLookup;
-
-    @Output() cancel = new EventEmitter<void>();
-    @Output() confirm = new EventEmitter<void>();
-
+    private orderFormService = inject(OrderFormService);
+    private selcOfficeService = inject(SelectedOfficeService)
     private fb = inject(FormBuilder);
     
+    initialPatient = input<Patient>();
+
+    cancel = output<void>();
+    confirm = output<void>();
+
     orderForm = this.fb.group({
         patientId: this.fb.control<number | null>(null, Validators.required),
         patientName: [''],
         analysisSearch: ['']
     });
+    errorText = '';
 
-    filteredPatients: PatientLookup[] = [];
+    patientSearchTerm = '';
+    analysisSearchTerm = '';
+    dropDownCount = 4;
+
+    patients: Patient[] = [];
     
-    filteredAnalyses: Analysis[] = [];
+    analyses: Analysis[] = [];
     selectedAnalyses: Analysis[] = [];
+
+    private patientSubject = new Subject<string>();
+    private patientSub!: Subscription;
+
+    private analysisSubject = new Subject<string>();
+    private analysisSub!: Subscription;
 
     ngOnInit()
     {
-        if (this.initialPatient)
+        const patient = this.initialPatient();
+        if (patient)
         {
-            const name = `${this.initialPatient.lastName} ${this.initialPatient.firstName}` +
-                         `${this.initialPatient.middleName ? ' '+ this.initialPatient.middleName : ''}`;
+            const name = `${patient.lastName} ${patient.firstName}` +
+                         `${patient.middleName ? ' '+ patient.middleName : ''}`;
             this.orderForm.patchValue({
-                patientId: this.initialPatient.id,
+                patientId: patient.id,
                 patientName: name 
             });
         }
-    }
 
-    onSearchChange(e: Event): void 
-    {
-        this.orderForm.patchValue({ patientId: null });
-
-        const query = (e.target as HTMLInputElement).value.toLowerCase();
-        if (query.length < 2) 
+        this.patientSub = this.patientSubject.pipe(
+            debounceTime(500),
+            distinctUntilChanged()
+        ).subscribe(term => 
         {
-            this.filteredPatients = [];
-            return;
-        }
+            if (term)
+            {
+                this.patientSearchTerm = term;
+                this.getPatients();
+            }
+        });
 
-        const mockPatients: PatientLookup[] = 
-        [
-            { id: 1, lastName: 'Коваленко', firstName: 'Олександр', middleName: 'Сергійович', phone: '+380679876543', },
-            { id: 2, lastName: 'Петренко', firstName: 'Марія', phone: '+380501234567' }
-        ];
-
-        this.filteredPatients = mockPatients.filter(p => 
-            p.lastName.toLowerCase().includes(query) ||
-            p.phone.includes(query)
-        );
+        this.analysisSub = this.analysisSubject.pipe(
+            debounceTime(500),
+            distinctUntilChanged()
+            ).subscribe(term => 
+        {
+            if (term)
+            {
+                this.analysisSearchTerm = term;
+                this.getAnalyses();
+            }
+        });
     }
 
-    selectPatient(patient: PatientLookup)
+    ngOnDestroy(): void 
     {
-        const name = `${patient.lastName} ${patient.firstName}${patient.middleName ? ' ' + patient.middleName : ''}`;
-        this.orderForm.patchValue({ patientId: patient.id, patientName: name });
-        this.filteredPatients = [];
+        this.patientSub.unsubscribe();
+        this.analysisSub.unsubscribe();
+    }
+
+    onPatientSearchChange(e: Event): void
+    {
+        const target = e.target as HTMLInputElement;
+        const value = target.value.trim();
+
+        if (value.length !== 1)
+        {
+            this.patientSubject.next(value);
+        }
     }
 
     onAnalysisSearchChange(e: Event): void
     {
-        const query = (e.target as HTMLInputElement).value.toLowerCase();
-        if (query.length < 2)
+        const target = e.target as HTMLInputElement;
+        const value = target.value.trim();
+
+        if (value.length !== 1)
         {
-            this.filteredAnalyses = [];
-            return;
+            this.analysisSubject.next(value);
         }
+    }
 
-        const mockAnalyses: Analysis[] = 
-        [
-            { id: 1, name: 'Загальний аналіз крові',     price: 120 },
-            { id: 2, name: 'Біохімічний аналіз крові',    price: 280 },
-            { id: 3, name: 'Загальний аналіз сечі',       price: 90  },
-            { id: 4, name: 'Глюкоза крові',               price: 80  },
-            { id: 5, name: 'ТТГ (тиреотропний гормон)',   price: 220 }
-        ];
+    selectPatient(patient: Patient)
+    {
+        const name = `${patient.lastName} ${patient.firstName}${patient.middleName ? ' ' + patient.middleName : ''}`;
+        this.orderForm.patchValue({ patientId: patient.id, patientName: name });
+        this.patients = [];
+    }
 
-        this.filteredAnalyses = mockAnalyses.filter(a =>
-            a.name.toLowerCase().includes(query) &&
-            !this.selectedAnalyses.some(s => s.id === a.id) // не показувати вже обрані
-        );
+    getPatients()
+    {   
+        this.orderFormService
+            .getPatients(this.patientSearchTerm, this.dropDownCount)
+            .subscribe(
+            {
+                next: patients => this.patients = patients,
+                error: err => console.error(err)
+            });
+    }
+
+    getAnalyses()
+    {   
+        this.orderFormService
+            .getAnalyses(this.analysisSearchTerm, this.dropDownCount)
+            .subscribe(
+            {
+                next: analyses => 
+                {
+                    this.analyses = analyses.filter(a =>
+                        !this.selectedAnalyses.some(s => s.id === a.id));
+                },
+                error: err => console.error(err)
+            });
     }
 
     selectAnalysis(analysis: Analysis): void
     {
         this.selectedAnalyses.push(analysis);
-        this.filteredAnalyses = [];
-        this.orderForm.patchValue({ analysisSearch: '' }); // очищаємо поле
+        this.analyses = [];
+        this.orderForm.patchValue({ analysisSearch: '' });
     }
 
     removeAnalysis(id: number): void
@@ -121,9 +170,30 @@ export class OrderFormComponent implements OnInit
             this.orderForm.markAllAsTouched();
             return;
         }
-    
-        console.log(this.orderForm.value);
-        // ХЗ
-        this.confirm.emit();    
+
+        const office = this.selcOfficeService.selectedOffice();
+        if (!office)
+        {
+            this.errorText = 'Ви не прикріплені до жодного відділення';
+            return;
+        }
+
+        const newOrder: NewOrder = 
+        {
+            patientId: this.orderForm.value.patientId as number,
+            officeId: office.id, 
+            analysisIds: this.selectedAnalyses.map(analysis => analysis.id)
+        };
+
+        this.orderFormService.createOrder(newOrder)
+            .subscribe(
+            {
+                next: () => this.confirm.emit(),
+                error: err =>
+                {
+                    this.errorText = err.error.msg;
+                    console.error(err);
+                }    
+            }); 
     }
 }
