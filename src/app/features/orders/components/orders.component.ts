@@ -1,14 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { Order } from '../interfaces/order.interface';
 import { OrderStatus } from '../enums/order-status.enum';
 import { DatePipe } from '@angular/common';
 import { OrderFormComponent } from './order-form/order-form.component';
-import { PatientLookup } from '../interfaces/patient-lookup.interface';
+import { Patient } from '../interfaces/patient.interface';
 import { Router, RouterLink } from '@angular/router';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
+import { OrderService } from '../services/order.service';
+import { SearchType } from '../enums/search-type.enum';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-orders',
@@ -16,75 +19,41 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.css'
 })
-export class OrdersComponent
+export class OrdersComponent implements OnInit, OnDestroy
 {
+    private orderService = inject(OrderService);
     private router = inject(Router);
 
     OrderStatus = OrderStatus;
-    
+    SearchType = SearchType;
+
     showOrderForm = false;
 
     showCancelDialog = false;
+    showPayDialog = false;    
     selectedOrder?: Order;
     dialogTitle = '';
     dialogDescription = '';
 
-    searchQuery = '';
-    searchType: 'number' | 'patient' = 'number';
+    searchTerm = '';
+    searchType = SearchType.Number;
 
     selectedPage = 1;
-    pageCount = 7;
+    pageCount = 1;
+    pageSize = 6;
 
-    orders: Order[] = 
-    [
-        {
-            patientFirstName: 'Олександр',
-            patientLastName: 'Коваленко',
-            patientPhone: '+380501234567',
-            number: 10245,
-            createdDate: new Date('2026-03-15'),
-            analyses: ['Загальний аналіз крові', 'Глюкоза'],
-            status: OrderStatus.Completed,
-            price: 450.00
-        },
-        {
-            patientFirstName: 'Марія',
-            patientLastName: 'Петренко',
-            patientPhone: '+380679876543',
-            number: 10246,
-            createdDate: new Date('2026-03-20'),
-            analyses: ['Тиреотропний гормон (ТТГ)'],
-            status: OrderStatus.InProgress,
-            price: 320.50
-        },
-        {
-            patientFirstName: 'Іван',
-            patientLastName: 'Мазур',
-            patientPhone: '+380931112233',
-            number: 10247,
-            createdDate: new Date('2026-03-24'),
-            analyses: ['Вітамін D', 'Феритин', 'Магній'],
-            status: OrderStatus.Pending,
-            price: 1280.00
-        },
-        {
-            patientFirstName: 'Олена',
-            patientLastName: 'Сидоренко',
-            patientPhone: '+380664445566',
-            number: 10248,
-            createdDate: new Date('2026-03-22'),
-            analyses: ['ПЛР-тест на COVID-19'],
-            status: OrderStatus.Cancelled,
-            price: 600.00
-        }
-    ];
+    orders: Order[] = [];
 
-    preselectedPatient?: PatientLookup;
+    preselectedPatient?: Patient;
 
+    
+    private searchSubject = new Subject<string>();
+    private searchSub!: Subscription;
+    
     constructor()
     {
         const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras.state as PatientLookup;
+        const state = navigation?.extras.state as Patient;
 
         if (state)
         {
@@ -93,13 +62,41 @@ export class OrdersComponent
         }
     }
 
+    ngOnInit(): void 
+    {
+        this.loadPage(1);
+    
+        this.searchSub = this.searchSubject.pipe(
+            debounceTime(500),
+            distinctUntilChanged()
+        ).subscribe(term => 
+        {
+            this.searchTerm = term;
+            this.loadPage(1);
+        });
+    }
+    
+    ngOnDestroy(): void 
+    {
+        this.searchSub.unsubscribe();
+    }
+
+    onSearchChange(e: Event): void
+    {
+        const target = e.target as HTMLInputElement;
+        const value = target.value.trim();
+
+        
+        this.searchSubject.next(value);
+    }
+
     get searchPlaceholder()
     {
         switch (this.searchType)
         {
-            case 'number':
+            case SearchType.Number:
                 return 'Введіть номер замовлення';
-            case 'patient':
+            case SearchType.Patient:
                 return 'Введіть ім\'я або тел. номер пацієнта';
         }
         return 'Пошук замовлення';
@@ -122,6 +119,34 @@ export class OrdersComponent
         }
     }
 
+    onAddOrder()
+    {
+        this.loadPage(this.selectedPage);
+        this.showOrderForm = false;
+    }
+
+    onPayClick(o: Order): void
+    {
+        this.selectedOrder = o;
+        this.dialogTitle = 'Оплатити замовлення';
+        this.dialogDescription = `Оплатити замовлення пацієнта ${o.patientLastName} ${o.patientFirstName}?`;
+        this.showPayDialog = true;    
+    }
+
+    payOrder(orderNumber: number): void
+    {
+        this.orderService.payOrder(orderNumber)
+            .subscribe(
+            {
+                next: () => 
+                {
+                    this.loadPage(this.selectedPage);
+                    this.showPayDialog = false;
+                },
+                error: err => console.error(err)
+            });;
+    }
+
     onCancelClick(o: Order): void
     {
         this.selectedOrder = o;
@@ -132,26 +157,32 @@ export class OrdersComponent
 
     cancelOrder(orderNumber: number): void
     {
-        for (let i = 0; i < this.orders.length; i++)
-        {
-            if (this.orders[i].number === orderNumber)
+        this.orderService.cancelOrder(orderNumber)
+            .subscribe(
             {
-                this.orders[i].status = OrderStatus.Cancelled;
-                break;
-            }
-        }
-
-        this.showCancelDialog = false;
-    }
-
-    addOrder(): void
-    {
-
+                next: () => 
+                {
+                    this.loadPage(this.selectedPage);
+                    this.showCancelDialog = false;
+                },
+                error: err => console.error(err)
+            });
     }
 
     loadPage(page: number): void
     {
         this.selectedPage = page;
-        // ...
+        
+        this.orderService
+            .getOrdersPage(this.selectedPage, this.pageSize, this.searchType, this.searchTerm)
+            .subscribe(
+            {
+                next: orderPage => 
+                {
+                    this.orders = orderPage.orders;
+                    this.pageCount = orderPage.pageCount;
+                },
+                error: err => console.error(err)
+            });
     }
 }
