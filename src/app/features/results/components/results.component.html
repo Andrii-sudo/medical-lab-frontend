@@ -7,12 +7,12 @@
 
     <div class="toolbar">
         <div class="search-wrapper">
-            <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery"/>
+            <input type="text" [placeholder]="searchPlaceholder" [value]="searchTerm" (input)="onSearchChange($event)" />
             <img src="icons/search.svg" alt="" class="search-icon" />
         </div>
-        <select class="slc-filter" [(ngModel)]="searchType">
-            <option value="order">Пошук за номером замовлення</option>
-            <option value="patient">Пошук за пацієнтом</option>
+        <select class="slc-filter" [(ngModel)]="searchType" (ngModelChange)="loadPage(1)">
+            <option [value]="SearchType.Order">Пошук за номером замовлення</option>
+            <option [value]="SearchType.Patient">Пошук за пацієнтом</option>
         </select>
     </div>
 
@@ -20,6 +20,7 @@
         <div class="app-table">
             <span class="col-header">Пацієнт</span>
             <span class="col-header">Номер замовлення</span>
+            <span class="col-header">Аналіз</span>
             <span class="col-header">Зразок</span>
             <span class="col-header">Статус</span>
             <span class="col-header"></span>
@@ -33,6 +34,7 @@
                     </div>                    
 
                     <span class="single">{{ result.orderNumber }}</span>
+                    <span class="single">{{ result.analysisName }}</span>
                     <span class="single">{{ result.sampleType }}</span>
                     <span class="single">{{ getStatusLabel(result.status) }}</span>
 
@@ -66,5 +68,5 @@
     <app-result-form 
         [result]="selectedResult"
         (cancel)="showResultForm = false"
-        (confirm)="showResultForm = false" />
+        (confirm)="onConfirmResult()" />
 }

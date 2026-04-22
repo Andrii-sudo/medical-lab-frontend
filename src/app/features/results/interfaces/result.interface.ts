@@ -4,11 +4,12 @@ import { ResultParameter } from "./result-parameter.interface";
 export interface Result
 {
     id: number;
+    sampleType: string;
+    status: ResultStatus;
+    analysisName: string;
+    orderNumber: number;
     patientFirstName: string;
     patientLastName: string;
     patientPhone: string;
-    orderNumber: number;
-    sampleType: string;
-    status: ResultStatus;
-    parameters: ResultParameter[];
+    //parameters: ResultParameter[]; // ???
 }

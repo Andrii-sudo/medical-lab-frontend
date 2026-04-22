@@ -151,7 +151,6 @@ export class SamplesComponent implements OnInit, OnDestroy
             {
                 next: samplePage => 
                 {
-                    console.log(samplePage.samples);
                     this.samples = samplePage.samples;
                     this.pageCount = samplePage.pageCount;
                 },
