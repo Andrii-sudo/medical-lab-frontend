@@ -1,7 +1,7 @@
 export enum SampleStatus
 {
-    Waiting,
-    Collected,
-    Analyzed,
-    Expired
+    Waiting = 'waiting',
+    Collected = 'collected',
+    Analyzed = 'analyzed',
+    Expired = 'expired'
 }

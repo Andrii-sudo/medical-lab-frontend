@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Sample } from '../interfaces/sample.interface';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { SampleStatus } from '../enums/sample-status.enum';
@@ -8,6 +8,9 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NavigationState } from '../interfaces/navigation-state.interface';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { SearchType } from '../enums/search-type.enum';
+import { SampleService } from '../services/sample.service';
 
 @Component({
     selector: 'app-samples',
@@ -15,14 +18,16 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
     templateUrl: './samples.component.html',
     styleUrl: './samples.component.css'
 })
-export class SamplesComponent 
+export class SamplesComponent implements OnInit, OnDestroy
 {
+    private sampleService = inject(SampleService);
     private router = inject(Router);
 
+    SearchType = SearchType;
     SampleStatus = SampleStatus;
 
-    searchQuery = '';
-    searchType: string = 'order';
+    searchTerm = '';
+    searchType: SearchType = SearchType.Order;
 
     showCollectDialog = false;
     selectedSample?: Sample;
@@ -30,42 +35,13 @@ export class SamplesComponent
     dialogDescription = '';
 
     selectedPage = 1;
-    pageCount = 7;
+    pageCount = 1;
+    pageSize = 6;
 
-    samples: Sample[] = 
-    [
-        {
-            id: 1,
-            patientFirstName: 'Олександр',
-            patientLastName: 'Коваленко',
-            patientPhone: '+380501234567',
-            orderNumber: 10245,
-            type: 'Кров',
-            status: SampleStatus.Collected,
-            collectionDate: new Date('2026-03-25'),
-            expiryDate: new Date('2026-03-26')
-        },
-        {
-            id: 2,
-            patientFirstName: 'Марія',
-            patientLastName: 'Петренко',
-            patientPhone: '+380679876543',
-            orderNumber: 10246,
-            type: 'Сеча',
-            status: SampleStatus.Waiting
-        },
-        {
-            id: 3,
-            patientFirstName: 'Іван',
-            patientLastName: 'Мазур',
-            patientPhone: '+380931112233',
-            orderNumber: 10247,
-            type: 'Кров',
-            status: SampleStatus.Analyzed,
-            collectionDate: new Date('2026-03-24'),
-            expiryDate: new Date('2026-03-25')
-        }
-    ];
+    samples: Sample[] = [];
+
+    private searchSubject = new Subject<string>();
+    private searchSub!: Subscription;
 
     constructor()
     {
@@ -76,15 +52,42 @@ export class SamplesComponent
         {
             if (state.orderNumber)
             {
-                this.searchQuery = state.orderNumber.toString();
-                this.searchType = 'order';
+                this.searchTerm = state.orderNumber.toString();
+                this.searchType = SearchType.Order;
             }
             else if (state.patientName)
             {
-                this.searchQuery = state.patientName;
-                this.searchType = 'patient';
+                this.searchTerm = state.patientName;
+                this.searchType = SearchType.Patient;
             }
         }
+    }
+    
+    ngOnInit(): void 
+    {
+        this.loadPage(1);
+        
+        this.searchSub = this.searchSubject.pipe(
+            debounceTime(500),
+            distinctUntilChanged()
+        ).subscribe(term => 
+        {
+            this.searchTerm = term;
+            this.loadPage(1);
+        });
+    }
+
+    ngOnDestroy(): void 
+    {
+        this.searchSub.unsubscribe();
+    }
+
+    onSearchChange(e: Event): void
+    {
+        const target = e.target as HTMLInputElement;
+        const value = target.value.trim();
+
+        this.searchSubject.next(value);
     }
 
     get searchPlaceholder()
@@ -114,22 +117,6 @@ export class SamplesComponent
         }
     }
 
-    collectSample(sId: number): void
-    {
-        for (let i = 0; i < this.samples.length; i++)
-        {
-            if (this.samples[i].id === sId)
-            {
-                this.samples[i].status = SampleStatus.Collected;
-                this.samples[i].collectionDate = new Date();
-                this.samples[i].expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
-                break;
-            }
-        }
-
-        this.showCollectDialog = false;
-    }
-
     onCollectClick(s: Sample): void
     {
         this.selectedSample = s;    
@@ -138,9 +125,37 @@ export class SamplesComponent
         this.showCollectDialog = true;
     }
 
+    collectSample(sId: number): void
+    {
+        this.sampleService.collectSample(sId)
+            .subscribe(
+            {
+                next: () =>
+                {
+                    this.loadPage(this.selectedPage);
+                    this.showCollectDialog = false;
+                },
+                error: err =>
+                {
+                    console.error(err);
+                } 
+            });
+    }
+
     loadPage(page: number): void
     {
         this.selectedPage = page;
-        // ...
+        this.sampleService
+            .getSamplesPage(this.selectedPage, this.pageSize, this.searchType, this.searchTerm)
+            .subscribe(
+            {
+                next: samplePage => 
+                {
+                    console.log(samplePage.samples);
+                    this.samples = samplePage.samples;
+                    this.pageCount = samplePage.pageCount;
+                },
+                error: err => console.error(err)
+            });
     }
 }
