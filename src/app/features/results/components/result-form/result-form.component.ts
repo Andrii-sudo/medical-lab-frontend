@@ -6,6 +6,7 @@ import { ResultStatus } from '@features/results/enums/result-status.enum';
 import { ResultService } from '@features/results/services/result.service';
 import { ResultParameter } from '@features/results/interfaces/result-parameter.interface';
 import { UpdateResultParameter } from '@features/results/interfaces/update-result-parameter.interface';
+import { UpdateResult } from '@features/results/interfaces/update-result.interface';
 
 @Component({
     selector: 'app-result-form',
@@ -19,12 +20,14 @@ export class ResultFormComponent implements OnInit
     private fb = inject(FormBuilder);
 
     result = input.required<Result>();
-    
+    editMode = input.required<boolean>();
+
     cancel = output<void>();
     confirm = output<void>();
 
     resultForm = this.fb.group({
-        parameters: this.fb.array([])
+        parameters: this.fb.array([]),
+        conclusion: ['']
     });
 
     errorText = '';
@@ -32,12 +35,18 @@ export class ResultFormComponent implements OnInit
     ngOnInit(): void 
     {
         const result = this.result();
-        this.resultService.getResultParameters(result.id)
+        this.resultService.getResultInfo(result.id)
             .subscribe(
             {
-                next: parameters => 
+                next: info => 
                 {
-                    parameters.forEach(p =>
+                    this.resultForm.patchValue({ conclusion: info.conclusion || '' });
+                    if (!this.isEditable)
+                    {
+                        this.resultForm.get('conclusion')?.disable();
+                    }
+
+                    info.parameters.forEach(p =>
                     {
                         this.parameters.push(
                             this.fb.group({
@@ -46,7 +55,7 @@ export class ResultFormComponent implements OnInit
                                 unit:    [p.unit],
                                 normMin: [p.normMin],
                                 normMax: [p.normMax],
-                                value:   [{ value: p.value, disabled: result.status !== ResultStatus.Pending }, Validators.required]
+                                value:   [{ value: p.value, disabled: !this.isEditable }, Validators.required]
                             })
                         )
                     });
@@ -55,31 +64,46 @@ export class ResultFormComponent implements OnInit
             });
     }
 
+    get isEditable(): boolean 
+    {
+        return this.result().status === ResultStatus.Pending || this.editMode();
+    }
+
+    get showConclusionBlock(): boolean 
+    {
+        if (this.isEditable) return true;
+
+        const text = this.resultForm.get('conclusion')?.value;
+        return !!text && text.trim().length > 0;
+    }
+
     get title(): string
     {
         const result = this.result(); 
+        const patient = `${result.patientLastName} ${result.patientFirstName}`;
         if (result.status === ResultStatus.Pending)        
-            return `Внести результати пацієнта ${result.patientLastName} ${result.patientFirstName}`;
+        {
+            return `Внести результати пацієнта ${patient}`;
+        }
+        else if (this.editMode())
+        {
+            return `Редагування результатів пацієнта ${patient}`;
+        }
         else
-            return `Перегляд результатів пацієнта ${result.patientLastName} ${result.patientFirstName}`;
+        {
+            return `Перегляд результатів пацієнта ${patient}`;
+        }
     }
 
     get cancelText(): string
     {
-        if (this.result().status === ResultStatus.Pending)        
-            return 'Скасувати';
-        else
-            return '';
+        return this.isEditable ? 'Скасувати' : '';
         
     }
 
     get submitText(): string
     {
-        if (this.result().status === ResultStatus.Pending)        
-            return 'Зберегти';
-        else
-            return 'Ок';
-        
+        return this.isEditable ? 'Зберегти' : 'Ок';
     }
 
     get parameters(): FormArray
@@ -113,7 +137,7 @@ export class ResultFormComponent implements OnInit
     onSubmit()
     {
         const result = this.result();
-        if (result.status !== ResultStatus.Pending)
+        if (!this.isEditable)
         {
             this.cancel.emit();
             return;
@@ -127,14 +151,20 @@ export class ResultFormComponent implements OnInit
         }
 
         const formValues = this.parameters.getRawValue();
-
-        const requestData = formValues.map((param: ResultParameter) => (
+        const conclusionValue = this.resultForm.getRawValue().conclusion;
+        
+        const requestData: UpdateResult = 
         {
-            id: param.id,
-            value: param.value
-        } as UpdateResultParameter));
+            id: result.id,
+            conclusion: conclusionValue || null,
+            parameters: formValues.map((param: any) => (
+            {
+                id: param.id,
+                value: param.value
+            } as UpdateResultParameter))
+        };
 
-        this.resultService.updateResultParameters(requestData)
+        this.resultService.updateResultInfo(requestData)
             .subscribe(
             {
                 next: () => this.confirm.emit(),

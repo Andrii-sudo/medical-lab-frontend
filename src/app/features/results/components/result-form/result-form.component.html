@@ -4,6 +4,7 @@
     [cancelText]="cancelText"
     [submitText]="submitText" 
     [errorText]="errorText"
+    width="39rem"
     (cancel)="onCancel()">
     <form id="result-form" [formGroup]="resultForm" (ngSubmit)="onSubmit()">
         <div formArrayName="parameters">
@@ -24,5 +25,16 @@
                 }
             </div>
         </div>
+        
+        @if (showConclusionBlock)
+        {
+            <div class="form-block conclusion-block">
+                <label for="conclusion">Висновок:</label>
+                    <textarea 
+                    formControlName="conclusion" 
+                    id="conclusion" 
+                    rows="3"></textarea>
+            </div>
+        }
     </form>
 </app-modal>

@@ -9,6 +9,8 @@ import { PaginationComponent } from '@shared/components/pagination/pagination.co
 import { SearchType } from '../enums/search-type.enum';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { ResultService } from '../services/result.service';
+import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
 
 @Component({
     selector: 'app-results',
@@ -18,13 +20,18 @@ import { ResultService } from '../services/result.service';
 })
 export class ResultsComponent implements OnInit, OnDestroy
 {
+    private authService = inject(AuthService);
     private resultService = inject(ResultService);
     private router = inject(Router);
+
+    userRole = this.authService.userRole;
+    UserRole = UserRole; 
 
     SearchType = SearchType;
     ResultStatus = ResultStatus;
 
     showResultForm = false;
+    isEditMode = false;
     selectedResult!: Result;
 
     searchTerm = '';
@@ -114,12 +121,14 @@ export class ResultsComponent implements OnInit, OnDestroy
     onEnterResult(r: Result)
     {
         this.selectedResult = r;
+        this.isEditMode = true;
         this.showResultForm = true; 
     }
 
     onReveiwResult(r: Result)
     {
-        this.selectedResult = r;        
+        this.selectedResult = r;    
+        this.isEditMode = false;    
         this.showResultForm = true; 
     }
 

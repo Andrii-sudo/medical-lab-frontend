@@ -46,6 +46,14 @@
                         @else if (result.status === ResultStatus.Normal || result.status === ResultStatus.Abnormal) 
                         {
                             <button class="btn-action btn-reveiw" (click)="onReveiwResult(result)">Переглянути</button>
+                            @if (userRole() === UserRole.Admin)
+                            {
+                                <button 
+                                    class="btn-action btn-edit" 
+                                    (click)="onEnterResult(result)">
+                                    <img src="icons/edit.svg" />
+                                </button>
+                            }
                         }
                     </div>
                 </div>
@@ -67,6 +75,7 @@
 {
     <app-result-form 
         [result]="selectedResult"
+        [editMode]="isEditMode"
         (cancel)="showResultForm = false"
         (confirm)="onConfirmResult()" />
 }

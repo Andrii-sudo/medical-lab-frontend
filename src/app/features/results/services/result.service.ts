@@ -4,8 +4,8 @@ import { environment } from '@env/environment';
 import { SearchType } from '../enums/search-type.enum';
 import { Observable } from 'rxjs';
 import { ResultPage } from '../interfaces/result-page.interface';
-import { ResultParameter } from '../interfaces/result-parameter.interface';
-import { UpdateResultParameter } from '../interfaces/update-result-parameter.interface';
+import { ResultInfo } from '../interfaces/result-info.interface';
+import { UpdateResult } from '../interfaces/update-result.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -47,13 +47,13 @@ export class ResultService
         return resultPage!;
     }
 
-    getResultParameters(resultId: number): Observable<ResultParameter[]>
+    getResultInfo(resultId: number): Observable<ResultInfo>
     {
-        return this.http.get<ResultParameter[]>(`${this.apiUrl}/${resultId}/parameters`);
+        return this.http.get<ResultInfo>(`${this.apiUrl}/${resultId}`);
     }
 
-    updateResultParameters(resultParameters: UpdateResultParameter[]): Observable<void>
+    updateResultInfo(requestData: UpdateResult): Observable<void>
     {
-        return this.http.put<void>(`${this.apiUrl}/parameters`, resultParameters);
+        return this.http.put<void>(this.apiUrl, requestData);
     }
 }

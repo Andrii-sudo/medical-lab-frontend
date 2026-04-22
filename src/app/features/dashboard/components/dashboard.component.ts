@@ -9,6 +9,7 @@ import { EmployeeStats } from '../interfaces/employee-stat.interface';
 import { DashboardService } from '../services/dashboard.service';
 import { SelectedOfficeService } from '@core/services/selected-office.service';
 import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
 
 @Component({
     selector: 'app-dashboard',
@@ -20,7 +21,10 @@ export class DashboardComponent implements OnInit
 {
     private dashboardService = inject(DashboardService);
     private selcOffice = inject(SelectedOfficeService);
-    private auth = inject(AuthService);
+    private authService = inject(AuthService);
+
+    UserRole = UserRole;
+    userRole = this.authService.userRole; 
 
     today = new Date().toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -53,9 +57,9 @@ export class DashboardComponent implements OnInit
 
     ngOnInit(): void
     {
-        const user = this.auth.currentUser();
+        const user = this.authService.currentUser();
 
-        if (user)
+        if (user && user.role === UserRole.Employee)
         {
             this.dashboardService.getEmployeeShifts(user.id)
                 .subscribe({ 

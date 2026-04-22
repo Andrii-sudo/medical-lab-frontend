@@ -1,18 +1,47 @@
 <div class="toolbar">
-    <div class="date-nav">
-        <button class="btn-nav" (click)="shiftDay(-1)">&#8249;</button>
-        <span class="date-label">{{ selectedDate | date:'EEEE, d MMMM yyyy' : '' : 'uk' }}</span>
-        <button class="btn-nav" (click)="shiftDay(1)">&#8250;</button>
+    <div class="toolbar-left">
+        <div class="date-nav">
+            <button class="btn-nav" (click)="shiftDay(-1)">&#8249;</button>
+            <span class="date-label">{{ selectedDate | date:'EEEE, d MMMM yyyy' : '' : 'uk' }}</span>
+            <button class="btn-nav" (click)="shiftDay(1)">&#8250;</button>
+        </div>
+        <button class="btn-today" (click)="setToday()">Сьогодні</button>
     </div>
-    <button class="btn-today" (click)="setToday()">Сьогодні</button>
 
-    <select class="slc-filter" [(ngModel)]="selectedStatus">
-        <option [ngValue]="null"                       >Всі статуси</option>
-        <option [ngValue]="AppointmentStatus.Pending"  >Очікується</option>
-        <option [ngValue]="AppointmentStatus.Arrived"  >Прибув</option>
-        <option [ngValue]="AppointmentStatus.Completed">Завершено</option>
-        <option [ngValue]="AppointmentStatus.Cancelled">Скасовано</option>
-    </select>
+    <div class="toolbar-right">
+        @if (userRole() === UserRole.Admin)
+        {
+            <div class="form-block-inline">
+                <label for="admin-city">Місто:</label>
+                <select class="slc-filter" id="admin-city" [(ngModel)]="selectedCity" (ngModelChange)="onCityChange()">
+                    <option value="" disabled selected>Оберіть місто</option>
+                    @for (city of cities; track city)
+                    {
+                        <option [value]="city">{{ city }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-block-inline">
+                <label for="admin-office">Відділення:</label>
+                <select class="slc-filter" id="admin-office" [(ngModel)]="selectedOfficeId" (ngModelChange)="onOfficeChange()" [disabled]="!selectedCity">
+                    <option value="" disabled selected>Оберіть відділення</option>
+                    @for (office of offices; track office.id)
+                    {
+                        <option [value]="office.id">№{{ office.number }} - {{ office.address }}</option>
+                    }
+                </select>
+            </div>
+        }
+
+        <select class="slc-filter" [(ngModel)]="selectedStatus">
+            <option [ngValue]="null"                       >Всі статуси</option>
+            <option [ngValue]="AppointmentStatus.Pending"  >Очікується</option>
+            <option [ngValue]="AppointmentStatus.Arrived"  >Прибув</option>
+            <option [ngValue]="AppointmentStatus.Completed">Завершено</option>
+            <option [ngValue]="AppointmentStatus.Cancelled">Скасовано</option>
+        </select>
+    </div>
 </div>
 
 <div class="table-panel">

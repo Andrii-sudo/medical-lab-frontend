@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
 import { Office } from '@core/interfaces/office.interface';
 import { SelectedOfficeService } from '@core/services/selected-office.service';
 
@@ -17,14 +18,18 @@ export class NavbarComponent implements OnInit
     private router = inject(Router);
     private selcOfficeService = inject(SelectedOfficeService);
 
+    UserRole = UserRole;
+    userRole = this.authService.userRole; 
+
     isOpen = false;
     
     availableOffices: Office[] = [];
 
     ngOnInit(): void 
     {
+        
         const userId = this.authService.userId();
-        if (userId)
+        if (userId && this.userRole() === UserRole.Employee)
         {   
             this.selcOfficeService.getEmployeeOffices(userId)
                 .subscribe({ 
