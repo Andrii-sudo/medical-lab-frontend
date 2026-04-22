@@ -9,6 +9,10 @@ import { ConfirmDialogComponent } from "@shared/components/confirm-dialog/confir
 import { RouterLink } from '@angular/router';
 import { AppointmentService } from '@features/patients/services/appointment.service';
 import { SelectedOfficeService } from '@core/services/selected-office.service';
+import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
+import { OfficeService } from '@features/patients/services/office.service';
+import { Office } from '../../../patients/interfaces/office.interface';
 
 @Component({
     selector: 'app-patients-schedule',
@@ -18,8 +22,14 @@ import { SelectedOfficeService } from '@core/services/selected-office.service';
 })
 export class PatientsScheduleComponent 
 {
+    private authService = inject(AuthService);
     private appointmentService = inject(AppointmentService);
     private selcOfficeService = inject(SelectedOfficeService);
+    private officeService = inject(OfficeService);
+    
+    UserRole = UserRole;
+    userRole = this.authService.userRole;
+    
 
     AppointmentStatus = AppointmentStatus;
     AppointmentPurpose = AppointmentPurpose;
@@ -35,31 +45,86 @@ export class PatientsScheduleComponent
     dialogTitle = '';
     dialogDescription = '';
 
+    // Для адміна
+    cities: string[] = [];
+    offices: Office[] = [];
+    selectedCity = '';
+    selectedOfficeId: number | '' = '';
+
     constructor() 
-    {
+    {   
         effect(() => 
         {
-            const currentOffice = this.selcOfficeService.selectedOffice();
-            if (currentOffice)
+            if (this.userRole() === UserRole.Employee)
             {
-                this.loadAppointments();
+                const currentOffice = this.selcOfficeService.selectedOffice();
+                if (currentOffice)
+                {
+                    this.loadAppointments(currentOffice.id);
+                }
             }
-        });
+        });    
     }
 
-    loadAppointments(): void
+    ngOnInit(): void 
     {
-        const office = this.selcOfficeService.selectedOffice();
-        if (office)
+        if (this.userRole() === UserRole.Admin)
         {
-            this.appointmentService
-                .getDailyAppointments(office.id, this.selectedDate)
-                .subscribe(
-                {
-                    next: appointments => this.appointments = appointments,
-                    error: err => console.error(err)
-                });
+            this.officeService.getCities().subscribe(
+            {
+                next: cities => this.cities = cities.sort(),
+                error: err => console.error(err)
+            });
         }
+    }
+
+    onCityChange()
+    {
+        if (!this.selectedCity) return;
+        
+        this.officeService.getOffices(this.selectedCity, null)
+            .subscribe(
+            {
+                next: offices => 
+                {
+                    this.offices = offices;
+                    this.selectedOfficeId = ''; 
+                    this.appointments = [];     
+                },
+                error: err => console.error(err)
+            });
+    }
+
+    onOfficeChange()
+    {
+        if (this.selectedOfficeId)
+        {
+            this.loadAppointments(Number(this.selectedOfficeId));
+        }
+    }
+
+    private reloadCurrentOffice(): void
+    {
+        if (this.userRole() === UserRole.Employee)
+        {
+            const office = this.selcOfficeService.selectedOffice();
+            if (office) this.loadAppointments(office.id);
+        }
+        else if (this.userRole() === UserRole.Admin)
+        {
+            if (this.selectedOfficeId) this.loadAppointments(Number(this.selectedOfficeId));
+        }
+    }
+
+    loadAppointments(officeId: number): void
+    {
+        this.appointmentService
+            .getDailyAppointments(officeId, this.selectedDate)
+            .subscribe(
+            {
+                next: appointments => this.appointments = appointments,
+                error: err => console.error(err)
+            });
     }
 
     shiftDay(delta: number): void
@@ -68,13 +133,13 @@ export class PatientsScheduleComponent
         newDate.setDate(newDate.getDate() + delta);
 
         this.selectedDate = newDate;
-        this.loadAppointments();
+        this.reloadCurrentOffice();
     }
 
     setToday(): void
     {
         this.selectedDate = new Date();
-        this.loadAppointments();
+        this.reloadCurrentOffice();
     }
 
     get filteredAppointments(): Appointment[]
@@ -156,7 +221,7 @@ export class PatientsScheduleComponent
             {
                 next: () => 
                 {
-                    this.loadAppointments();
+                    this.reloadCurrentOffice();
                     this.showAdvanceDialog = false;
                 },
                 error: err => console.error(err)
@@ -183,7 +248,7 @@ export class PatientsScheduleComponent
             {
                 next: () => 
                 {
-                    this.loadAppointments();
+                    this.reloadCurrentOffice();
                     this.showCancelDialog = false
                 },
                 error: err => console.error(err)

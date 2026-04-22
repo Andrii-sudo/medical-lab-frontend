@@ -8,20 +8,29 @@
     margin-bottom: 1rem;
 }
 
-.param-table::-webkit-scrollbar 
+.param-table::-webkit-scrollbar,
+.conclusion-block textarea::-webkit-scrollbar 
 {
     width: 6px;
+    height: 6px;
 }
-.param-table::-webkit-scrollbar-track 
+
+.param-table::-webkit-scrollbar-track,
+.conclusion-block textarea::-webkit-scrollbar-track 
 {
     background: #0f172a; 
+    border-radius: 0.45rem;
 }
-.param-table::-webkit-scrollbar-thumb 
+
+.param-table::-webkit-scrollbar-thumb,
+.conclusion-block textarea::-webkit-scrollbar-thumb 
 {
     background: #2d3f55; 
     border-radius: 4px;
 }
-.param-table::-webkit-scrollbar-thumb:hover 
+
+.param-table::-webkit-scrollbar-thumb:hover,
+.conclusion-block textarea::-webkit-scrollbar-thumb:hover 
 {
     background: #4a90e2; 
 }
@@ -101,7 +110,7 @@
 }
 
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button 
+input::-webkit-inner-spin-button
 {
     -webkit-appearance: none;
     margin: 0;
@@ -111,4 +120,48 @@ input::-webkit-inner-spin-button
 {
     -moz-appearance: textfield;
     appearance: textfield;
+}
+
+.conclusion-block 
+{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.conclusion-block label 
+{
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #a0c4f1;
+}
+
+.conclusion-block textarea 
+{
+    width: 100%;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #15376e;
+    border-radius: 0.45rem;
+    padding: 0.75rem;
+    font-size: 0.94rem;
+    font-family: inherit;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.conclusion-block textarea:focus 
+{
+    border-color: #4a90e2;
+}
+
+.conclusion-block textarea:disabled 
+{
+    background-color: transparent;
+    border: 1px solid #2d3f55;
+   
+    resize: none;
+    color: #a0c4f1;
 }
