@@ -10,7 +10,7 @@
             <input type="text" [placeholder]="searchPlaceholder" [value]="searchTerm" (input)="onSearchChange($event)" />
             <img src="icons/search.svg" alt="" class="search-icon" />
         </div>
-        <select class="slc-filter" [(ngModel)]="searchType">
+        <select class="slc-filter" [(ngModel)]="searchType" (ngModelChange)="loadPage(1)">
             <option [value]="SearchType.Number">Пошук за номером замовлення</option>
             <option [value]="SearchType.Patient">Пошук за пацієнтом</option>
         </select>

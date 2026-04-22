@@ -7,12 +7,12 @@
 
     <div class="toolbar">
         <div class="search-wrapper">
-            <input type="text" [placeholder]="searchPlaceholder" [(ngModel)]="searchQuery" />
+            <input type="text" [placeholder]="searchPlaceholder" [value]="searchTerm" (input)="onSearchChange($event)" />
             <img src="icons/search.svg" alt="" class="search-icon" />
         </div>
-        <select class="slc-filter" [(ngModel)]="searchType">
-            <option value="order">Пошук за замовленням</option>
-            <option value="patient">Пошук за пацієнтом</option>
+        <select class="slc-filter" [(ngModel)]="searchType" (ngModelChange)="loadPage(1)">
+            <option [value]="SearchType.Order">Пошук за замовленням</option>
+            <option [value]="SearchType.Patient">Пошук за пацієнтом</option>
         </select>
     </div>
 
