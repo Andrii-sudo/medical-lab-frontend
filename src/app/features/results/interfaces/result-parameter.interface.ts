@@ -3,7 +3,7 @@ export interface ResultParameter
     id: number;
     name: string;
     value?: number;
-    unit: string;
+    unit?: string;
     normMin?: number;
     normMax?: number;
 }

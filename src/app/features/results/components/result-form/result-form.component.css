@@ -3,13 +3,33 @@
     border: 1px solid #2d3f55;
     border-radius: 0.45rem;
     overflow: hidden;
+    overflow-y: auto; 
+    max-height: 22rem;
     margin-bottom: 1rem;
+}
+
+.param-table::-webkit-scrollbar 
+{
+    width: 6px;
+}
+.param-table::-webkit-scrollbar-track 
+{
+    background: #0f172a; 
+}
+.param-table::-webkit-scrollbar-thumb 
+{
+    background: #2d3f55; 
+    border-radius: 4px;
+}
+.param-table::-webkit-scrollbar-thumb:hover 
+{
+    background: #4a90e2; 
 }
 
 .param-headers
 {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.2fr 1fr;
 }
 
 .param-header
@@ -26,7 +46,7 @@
 .param-row
 {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.2fr 1fr;
     border-bottom: 1px solid #2d3f55;
     align-items: center;
     padding: 0.5rem 0;

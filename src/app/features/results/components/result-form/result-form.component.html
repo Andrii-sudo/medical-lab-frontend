@@ -3,7 +3,7 @@
     [title]="title" 
     [cancelText]="cancelText"
     [submitText]="submitText" 
-    [errorText]="showError ? 'Потрібно заповнити всі показники' : ''"
+    [errorText]="errorText"
     (cancel)="onCancel()">
     <form id="result-form" [formGroup]="resultForm" (ngSubmit)="onSubmit()">
         <div formArrayName="parameters">

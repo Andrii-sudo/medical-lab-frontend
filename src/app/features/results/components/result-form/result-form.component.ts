@@ -1,8 +1,11 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, input, OnInit, output } from '@angular/core';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Result } from '../../interfaces/result.interface';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { ResultStatus } from '@features/results/enums/result-status.enum';
+import { ResultService } from '@features/results/services/result.service';
+import { ResultParameter } from '@features/results/interfaces/result-parameter.interface';
+import { UpdateResultParameter } from '@features/results/interfaces/update-result-parameter.interface';
 
 @Component({
     selector: 'app-result-form',
@@ -12,46 +15,58 @@ import { ResultStatus } from '@features/results/enums/result-status.enum';
 })
 export class ResultFormComponent implements OnInit
 {
-    @Input({ required: true }) result!: Result;
-    
-    @Output() cancel = new EventEmitter<void>();
-    @Output() confirm = new EventEmitter<Result>();
-
+    private resultService = inject(ResultService);
     private fb = inject(FormBuilder);
+
+    result = input.required<Result>();
+    
+    cancel = output<void>();
+    confirm = output<void>();
 
     resultForm = this.fb.group({
         parameters: this.fb.array([])
-    });;
-    showError = false;
+    });
+
+    errorText = '';
 
     ngOnInit(): void 
     {
-        this.result.parameters.forEach(p =>
-        {
-            this.parameters.push(
-                this.fb.group({
-                    id:      [p.id],
-                    name:    [p.name],
-                    unit:    [p.unit],
-                    normMin: [p.normMin],
-                    normMax: [p.normMax],
-                    value:   [{ value: p.value, disabled: this.result.status !== ResultStatus.Pending }, Validators.required]
-                })
-            )
-        });
+        const result = this.result();
+        this.resultService.getResultParameters(result.id)
+            .subscribe(
+            {
+                next: parameters => 
+                {
+                    parameters.forEach(p =>
+                    {
+                        this.parameters.push(
+                            this.fb.group({
+                                id:      [p.id],
+                                name:    [p.name],
+                                unit:    [p.unit],
+                                normMin: [p.normMin],
+                                normMax: [p.normMax],
+                                value:   [{ value: p.value, disabled: result.status !== ResultStatus.Pending }, Validators.required]
+                            })
+                        )
+                    });
+                },
+                error: err => console.error(err)
+            });
     }
 
     get title(): string
     {
-        if (this.result.status === ResultStatus.Pending)        
-            return 'Внести результати';
+        const result = this.result(); 
+        if (result.status === ResultStatus.Pending)        
+            return `Внести результати пацієнта ${result.patientLastName} ${result.patientFirstName}`;
         else
-            return 'Перегляд результатів';
+            return `Перегляд результатів пацієнта ${result.patientLastName} ${result.patientFirstName}`;
     }
 
     get cancelText(): string
     {
-        if (this.result.status === ResultStatus.Pending)        
+        if (this.result().status === ResultStatus.Pending)        
             return 'Скасувати';
         else
             return '';
@@ -60,19 +75,11 @@ export class ResultFormComponent implements OnInit
 
     get submitText(): string
     {
-        if (this.result.status === ResultStatus.Pending)        
+        if (this.result().status === ResultStatus.Pending)        
             return 'Зберегти';
         else
             return 'Ок';
         
-    }
-
-    get errorText(): string
-    {
-        if (this.showError)
-            return 'Потрібно заповнити всі показники';
-        else
-            return '';
     }
 
     get parameters(): FormArray
@@ -82,15 +89,15 @@ export class ResultFormComponent implements OnInit
 
     normValueLabel(normMin: number, normMax: number, unit: string): string
     {
-        if (normMin && normMax)
+        if (normMin != null && normMax != null)
         {
             return `${normMin} - ${normMax} ${unit}`;
         }
-        else if (normMin)
+        else if (normMin != null)
         {
             return `>${normMin} ${unit}`;
         }
-        else if (normMax)
+        else if (normMax != null)
         {
             return `<${normMax} ${unit}`;
         }
@@ -105,30 +112,33 @@ export class ResultFormComponent implements OnInit
 
     onSubmit()
     {
-        // if (this.result.status) ... 
+        const result = this.result();
+        if (result.status !== ResultStatus.Pending)
+        {
+            this.cancel.emit();
+            return;
+            // export 
+        } 
         
         if (!this.resultForm.valid)
         {
-            this.showError = true;
+            this.errorText = 'Потрібно заповнити всі показники';
             return;
         }
 
-        // .controls - це масив FormGroup-ів
-        // .map(c => c.value) - витягує { id, name, unit, normMin, normMax, value } з кожного
-        const params = this.parameters.controls.map(c => c.value);
+        const formValues = this.parameters.getRawValue();
 
-        // перевіряємо чи хоч один параметр виходить за межі норми
-        const hasAbnormal = params.some(p =>
-            (p.normMin != null && p.value < p.normMin) ||
-            (p.normMax != null && p.value > p.normMax)
-        );
+        const requestData = formValues.map((param: ResultParameter) => (
+        {
+            id: param.id,
+            value: param.value
+        } as UpdateResultParameter));
 
-        // ...this.result - копіюємо всі поля result (id, patientFirstName, ...)
-        // і перезаписуємо status та parameters новими значеннями
-        this.confirm.emit({
-            ...this.result,
-            status: hasAbnormal ? ResultStatus.Abnormal : ResultStatus.Normal,
-            parameters: params
-        });
+        this.resultService.updateResultParameters(requestData)
+            .subscribe(
+            {
+                next: () => this.confirm.emit(),
+                error: err => console.error(err)
+            })
     }
 }

@@ -1,6 +1,6 @@
 export enum ResultStatus
 {
-    Pending,
-    Normal,
-    Abnormal
+    Pending = 'pending',
+    Normal = 'normal',
+    Abnormal = 'abnormal'
 }
