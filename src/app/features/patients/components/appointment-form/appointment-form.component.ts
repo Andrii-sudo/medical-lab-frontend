@@ -5,7 +5,7 @@ import { AppointmentPurpose } from '../../enums/appointment-purpose.enum';
 import { Office } from '../../interfaces/office.interface';
 import { ModalComponent } from "@shared/components/modal/modal.component";
 import { DatePipe } from '@angular/common';
-import { OfficeService } from '@features/patients/services/office.service';
+import { OfficeService } from '@core/services/office.service';
 import { OfficeType } from '@core/enums/office-type';
 import { AppointmentService } from '@features/patients/services/appointment.service';
 

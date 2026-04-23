@@ -17,7 +17,8 @@
         }
         @if (userRole() === UserRole.Admin)
         {
-            <li><a routerLink="/employees" routerLinkActive="active" (click)="closeMenu()">Працівники</a></li>
+            <li><a routerLink="/employees"          routerLinkActive="active" (click)="closeMenu()">Працівники</a></li>
+            <li><a routerLink="/employees-schedule" routerLinkActive="active" (click)="closeMenu()">Розклад працівників</a></li>
         }
     </ul>
 

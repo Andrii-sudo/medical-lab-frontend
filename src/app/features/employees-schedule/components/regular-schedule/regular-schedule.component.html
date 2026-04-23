@@ -1,0 +1,82 @@
+<div class="table-panel">
+    <div class="app-table">
+        <span class="col-header">День тижня</span>
+        <span class="col-header">Відділення</span>
+        <span class="col-header">Години роботи</span>
+        <span class="col-header"></span>
+
+        @for (shift of regularSchedule; track $index)
+        {
+            <div class="list-row">
+                <span class="single">{{ getDayOfWeekLabel($index) }}</span>
+
+                @if (shift)
+                {
+                    <div class="cell-stack">
+                        <span class="maintext">{{ shift.officeCity }}, Відділення №{{ shift.officeNumber }}</span>
+                        <span class="subtext">{{ shift.officeAddress }}</span>
+                    </div>                    
+                    
+                    <span class="single">{{ shift.startTime | slice:0:5 }} - {{ shift.endTime | slice:0:5 }}</span>
+                                
+                    <div class="col-action">
+                        <button 
+                            class="btn-action btn-edit" 
+                            (click)="onEditShiftClick(shift)">
+                            <img src="icons/edit.svg" />
+                        </button>
+                        <button 
+                            class="btn-action btn-delete" 
+                            (click)="onDeleteShiftClick(shift)">
+                            &#10006;
+                        </button>
+                    </div>
+                }
+                @else 
+                {
+                    <span class="single">Вихідний</span>
+                    <span class="single">—</span>
+                    <div class="col-action">
+                        <button 
+                            class="btn-action btn-add" 
+                            (click)="onAddShiftClick($index)" >
+                            &#43;
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+        @empty 
+        {
+            <div class="empty-state">Розклад не знайдено</div>
+        }
+    </div>
+</div>
+
+@if (showAddShiftForm)
+{
+    <app-regular-shift-modal 
+        [dayOfWeek]="selectedDayOfWeek"
+        [employeeId]="selectedEmployee()!.id"
+        (cancel)="showAddShiftForm = false"
+        (confirm)="onAddShift()" />
+}
+
+@if (showEditShiftForm)
+{
+    <app-regular-shift-modal 
+        [shift]="selectedShift"
+        [dayOfWeek]="selectedDayOfWeek"
+        [employeeId]="selectedEmployee()!.id"
+        (cancel)="showEditShiftForm = false"
+        (confirm)="onEditShift()" />
+}
+
+@if (showDeleteDialog)
+{
+    <app-confirm-dialog 
+        title="Видалити зміну"
+        [description]="dialogDescription"
+        (cancel)="showDeleteDialog = false"
+        (confirm)="deleteShift()" />
+}

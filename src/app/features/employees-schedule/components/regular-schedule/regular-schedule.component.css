@@ -1,0 +1,32 @@
+.app-table
+{
+    grid-template-columns: 6.5rem 1fr 11rem auto;
+}
+
+.btn-edit
+{
+    padding: 0.1rem 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.btn-edit img
+{
+    height: 1.25rem;
+    transition: filter 0.2s;
+}
+
+.btn-edit:hover img
+{
+    filter: brightness(0) invert(1); 
+}
+
+.btn-delete
+{
+    margin-left: 0.5rem;
+}
+
+.btn-delete:hover
+{
+    background-color: #4a90e2;
+    color: #f87171;
+}

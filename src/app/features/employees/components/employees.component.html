@@ -43,6 +43,9 @@
                      
                     
                     <div class="col-action">
+                        <button class="btn-action btn-enter-result" 
+                                [routerLink]="['/employees-schedule']"
+                                [state]="employee">Розклад</button>
                         <button 
                             class="btn-action btn-edit" 
                             (click)="onEditEmployeeClick(employee)">
@@ -53,14 +56,6 @@
                             (click)="onDeleteEmployeeClick(employee)">
                             &#10006;
                         </button>
-                        <!--
-                        
-                        <button class="btn-action btn-enter-result" 
-                                [routerLink]="['/results']"
-                                [state]="{
-                                    orderNumber: sample.orderNumber
-                                }">Внести результати</button>
-                        -->
                     </div>
                 </div>
             }

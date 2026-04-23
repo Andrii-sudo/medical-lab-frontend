@@ -9,6 +9,7 @@ import { UserRole } from '@core/auth/user-role.enum';
 import { ErrorPageComponent } from '@core/auth/error-page/error-page.component';
 import { authGuard } from '@core/auth/guards/auth.guard';
 import { EmployeesComponent } from '@features/employees/components/employees.component';
+import { EmployeesScheduleComponent } from '@features/employees-schedule/components/employees-schedule.component';
 
 export const routes: Routes = 
 [
@@ -19,6 +20,13 @@ export const routes: Routes =
     { path: 'samples',   component: SamplesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'results',   component: ResultsComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'employees', component: EmployeesComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
+    
+    { 
+        path: 'employees-schedule', 
+        component: EmployeesScheduleComponent, 
+        canMatch: [authGuard], 
+        data: { roles: [UserRole.Admin] } 
+    },
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { 

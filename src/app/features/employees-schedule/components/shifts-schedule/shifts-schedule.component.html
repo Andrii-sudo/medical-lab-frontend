@@ -1,0 +1,77 @@
+<div class="filter-bar">
+    <input type="checkbox" id="hide-past" [(ngModel)]="hidePast" (ngModelChange)="onHidePastChange()" />
+    <label class="checkbox-label" for="hide-past">
+        Приховати минулі
+    </label>
+</div>
+
+<div class="table-panel">
+    <div class="app-table">
+        <span class="col-header">Дата / Період</span>
+        <span class="col-header">Тип винятку</span>
+        <span class="col-header">Відділення</span>
+        <span class="col-header">Години роботи</span>
+        <span class="col-header"></span>
+
+        @for (shift of shifts; track shift.id)
+        {
+            <div class="list-row">
+                @if (!shift.endDate || shift.startDate === shift.endDate)
+                {
+                    <span class="single">{{ shift.startDate }}</span>
+                }
+                @else
+                {
+                    <div class="cell-stack">
+                        <span class="maintext">{{ shift.startDate }}</span>
+                        <span class="subtext">{{ shift.endDate }}</span>
+                    </div>
+                }
+
+                <span class="single">{{ getShiftTypeLabel(shift.type) }}</span>
+
+                @if (shift.officeCity && shift.officeNumber)
+                {
+                    <div class="cell-stack">
+                        <span class="maintext">{{ shift.officeCity }}, Відділення №{{ shift.officeNumber }}</span>
+                        <span class="subtext">{{ shift.officeAddress }}</span>
+                    </div>
+                }
+                @else
+                {
+                    <span class="single">—</span>
+                }
+
+                <span class="single">
+                    {{ shift.startTime ? (shift.startTime | slice:0:5) + ' - ' + (shift.endTime | slice:0:5) : '—' }}
+                </span>
+
+                <div class="col-action">
+                    <button
+                        class="btn-action btn-delete"
+                        (click)="onDeleteClick(shift)">
+                        &#10006;
+                    </button>
+                </div>
+            </div>
+        }
+        @empty
+        {
+            <div class="empty-state">Винятків не знайдено</div>
+        }
+    </div>
+</div>
+
+<app-pagination
+    [selectedPage]="selectedPage"
+    [pageCount]="pageCount"
+    (changePage)="loadPage($event)" />
+
+@if (showDeleteDialog)
+{
+    <app-confirm-dialog
+        title="Видалити виняток"
+        [description]="dialogDescription"
+        (cancel)="showDeleteDialog = false"
+        (confirm)="deleteShift()" />
+}
