@@ -8,6 +8,7 @@ import { ResultsComponent } from '@features/results/components/results.component
 import { UserRole } from '@core/auth/user-role.enum';
 import { ErrorPageComponent } from '@core/auth/error-page/error-page.component';
 import { authGuard } from '@core/auth/guards/auth.guard';
+import { EmployeesComponent } from '@features/employees/components/employees.component';
 
 export const routes: Routes = 
 [
@@ -17,6 +18,7 @@ export const routes: Routes =
     { path: 'orders',    component: OrdersComponent,    canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'samples',   component: SamplesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'results',   component: ResultsComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
+    { path: 'employees', component: EmployeesComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { 

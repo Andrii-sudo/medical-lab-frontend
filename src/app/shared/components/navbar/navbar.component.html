@@ -15,6 +15,10 @@
             <li><a routerLink="/samples"   routerLinkActive="active" (click)="closeMenu()">Зразки</a></li>
             <li><a routerLink="/results"   routerLinkActive="active" (click)="closeMenu()">Результати</a></li>
         }
+        @if (userRole() === UserRole.Admin)
+        {
+            <li><a routerLink="/employees" routerLinkActive="active" (click)="closeMenu()">Працівники</a></li>
+        }
     </ul>
 
     <div class="nav-footer">

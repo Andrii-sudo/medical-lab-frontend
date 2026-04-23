@@ -1,0 +1,102 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Працівники</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input type="text" placeholder="Введіть ім'я або номер працівника" [value]="searchTerm" (input)="onSearchChange($event)" />
+            <img src="icons/search.svg" alt="" class="search-icon" />
+        </div>
+        <button class="btn-add" (click)="onAddEmployeeClick()">+ Новий працівник</button>
+    </div>
+
+    <div class="table-panel">
+        <div class="app-table">
+            <span class="col-header">Працівник</span>
+            <span class="col-header">Роль</span>
+            <span class="col-header">Номер</span>
+            <span class="col-header">Пошта</span>
+            <span class="col-header"></span>
+
+            @for (employee of employees; track employee.id)
+            {
+                <div class="list-row">
+                    @if (employee.middleName != null)
+                    {
+                        <div class="cell-stack">
+                            <span class="maintext">{{ employee.lastName }} {{ employee.firstName }}</span>
+                            <span class="subtext">{{ employee.middleName }}</span>
+                        </div>
+                    }
+                    @else 
+                    {
+                        <span class="single">{{ employee.lastName }} {{ employee.firstName }}</span>
+                    }
+                    
+                    <span class="single">{{ employee.isAdmin ? 'Адміністратор' : 'Працівник' }}</span>
+
+                    <span class="single">{{ employee.phone }}</span>
+                    <span class="single">{{ employee.email }}</span>
+                     
+                    
+                    <div class="col-action">
+                        <button 
+                            class="btn-action btn-edit" 
+                            (click)="onEditEmployeeClick(employee)">
+                            <img src="icons/edit.svg" />
+                        </button>
+                        <button 
+                            class="btn-action btn-delete" 
+                            (click)="onDeleteEmployeeClick(employee)">
+                            &#10006;
+                        </button>
+                        <!--
+                        
+                        <button class="btn-action btn-enter-result" 
+                                [routerLink]="['/results']"
+                                [state]="{
+                                    orderNumber: sample.orderNumber
+                                }">Внести результати</button>
+                        -->
+                    </div>
+                </div>
+            }
+            @empty 
+            {
+                <div class="empty-state">Працівників не знайдено</div>
+            }
+        </div>
+    </div>
+
+    <app-pagination 
+        [selectedPage]="selectedPage"
+        [pageCount]="pageCount" 
+        (changePage)="loadPage($event)" />
+</main>
+
+@if (showAddEmployeeForm)
+{
+    <app-employee-form 
+        (cancel)="showAddEmployeeForm = false"
+        (confirm)="onAddEmployee()" />
+}
+
+@if (showEditEmployeeForm)
+{
+    <app-employee-form 
+        [employee]="selectedEmployee"
+        (cancel)="showEditEmployeeForm = false"
+        (confirm)="onEditEmployee()" />
+}
+
+@if (showDeleteDialog)
+{
+    <app-confirm-dialog 
+        title="Видалити працівника"
+        [description]="dialogDescription"
+        (cancel)="showDeleteDialog = false"
+        (confirm)="deleteEmployee()" />
+}
