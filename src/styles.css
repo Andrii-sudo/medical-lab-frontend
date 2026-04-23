@@ -333,6 +333,12 @@ body
     accent-color: #4a90e2;
 }
 
+.form-hint
+{
+    font-size: 0.85rem;
+    color: #cbd5f5;
+}
+
 .form-error
 {
     font-size: 0.75rem;

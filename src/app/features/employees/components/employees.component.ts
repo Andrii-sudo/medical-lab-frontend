@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Employee } from '../interfaces/employee.interface';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { EmployeeService } from '../services/employee.service';
 
 @Component({
     selector: 'app-employees',
-    imports: [NavbarComponent, PaginationComponent, EmployeeFormComponent, ConfirmDialogComponent],
+    imports: [NavbarComponent, PaginationComponent, EmployeeFormComponent, ConfirmDialogComponent, RouterLink],
     templateUrl: './employees.component.html',
     styleUrl: './employees.component.css'
 })

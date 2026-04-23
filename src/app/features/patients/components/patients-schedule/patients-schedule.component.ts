@@ -11,7 +11,7 @@ import { AppointmentService } from '@features/patients/services/appointment.serv
 import { SelectedOfficeService } from '@core/services/selected-office.service';
 import { AuthService } from '@core/auth/auth.service';
 import { UserRole } from '@core/auth/user-role.enum';
-import { OfficeService } from '@features/patients/services/office.service';
+import { OfficeService } from '@core/services/office.service';
 import { Office } from '../../../patients/interfaces/office.interface';
 
 @Component({

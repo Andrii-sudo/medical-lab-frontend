@@ -1,0 +1,133 @@
+<app-modal 
+    formId="shift-form" 
+    [title]="'Додати виняток'" 
+    [errorText]="errorMessage"
+    submitText="Зберегти" 
+    width="40rem"
+    (cancel)="onCancel()">
+    <form id="shift-form" [formGroup]="shiftForm" (ngSubmit)="onSubmit()">
+        <div class="form-block">
+            <label for="shiftType">Тип винятку</label>
+            <select formControlName="shiftType" id="shiftType" (change)="onShiftTypeChange()">
+                <option value="" disabled selected>Оберіть тип</option>
+                <option [value]="ShiftType.Work">Додаткова робота</option>
+                <option [value]="ShiftType.DayOff">Вихідний</option>
+                <option [value]="ShiftType.Vacation">Відпустка</option>
+                <option [value]="ShiftType.SickLeave">Лікарняний</option>
+            </select>
+
+            @if (shiftForm.get('shiftType')?.touched && shiftForm.get('shiftType')?.hasError('required'))
+            {
+                <span class="form-error">Тип обов'язковий</span>
+            }
+        </div>
+
+        @if (isWorkType)
+        {
+            <div class="form-block">
+                <label for="date">Дата</label>
+                <input formControlName="startDate" type="date" id="date" [min]="today" />
+
+                @if (shiftForm.get('startDate')?.touched && shiftForm.get('startDate')?.hasError('required'))
+                {
+                    <span class="form-error">Дата обов'язкова</span>
+                }
+            </div>
+
+            <div class="form-row">
+                <div class="form-block">
+                    <label for="city">Місто</label>
+                    <select formControlName="city" id="city" (change)="onCityChange()">
+                        <option value="" disabled selected>Оберіть місто</option>
+                        @for (city of cities; track city)
+                        {
+                            <option [value]="city">{{ city }}</option>
+                        }
+                    </select>
+
+                    @if (shiftForm.get('city')?.touched && shiftForm.get('city')?.hasError('required'))
+                    {
+                        <span class="form-error">Місто обов'язкове</span>
+                    }
+                </div>
+
+                <div class="form-block">
+                    <label for="officeId">Відділення</label>
+                    <select formControlName="officeId" id="officeId" (change)="onOfficeChange()">
+                        <option value="" disabled selected>Оберіть відділення</option>
+                        @for (office of offices; track office.id)
+                        {
+                            <option [value]="office.id">№{{ office.number }} - {{ office.address }}</option>
+                        }
+                        @empty
+                        {
+                            <option value="" disabled>Відділення відсутні</option>
+                        }
+                    </select>
+
+                    @if (shiftForm.get('officeId')?.touched && shiftForm.get('officeId')?.hasError('required'))
+                    {
+                        <span class="form-error">Відділення обов'язкове</span>
+                    }
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-block">
+                    <label for="startTime">Час початку</label>
+                    <input formControlName="startTime" type="time" id="startTime"
+                        [min]="officeOpenTime" [max]="officeCloseTime" />
+
+                    @if (officeOpenTime)
+                    {
+                        <span class="form-hint">Відділення відкривається о {{ officeOpenTime }}</span>
+                    }
+                    @if (shiftForm.get('startTime')?.touched && shiftForm.get('startTime')?.hasError('required'))
+                    {
+                        <span class="form-error">Вкажіть час</span>
+                    }
+                </div>
+
+                <div class="form-block">
+                    <label for="endTime">Час завершення</label>
+                    <input formControlName="endTime" type="time" id="endTime"
+                        [min]="officeOpenTime" [max]="officeCloseTime" />
+
+                    @if (officeCloseTime)
+                    {
+                        <span class="form-hint">Відділення зачиняється о {{ officeCloseTime }}</span>
+                    }
+                    @if (shiftForm.get('endTime')?.touched && shiftForm.get('endTime')?.hasError('required'))
+                    {
+                        <span class="form-error">Вкажіть час</span>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (isPeriodType)
+        {
+            <div class="form-row">
+                <div class="form-block">
+                    <label for="startDate">Дата початку</label>
+                    <input formControlName="startDate" type="date" id="startDate" [min]="today" />
+
+                    @if (shiftForm.get('startDate')?.touched && shiftForm.get('startDate')?.hasError('required'))
+                    {
+                        <span class="form-error">Дата початку обов'язкова</span>
+                    }
+                </div>
+
+                <div class="form-block">
+                    <label for="endDate">Дата завершення</label>
+                    <input formControlName="endDate" type="date" id="endDate" [min]="shiftForm.get('startDate')?.value || today" />
+
+                    @if (shiftForm.get('endDate')?.touched && shiftForm.get('endDate')?.hasError('required'))
+                    {
+                        <span class="form-error">Дата завершення обов'язкова</span>
+                    }
+                </div>
+            </div>
+        }
+    </form>
+</app-modal>

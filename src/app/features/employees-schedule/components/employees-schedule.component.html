@@ -1,0 +1,67 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Розклад працівників</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input type="text" placeholder="Введіть ім'я або номер працівника" [value]="searchTerm" (input)="onSearchChange($event)" />
+            <img src="icons/search.svg" alt="" class="search-icon" />
+
+            @if (employees.length > 0) 
+            {
+                <ul class="employee-dropdown">
+                    @for (employee of employees; track employee.id) 
+                    {
+                        <li class="employee-option" (click)="selectEmployee(employee)">
+                            <div class="maintext">{{ employee.lastName }} {{ employee.firstName }} {{ employee.middleName ?? '' }}</div>
+                            <div class="subtext">Номер: {{ employee.phone }}</div>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        @if (activeTab === ScheduleTab.Shifts)
+        {
+            <button class="btn-add" [disabled]="!selectedEmployee" (click)="onAddShiftClick()">+ Виняток</button>
+        }
+    </div>
+
+    <div class="tabs">
+        <button 
+            class="tab"
+            [class.active]="activeTab === ScheduleTab.Regural"
+            (click)="activeTab = ScheduleTab.Regural">
+            Регулярний
+        </button>
+        <button 
+            class="tab"
+            [class.active]="activeTab === ScheduleTab.Shifts"
+            (click)="activeTab = ScheduleTab.Shifts">
+            Винятки
+        </button>
+    </div>
+    
+    @if (activeTab === ScheduleTab.Regural)
+    {
+        <app-regular-schedule 
+            [selectedEmployee]="selectedEmployee" />
+    }
+
+    @if (activeTab === ScheduleTab.Shifts)
+    {
+        <app-shifts-schedule 
+            [selectedEmployee]="selectedEmployee" />
+    }
+</main>
+
+@if (showShiftForm && selectedEmployee)
+{
+    <app-shift-modal
+        [employeeId]="selectedEmployee.id"
+        (cancel)="showShiftForm = false"
+        (confirm)="onAddShift()" />
+}
