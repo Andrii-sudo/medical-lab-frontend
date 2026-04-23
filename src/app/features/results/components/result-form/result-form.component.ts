@@ -4,9 +4,12 @@ import { Result } from '../../interfaces/result.interface';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { ResultStatus } from '@features/results/enums/result-status.enum';
 import { ResultService } from '@features/results/services/result.service';
-import { ResultParameter } from '@features/results/interfaces/result-parameter.interface';
 import { UpdateResultParameter } from '@features/results/interfaces/update-result-parameter.interface';
 import { UpdateResult } from '@features/results/interfaces/update-result.interface';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+(pdfMake as any)['vfs'] = (pdfFonts as any)['vfs'];
 
 @Component({
     selector: 'app-result-form',
@@ -97,13 +100,13 @@ export class ResultFormComponent implements OnInit
 
     get cancelText(): string
     {
-        return this.isEditable ? 'Скасувати' : '';
+        return 'Скасувати';
         
     }
 
     get submitText(): string
     {
-        return this.isEditable ? 'Зберегти' : 'Ок';
+        return this.isEditable ? 'Зберегти' : 'Експортувати';
     }
 
     get parameters(): FormArray
@@ -139,9 +142,9 @@ export class ResultFormComponent implements OnInit
         const result = this.result();
         if (!this.isEditable)
         {
+            this.exportToPdf();
             this.cancel.emit();
-            return;
-            // export 
+            return; 
         } 
         
         if (!this.resultForm.valid)
@@ -170,5 +173,179 @@ export class ResultFormComponent implements OnInit
                 next: () => this.confirm.emit(),
                 error: err => console.error(err)
             })
+    }
+
+    exportToPdf(): void
+    {
+        const result = this.result();
+        const params = this.parameters.getRawValue();
+        const conclusion = this.resultForm.getRawValue().conclusion;
+        const date = new Date().toLocaleDateString('uk-UA');
+
+        const paramRows = params.map((p: any) =>
+        {
+            const norm = this.normValueLabel(p.normMin, p.normMax, p.unit);
+            const value = p.value ?? '—';
+            
+            let valueColor = '#1a1a1a';
+            if (p.value != null && p.normMin != null && p.value < p.normMin) valueColor = '#c0392b';
+            if (p.value != null && p.normMax != null && p.value > p.normMax) valueColor = '#c0392b';
+
+            return [
+                { text: p.name, style: 'paramName' },
+                { text: String(value), style: 'paramValue', color: valueColor, bold: valueColor !== '#1a1a1a' },
+                { text: p.unit || '—', style: 'paramCell' },
+                { text: norm || '—', style: 'paramCell' }
+            ];
+        });
+
+        const docDefinition: any = 
+        {
+            pageSize: 'A4',
+            pageMargins: [40, 50, 40, 60],
+            defaultStyle: { font: 'Roboto' },
+
+            footer: (currentPage: number, pageCount: number) => (
+            {
+                columns: 
+                [
+                    { text: `Документ згенеровано: ${date}`, style: 'footer', alignment: 'left' },
+                    { text: `Сторінка ${currentPage} з ${pageCount}`, style: 'footer', alignment: 'right' }
+                ],
+                margin: [40, 10]
+            }),
+
+            content: 
+            [
+                {
+                    columns: 
+                    [
+                        {
+                            stack: 
+                            [
+                                { text: 'MedLab', style: 'labName' },
+                                { text: 'Медична лабораторія', style: 'labSubtitle' },
+                            ]
+                        },
+                        {
+                            stack: 
+                            [
+                                { text: 'РЕЗУЛЬТАТИ ДОСЛІДЖЕННЯ', style: 'docTitle', alignment: 'right' },
+                                { text: `Замовлення №${result.orderNumber}`, style: 'orderNum', alignment: 'right' },
+                                { text: `Дата: ${date}`, style: 'dateText', alignment: 'right' }
+                            ]
+                        }
+                    ]
+                },
+
+                { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 2, lineColor: '#2980b9' }], margin: [0, 10, 0, 12] },
+
+                {
+                    table: 
+                    {
+                        widths: ['*', '*'],
+                        body: 
+                        [
+                            [
+                                {
+                                    stack: 
+                                    [
+                                        { text: 'ПАЦІЄНТ', style: 'sectionLabel' },
+                                        { text: `${result.patientLastName} ${result.patientFirstName}`, style: 'patientName' },
+                                        { text: `Тел.: ${result.patientPhone}`, style: 'patientDetail' }
+                                    ],
+                                    border: [false, false, false, false]
+                                },
+                                {
+                                    stack: 
+                                    [
+                                        { text: 'ТИП ЗРАЗКА', style: 'sectionLabel' },
+                                        { text: result.sampleType || '—', style: 'patientDetail' }
+                                    ],
+                                    border: [false, false, false, false],
+                                    alignment: 'right'
+                                }
+                            ]
+                        ]
+                    },
+                    margin: [0, 0, 0, 14]
+                },
+
+                { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#bdc3c7' }], margin: [0, 0, 0, 14] },
+
+                { text: 'ПОКАЗНИКИ', style: 'sectionLabel', margin: [0, 0, 0, 6] },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['*', 80, 60, 120],
+                        body: 
+                        [
+                            [
+                                { text: 'Показник',        style: 'tableHeader' },
+                                { text: 'Значення',         style: 'tableHeader', alignment: 'center' },
+                                { text: 'Одиниці',          style: 'tableHeader', alignment: 'center' },
+                                { text: 'Референтний діапазон', style: 'tableHeader', alignment: 'center' }
+                            ],
+                            ...paramRows.map((row: any, i: number) =>
+                                row.map((cell: any) => (
+                                {
+                                    ...cell,
+                                    fillColor: i % 2 === 0 ? '#f8fafc' : '#ffffff'
+                                }))
+                            )
+                        ]
+                    },
+                    layout: 
+                    {
+                        hLineWidth: (i: number) => i === 0 || i === 1 ? 1 : 0.5,
+                        vLineWidth: () => 0.5,
+                        hLineColor: () => '#dde1e7',
+                        vLineColor: () => '#dde1e7',
+                        paddingTop: () => 6,
+                        paddingBottom: () => 6,
+                        paddingLeft: () => 8,
+                        paddingRight: () => 8
+                    }
+                },
+
+                ...(conclusion?.trim() ? 
+                [
+                    { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#bdc3c7' }], margin: [0, 16, 0, 12] },
+                    { text: 'ВИСНОВОК', style: 'sectionLabel', margin: [0, 0, 0, 6] },
+                    {
+                        table: 
+                        {
+                            widths: ['*'],
+                            body: [[{ text: conclusion, style: 'conclusionText', border: [false, false, false, false] }]]
+                        },
+                        fillColor: '#f0f4f8',
+                        margin: [0, 0, 0, 0]
+                    }
+                ] : [])
+            ],
+
+            styles: 
+            {
+                labName:        { fontSize: 18, bold: true, color: '#2980b9' },
+                labSubtitle:    { fontSize: 9, color: '#7f8c8d', margin: [0, 2, 0, 0] },
+                docTitle:       { fontSize: 13, bold: true, color: '#2c3e50' },
+                orderNum:       { fontSize: 10, color: '#2980b9', margin: [0, 3, 0, 0] },
+                dateText:       { fontSize: 9, color: '#7f8c8d', margin: [0, 2, 0, 0] },
+                sectionLabel:   { fontSize: 8, bold: true, color: '#7f8c8d', letterSpacing: 1 },
+                patientName:    { fontSize: 13, bold: true, color: '#2c3e50', margin: [0, 3, 0, 2] },
+                patientDetail:  { fontSize: 10, color: '#555', margin: [0, 1, 0, 0] },
+                tableHeader:    { fontSize: 9, bold: true, color: '#2c3e50', fillColor: '#2980b9', },
+                paramName:      { fontSize: 10, color: '#2c3e50' },
+                paramValue:     { fontSize: 10, alignment: 'center' },
+                paramCell:      { fontSize: 10, color: '#555', alignment: 'center' },
+                conclusionText: { fontSize: 10, color: '#2c3e50', lineHeight: 1.5 },
+                legend:         { fontSize: 8, color: '#c0392b', italics: true },
+                footer:         { fontSize: 8, color: '#aaa' }
+            }
+        };
+
+        pdfMake.createPdf(docDefinition).download(
+            `Результат_${result.patientLastName}_${result.orderNumber}.pdf`
+        );
     }
 }
