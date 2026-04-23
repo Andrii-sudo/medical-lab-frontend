@@ -1,0 +1,82 @@
+<app-modal 
+    formId="employee-form" 
+    width="38rem"
+    [title]="title" 
+    [errorText]="errorMessage"
+    [submitText]="isEditMode ? 'Зберегти' : 'Додати'" 
+    (cancel)="onCancel()">
+    <form id="employee-form" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-block">
+                <label for="firstName">Ім'я</label>
+                <input formControlName="firstName" type="text" id="firstName" placeholder="Вкажіть ім'я" />
+                
+                @if (employeeForm.get('firstName')?.touched && employeeForm.get('firstName')?.hasError('required')) 
+                {
+                    <span class="form-error">Ім'я обов'язкове</span>
+                }
+            </div>
+            <div class="form-block">
+                <label for="lastName">Прізвище</label>
+                <input formControlName="lastName" type="text" id="lastName" placeholder="Вкажіть прізвище" />
+                
+                @if (employeeForm.get('lastName')?.touched && employeeForm.get('lastName')?.hasError('required')) 
+                {
+                    <span class="form-error">Прізвище обов'язкове</span>
+                }
+            </div>
+        </div>
+
+        <div class="form-block">
+            <label for="middleName">По батькові</label>
+            <input formControlName="middleName" type="text" id="middleName" placeholder="Вкажіть по батькові" />
+        </div>
+
+        <div class="form-row">
+            <div class="form-block">
+                <label for="phone">Номер телефону</label>
+                <input formControlName="phone" type="text" id="phone" placeholder="Вкажіть номер" />
+                
+                @if (employeeForm.get('phone')?.touched && employeeForm.get('phone')?.hasError('required')) 
+                {
+                    <span class="form-error">Телефон обов'язковий</span>
+                }
+            </div>
+
+            <div class="form-block">
+                <label for="email">Email</label>
+                <input formControlName="email" type="email" id="email" placeholder="example@mail.com" />
+                
+                @if (employeeForm.get('email')?.touched && employeeForm.get('email')?.hasError('required')) 
+                {
+                    <span class="form-error">Пошта обов'язкова</span>
+                }
+                @else if (employeeForm.get('email')?.touched && employeeForm.get('email')?.hasError('email')) 
+                {
+                    <span class="form-error">Невірний формат пошти</span>
+                }
+            </div>
+        </div>
+        @if (!isEditMode)
+        {
+            <div class="form-block">
+                <label for="password">Пароль</label>
+                <input formControlName="password" type="password" id="password" placeholder="Мінімум 6 символів" />
+                
+                @if (employeeForm.get('password')?.touched && employeeForm.get('password')?.hasError('required')) 
+                {
+                    <span class="form-error">Пароль обов'язковий</span>
+                }
+                @else if (employeeForm.get('password')?.touched && employeeForm.get('password')?.hasError('minlength')) 
+                {
+                    <span class="form-error">Пароль має містити мінімум 6 символів</span>
+                }
+            </div>
+        
+            <div class="form-block form-checkbox">
+                <input formControlName="isAdmin" type="checkbox" id="isAdmin" />
+                <label for="isAdmin">Надати права адміністратора</label>
+            </div>
+        }
+    </form>
+</app-modal>

@@ -1,5 +1,6 @@
 <app-modal 
     formId="patient-form" 
+    width="38rem"
     [title]="patient() ? 'Редагувати пацієнта' : 'Додати нового пацієнта'" 
     [submitText]="patient() ? 'Зберегти' : 'Додати'"
     [errorText]="errorMessage" 
@@ -8,7 +9,7 @@
         <div class="form-row">
             <div class="form-block">
                 <label for="first-name">Ім'я</label>
-                <input formControlName="firstName" type="text" id="first-name" placeholder="Вкажіть ім'я пацієнта" />
+                <input formControlName="firstName" type="text" id="first-name" placeholder="Вкажіть ім'я" />
             
                 @if (patientForm.get('firstName')?.touched && patientForm.get('firstName')?.hasError('required'))
                 {
@@ -17,7 +18,7 @@
             </div>
             <div class="form-block">
                 <label for="last-name">Прізвище</label>
-                <input formControlName="lastName" type="text" id="last-name" placeholder="Вкажіть прізвище пацієнта" />
+                <input formControlName="lastName" type="text" id="last-name" placeholder="Вкажіть прізвище" />
                 
                 @if (patientForm.get('lastName')?.touched && patientForm.get('lastName')?.hasError('required'))
                 {
@@ -27,7 +28,7 @@
         </div>
         <div class="form-block">
             <label for="middle-name">По батькові</label>
-            <input formControlName="middleName" type="text" id="middle-name" placeholder="Вкажіть по батькові пацієнта" />
+            <input formControlName="middleName" type="text" id="middle-name" placeholder="Вкажіть по батькові" />
         </div>
         <div class="form-date-gender-row">
             <div class="form-block">
@@ -56,7 +57,7 @@
         <div class="form-row">
             <div class="form-block">
                 <label for="phone">Номер телефону</label>
-                <input formControlName="phone" type="tel" id="phone" placeholder="Вкажіть номер пацієнта" />
+                <input formControlName="phone" type="tel" id="phone" placeholder="Вкажіть номер" />
                 
                 @if (patientForm.get('phone')?.touched && patientForm.get('phone')?.hasError('required'))
                 {
@@ -70,7 +71,7 @@
             </div>
             <div class="form-block">
                 <label for="email">Email</label>
-                <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email пацієнта" />
+                <input formControlName="email" type="email" id="email" placeholder="example@mail.com" />
                 
                 @if (patientForm.get('email')?.touched && patientForm.get('email')?.hasError('email'))
                 {
