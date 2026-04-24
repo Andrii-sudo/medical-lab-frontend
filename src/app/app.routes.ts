@@ -10,6 +10,7 @@ import { ErrorPageComponent } from '@core/auth/error-page/error-page.component';
 import { authGuard } from '@core/auth/guards/auth.guard';
 import { EmployeesComponent } from '@features/employees/components/employees.component';
 import { EmployeesScheduleComponent } from '@features/employees-schedule/components/employees-schedule.component';
+import { OfficesComponent } from '@features/offices/components/offices.component';
 
 export const routes: Routes = 
 [
@@ -20,6 +21,7 @@ export const routes: Routes =
     { path: 'samples',   component: SamplesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'results',   component: ResultsComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'employees', component: EmployeesComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
+    { path: 'offices',   component: OfficesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
     
     { 
         path: 'employees-schedule', 

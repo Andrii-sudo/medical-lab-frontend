@@ -1,0 +1,91 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Відділення</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <div class="form-block-inline">
+                <label for="city-filter">Місто:</label>
+                <select class="slc-filter" id="city-filter" [(ngModel)]="selectedCity" (ngModelChange)="onFilterChange()">
+                    <option value="">Усі міста</option>
+                    @for (city of cities; track city)
+                    {
+                        <option [value]="city">{{ city }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-block-inline">
+                <label for="type-filter">Тип:</label>
+                <select class="slc-filter" id="type-filter" [(ngModel)]="selectedType" (ngModelChange)="onFilterChange()">
+                    <option value="">Усі типи</option>
+                    <option value="collection">Пункт забору</option>
+                    <option value="laboratory">Лабораторія</option>
+                    <option value="mixed">Змішаний</option>
+                </select>
+            </div>
+        </div>
+        <div class="search-wrapper">
+            
+        </div>
+        <button class="btn-add" (click)="onAddOfficeClick()">+ Нове відділення</button>
+    </div>
+
+    <div class="table-panel">
+        <div class="app-table">
+            <span class="col-header">Місто</span>
+            <span class="col-header">Адреса</span>
+            <span class="col-header">Тип</span>
+            <span class="col-header"></span>
+
+            @for (office of offices; track office.id)
+            {
+                <div class="list-row">
+                    <span class="single">{{ office.city }}</span>
+
+                    <div class="cell-stack">
+                        <span class="maintext">Відділення №{{ office.number }}</span>
+                        <span class="subtext">{{ office.address }}</span>
+                    </div>                    
+
+                    <span class="single">{{ getOfficeTypeLabel(office.type) }}</span>                     
+                    
+                    <div class="col-action">
+                        <button 
+                            class="btn-action btn-office-schedule" 
+                            (click)="onOfficeScheduleClick(office)">
+                            Розклад
+                        </button>
+                    </div>
+                </div>
+            }
+            @empty 
+            {
+                <div class="empty-state">Працівників не знайдено</div>
+            }
+        </div>
+    </div>
+
+    <app-pagination 
+        [selectedPage]="selectedPage"
+        [pageCount]="pageCount" 
+        (changePage)="loadPage($event)" />
+</main>
+
+@if (showAddOfficeForm)
+{
+    <app-office-form 
+        (cancel)="showAddOfficeForm = false"
+        (confirm)="onOfficeAdded()" />
+}
+
+@if (showScheduleForm && selectedOffice)
+{
+    <app-office-schedule-modal 
+        [office]="selectedOffice"
+        (cancel)="showScheduleForm = false"
+        (confirm)="onScheduleSaved()" />
+}
