@@ -22,7 +22,8 @@ export class NavbarComponent implements OnInit
     userRole = this.authService.userRole; 
 
     isOpen = false;
-    
+    showLoginOptions = false;
+
     availableOffices: Office[] = [];
 
     ngOnInit(): void 
@@ -76,6 +77,12 @@ export class NavbarComponent implements OnInit
     closeMenu(): void
     {
         this.isOpen = false;
+        this.showLoginOptions = false;
+    }
+
+    toggleLoginOptions(): void
+    {
+        this.showLoginOptions = !this.showLoginOptions;
     }
 
     logout(): void

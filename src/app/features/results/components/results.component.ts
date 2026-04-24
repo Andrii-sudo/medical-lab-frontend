@@ -141,15 +141,32 @@ export class ResultsComponent implements OnInit, OnDestroy
     loadPage(page: number): void
     {
         this.selectedPage = page;
-        this.resultService.getResultsPage(page, this.pageSize, this.searchType, this.searchTerm)
-            .subscribe(
-            {
-                next: resultPage => 
+
+        if (this.userRole() === this.UserRole.Patient)
+        {
+            this.resultService.getPatientResultsPage(page, this.pageSize)
+                .subscribe(
                 {
-                    this.results = resultPage.results;
-                    this.pageCount = resultPage.pageCount;
-                },
-                error: err => console.error(err)
-            });
+                    next: resultPage => 
+                    {
+                        this.results = resultPage.results;
+                        this.pageCount = resultPage.pageCount;
+                    },
+                    error: err => console.error(err)
+                });
+        }
+        else
+        {
+            this.resultService.getResultsPage(page, this.pageSize, this.searchType, this.searchTerm)
+                .subscribe(
+                {
+                    next: resultPage => 
+                    {
+                        this.results = resultPage.results;
+                        this.pageCount = resultPage.pageCount;
+                    },
+                    error: err => console.error(err)
+                });
+        }
     }
 }

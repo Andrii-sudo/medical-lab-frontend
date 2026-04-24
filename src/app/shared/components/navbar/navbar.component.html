@@ -7,9 +7,12 @@
 <nav [class.open]="isOpen">
     <button class="btn-navbar-close" (click)="closeMenu()">&#8592;</button>
     <ul class="nav-links">
-        @if (userRole() === UserRole.Admin || userRole() === UserRole.Employee)
+        @if (userRole() === UserRole.Employee)
         {
             <li><a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Інформаційна панель</a></li>
+        }
+        @if (userRole() === UserRole.Admin || userRole() === UserRole.Employee)
+        {
             <li><a routerLink="/patients"  routerLinkActive="active" (click)="closeMenu()">Пацієнти</a></li>
             <li><a routerLink="/orders"    routerLinkActive="active" (click)="closeMenu()">Замовлення</a></li>
             <li><a routerLink="/samples"   routerLinkActive="active" (click)="closeMenu()">Зразки</a></li>
@@ -21,10 +24,16 @@
             <li><a routerLink="/employees-schedule" routerLinkActive="active" (click)="closeMenu()">Розклад працівників</a></li>
             <li><a routerLink="/offices"            routerLinkActive="active" (click)="closeMenu()">Відділення</a></li>
         }
+        
         @if (!userRole() || userRole() === UserRole.Patient)
         {
             <li><a routerLink="/analyses" routerLinkActive="active" (click)="closeMenu()">Аналізи</a></li>
             <li><a routerLink="/offices"  routerLinkActive="active" (click)="closeMenu()">Відділення</a></li>
+            
+        }
+        @if (userRole() === UserRole.Patient)
+        {
+            <li><a routerLink="/results" routerLinkActive="active" (click)="closeMenu()">Результати</a></li>
         }
 
     </ul>
@@ -50,6 +59,29 @@
             <button class="btn-logout" (click)="logout()">
                 Вийти
             </button>
+        }
+        @else 
+        {
+            <div class="login-wrapper">
+                @if (showLoginOptions)
+                {
+                    <div class="login-options">
+                        <a routerLink="/login" 
+                            [state]="{ isPatient: true }" 
+                            class="login-option" 
+                            (click)="closeMenu()">Я пацієнт</a>
+                        
+                        <a routerLink="/login" 
+                            [state]="{ isPatient: false }" 
+                            class="login-option" 
+                            (click)="closeMenu()">Я працівник</a>
+                    </div>
+                }
+                
+                <button class="btn-login" (click)="toggleLoginOptions()">
+                    Увійти
+                </button>
+            </div>
         }
     </div>
 </nav>

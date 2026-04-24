@@ -1,5 +1,7 @@
 import { Component, inject, input, output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
 import { OfficeSchedule } from '@core/interfaces/office-schedule.interface';
 import { Office } from '@core/interfaces/office.interface';
 import { OfficeService } from '@core/services/office.service';
@@ -26,7 +28,11 @@ export class OfficeScheduleModalComponent
 {
     private officeService = inject(OfficeService);
     private fb = inject(FormBuilder);
+    private authService = inject(AuthService);
 
+    UserRole = UserRole;
+    userRole = this.authService.userRole; 
+    
     office = input.required<Office>();
     
     cancel = output<void>();
@@ -56,6 +62,11 @@ export class OfficeScheduleModalComponent
 
     ngOnInit(): void 
     {
+        if (this.userRole() !== this.UserRole.Admin)
+        {
+            this.scheduleForm.disable();
+        }
+
         this.officeService.getOfficeSchedule(this.office().id).subscribe(
         {
             next: (schedules) => 
@@ -76,13 +87,33 @@ export class OfficeScheduleModalComponent
         });
     }
 
-    onCancel() 
+    get submitText(): string
+    {
+        if (this.userRole() === UserRole.Admin)
+        {
+            return 'Зберегти';
+        }
+        return 'Ок';
+    }
+
+    get cancelText(): string
+    {
+        return 'Скасувати';        
+    }
+
+    onCancel(): void 
     {
         this.cancel.emit();
     }
 
-    onSubmit() 
+    onSubmit(): void 
     {
+        if (this.userRole() !== UserRole.Admin)
+        {
+            this.cancel.emit();
+            return;
+        }
+
         if (this.scheduleForm.invalid) 
         {
             this.scheduleForm.markAllAsTouched();

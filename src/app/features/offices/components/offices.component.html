@@ -2,7 +2,7 @@
 
 <main class="content">
     <div class="top-bar">
-        <h2>Відділення</h2>
+        <h2>{{ userRole() !== UserRole.Admin ? 'Наші ' : ''}}Відділення</h2>
     </div>
 
     <div class="toolbar">
@@ -17,21 +17,28 @@
                     }
                 </select>
             </div>
-
-            <div class="form-block-inline">
-                <label for="type-filter">Тип:</label>
-                <select class="slc-filter" id="type-filter" [(ngModel)]="selectedType" (ngModelChange)="onFilterChange()">
-                    <option value="">Усі типи</option>
-                    <option value="collection">Пункт забору</option>
-                    <option value="laboratory">Лабораторія</option>
-                    <option value="mixed">Змішаний</option>
-                </select>
-            </div>
+            
+            @if (userRole() === UserRole.Admin)
+            {
+                <div class="form-block-inline">
+                    <label for="type-filter">Тип:</label>
+                    <select class="slc-filter" id="type-filter" [(ngModel)]="selectedType" (ngModelChange)="onFilterChange()">
+                        <option value="">Усі типи</option>
+                        <option value="collection">Пункт забору</option>
+                        <option value="laboratory">Лабораторія</option>
+                        <option value="mixed">Змішаний</option>
+                    </select>
+                </div>
+            }
         </div>
         <div class="search-wrapper">
             
         </div>
-        <button class="btn-add" (click)="onAddOfficeClick()">+ Нове відділення</button>
+
+        @if (userRole() === UserRole.Admin)
+        {
+            <button class="btn-add" (click)="onAddOfficeClick()">+ Нове відділення</button>
+        }
     </div>
 
     <div class="table-panel">
