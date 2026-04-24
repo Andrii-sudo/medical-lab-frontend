@@ -1,0 +1,48 @@
+<app-modal 
+    formId="office-form" 
+    width="38rem"
+    title="Нове відділення" 
+    [errorText]="errorMessage"
+    submitText="Створити" 
+    (cancel)="onCancel()">
+    <form id="office-form" [formGroup]="officeForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-row">
+            <div class="form-block">
+                <label for="city">Місто</label>
+                <input formControlName="city" type="text" id="city" placeholder="Вкажіть місто" />
+                
+                @if (officeForm.get('city')?.touched && officeForm.get('city')?.hasError('required')) 
+                {
+                    <span class="form-error">Місто обов'язкове</span>
+                }
+            </div>
+
+            <div class="form-block">
+                <label for="type">Тип відділення</label>
+                <select formControlName="type" id="type">
+                    <option value="" disabled selected>Оберіть тип</option>
+                    <option value="collection">Пункт забору</option>
+                    <option value="laboratory">Лабораторія</option>
+                    <option value="mixed">Змішане</option>
+                </select>
+                
+                @if (officeForm.get('type')?.touched && officeForm.get('type')?.hasError('required')) 
+                {
+                    <span class="form-error">Тип обов'язковий</span>
+                }
+            </div>
+        </div>
+
+        <div class="form-block">
+            <label for="address">Адреса</label>
+            <input formControlName="address" type="text" id="address" placeholder="Наприклад: вул. Шевченка, 12" />
+            
+            @if (officeForm.get('address')?.touched && officeForm.get('address')?.hasError('required')) 
+            {
+                <span class="form-error">Адреса обов'язкова</span>
+            }
+        </div>
+
+    </form>
+</app-modal>

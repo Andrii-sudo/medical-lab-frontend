@@ -1,0 +1,39 @@
+<app-modal 
+    formId="schedule-form" 
+    width="32rem"
+    title="Розклад: Відділення №{{ office().number }}" 
+    [errorText]="errorMessage"
+    submitText="Зберегти" 
+    (cancel)="onCancel()">
+    
+    <form id="schedule-form" [formGroup]="scheduleForm" (ngSubmit)="onSubmit()">
+        <div class="schedule-grid" formArrayName="days">
+            
+            <div class="grid-header">
+                <span>День</span>
+                <span>Відкриття</span>
+                <span>Закриття</span>
+            </div>
+
+            @for (dayCtrl of daysControls; track $index) 
+            {
+                <div class="grid-row" [formGroupName]="$index">
+                    <span class="day-name">{{ dayNames[$index] }}</span>
+                    
+                    <input type="time" formControlName="openTime" class="time-input" />
+                    <span class="separator">-</span>
+                    <input type="time" formControlName="closeTime" class="time-input" />
+
+                    @if (dayCtrl.touched && dayCtrl.hasError('incomplete')) 
+                    {
+                        <span class="row-error">Заповніть обидва поля</span>
+                    }
+                    @if (dayCtrl.touched && dayCtrl.hasError('invalidRange')) 
+                    {
+                        <span class="row-error">Невірний діапазон</span>
+                    }
+                </div>
+            }
+        </div>
+    </form>
+</app-modal>

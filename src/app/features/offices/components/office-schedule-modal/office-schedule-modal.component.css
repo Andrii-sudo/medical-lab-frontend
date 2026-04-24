@@ -1,0 +1,81 @@
+.schedule-grid 
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.grid-header 
+{
+    display: grid;
+    grid-template-columns: 6rem 1fr 1.5rem 1fr;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #a0c4f1;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #374151;
+}
+
+.grid-row 
+{
+    display: grid;
+    grid-template-columns: 6rem 1fr 1.5rem 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.day-name 
+{
+    font-size: 0.94rem;
+    color: #e2e8f0;
+}
+
+.time-input 
+{
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #15376e;
+    border-radius: 0.45rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.94rem;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.time-input:focus 
+{
+    border-color: #4a90e2;
+}
+
+/* Робить іконку годинника білою */
+.time-input::-webkit-calendar-picker-indicator
+{
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.time-input::-webkit-calendar-picker-indicator:hover
+{
+    opacity: 1;
+}
+
+.separator 
+{
+    text-align: center;
+    color: #94a3b8;
+}
+
+.row-error 
+{
+    position: absolute;
+    bottom: -1rem;
+    left: 6.5rem;
+    font-size: 0.75rem;
+    color: #f87171;
+    white-space: nowrap;
+}
