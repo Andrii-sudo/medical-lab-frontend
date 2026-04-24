@@ -1,0 +1,46 @@
+<app-navbar />
+
+<main class="content">
+    <div class="top-bar">
+        <h2>Наші аналізи</h2>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrapper">
+            <input 
+                type="text" 
+                placeholder="Введіть назву аналізу для пошуку..." 
+                [value]="searchTerm" 
+                (input)="onSearchChange($event)" />
+            <img src="icons/search.svg" alt="" class="search-icon" />
+        </div>
+    </div>
+
+    <div class="cards-grid">
+        @for (analysis of analyses; track analysis.id)
+        {
+            <div class="analysis-card">
+                <div class="card-title">{{ analysis.name }}</div>
+                
+                <div class="card-bottom">
+                    <div class="duration">
+                        <span class="lbl">Термін виконання</span>
+                        <span class="val">{{ analysis.expiryDays }} дн.</span>
+                    </div>
+                    <div class="price">
+                        {{ analysis.price }} грн
+                    </div>
+                </div>
+            </div>
+        }
+        @empty 
+        {
+            <div class="empty-state">Аналізів не знайдено</div>
+        }
+    </div>
+
+    <app-pagination 
+        [selectedPage]="selectedPage"
+        [pageCount]="pageCount" 
+        (changePage)="loadPage($event)" />
+</main>

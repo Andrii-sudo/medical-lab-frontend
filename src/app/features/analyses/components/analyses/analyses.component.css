@@ -1,0 +1,139 @@
+.top-bar
+{
+    color: white;
+}
+
+.toolbar 
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-wrapper
+{
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-wrapper input
+{	
+    background-color: #1f2937;
+    color: #e2e8f0;
+    width: 100%;
+    border: 1px solid #374151;
+    border-radius: 0.4rem;
+    padding: 0.5rem 3.25rem 0.5rem 0.75rem;
+    box-sizing: border-box;
+    font-size: 0.94rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-wrapper input:focus
+{
+    border-color: #4a90e2;
+}
+
+.search-icon 
+{
+    position: absolute;
+    right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.6;
+}
+
+.cards-grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.analysis-card
+{
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 0.6rem;
+    height: 10rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.analysis-card:hover
+{
+    transform: translateY(-3px);
+    border-color: #4a90e2;
+}
+
+.card-title
+{
+    text-align: right;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1.4;
+}
+
+.card-bottom
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.duration
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.duration .lbl
+{
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.duration .val
+{
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #a0c4f1;
+}
+
+.price
+{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4a90e2;
+}
+
+.price span
+{
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.empty-state
+{
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #94a3b8;
+    padding: 3rem 0;
+    font-size: 1rem;
+}

@@ -21,6 +21,12 @@
             <li><a routerLink="/employees-schedule" routerLinkActive="active" (click)="closeMenu()">Розклад працівників</a></li>
             <li><a routerLink="/offices"            routerLinkActive="active" (click)="closeMenu()">Відділення</a></li>
         }
+        @if (!userRole() || userRole() === UserRole.Patient)
+        {
+            <li><a routerLink="/analyses" routerLinkActive="active" (click)="closeMenu()">Аналізи</a></li>
+            <li><a routerLink="/offices"  routerLinkActive="active" (click)="closeMenu()">Відділення</a></li>
+        }
+
     </ul>
 
     <div class="nav-footer">

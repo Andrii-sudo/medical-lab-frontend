@@ -11,9 +11,11 @@ import { authGuard } from '@core/auth/guards/auth.guard';
 import { EmployeesComponent } from '@features/employees/components/employees.component';
 import { EmployeesScheduleComponent } from '@features/employees-schedule/components/employees-schedule.component';
 import { OfficesComponent } from '@features/offices/components/offices.component';
+import { AnalysesComponent } from '@features/analyses/components/analyses/analyses.component';
 
 export const routes: Routes = 
 [
+    { path: 'analyses',  component: AnalysesComponent },
     { path: 'login',     component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'patients',  component: PatientsComponent,  canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
@@ -30,7 +32,7 @@ export const routes: Routes =
         data: { roles: [UserRole.Admin] } 
     },
 
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: '', redirectTo: '/analyses', pathMatch: 'full' },
     { 
         path: '403', component: ErrorPageComponent, 
         data: 
