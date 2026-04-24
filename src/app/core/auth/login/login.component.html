@@ -6,19 +6,35 @@
         [errorText]="errorMessage" 
         width="25rem">
         <form id="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="form-block">
-                <label for="email">Email</label>
-                <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>
-                
-                @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
-                {
-                    <span class="form-error">Email обов'язковий</span>
-                }
-                @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
-                {
-                    <span class="form-error">Неправильний формат email</span>
-                }
-            </div>
+            @if (isPatient) 
+            {
+                <div class="form-block">
+                    <label for="phone">Номер телефону</label>
+                    <input formControlName="phone" type="text" id="phone" placeholder="Вкажіть номер"/>
+                    
+                    @if (loginForm.get('phone')?.touched && loginForm.get('phone')?.hasError('required')) 
+                    {
+                        <span class="form-error">Номер телефону обов'язковий</span>
+                    }
+                </div>
+            }
+            @else 
+            {
+                <div class="form-block">
+                    <label for="email">Email</label>
+                    <input formControlName="email" type="email" id="email" placeholder="Вкажіть Email"/>
+                    
+                    @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) 
+                    {
+                        <span class="form-error">Email обов'язковий</span>
+                    }
+                    @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email'))
+                    {
+                        <span class="form-error">Неправильний формат email</span>
+                    }
+                </div>
+            }
+
             <div class="form-block">
                 <label for="password">Пароль</label>
                 <div class="password-wrapper">

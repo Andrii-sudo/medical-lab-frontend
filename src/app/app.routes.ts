@@ -16,14 +16,15 @@ import { AnalysesComponent } from '@features/analyses/components/analyses/analys
 export const routes: Routes = 
 [
     { path: 'analyses',  component: AnalysesComponent },
+    { path: 'offices',   component: OfficesComponent },
     { path: 'login',     component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'patients',  component: PatientsComponent,  canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'orders',    component: OrdersComponent,    canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
     { path: 'samples',   component: SamplesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
-    { path: 'results',   component: ResultsComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee] } },
+    { path: 'results',   component: ResultsComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin, UserRole.Employee, UserRole.Patient] } },
     { path: 'employees', component: EmployeesComponent, canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
-    { path: 'offices',   component: OfficesComponent,   canMatch: [authGuard], data: { roles: [UserRole.Admin] } },
+    
     
     { 
         path: 'employees-schedule', 

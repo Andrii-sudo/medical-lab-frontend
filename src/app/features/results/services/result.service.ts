@@ -56,4 +56,13 @@ export class ResultService
     {
         return this.http.put<void>(this.apiUrl, requestData);
     }
+
+    getPatientResultsPage(page: number, pageSize: number): Observable<ResultPage>
+    {
+        let params = new HttpParams()
+            .set("page", page)
+            .set("pageSize", pageSize);
+            
+        return this.http.get<ResultPage>(`${this.apiUrl}/my`, { params });
+    }
 }

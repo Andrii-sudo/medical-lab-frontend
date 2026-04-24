@@ -7,6 +7,8 @@ import { OfficeFormComponent } from './office-form/office-form.component';
 import { FormsModule } from '@angular/forms';
 import { OfficeType } from '@core/enums/office-type';
 import { OfficeScheduleModalComponent } from './office-schedule-modal/office-schedule-modal.component';
+import { AuthService } from '@core/auth/auth.service';
+import { UserRole } from '@core/auth/user-role.enum';
 
 @Component({
     selector: 'app-offices',
@@ -17,6 +19,11 @@ import { OfficeScheduleModalComponent } from './office-schedule-modal/office-sch
 export class OfficesComponent implements OnInit
 {
     private officeService = inject(OfficeService);
+    private authService = inject(AuthService);
+
+    UserRole = UserRole;
+    userRole = this.authService.userRole; 
+
 
     cities: string[] = [];
     selectedCity = '';
@@ -35,6 +42,11 @@ export class OfficesComponent implements OnInit
 
     ngOnInit(): void 
     {
+        if (this.userRole() !== UserRole.Admin)
+        {
+            this.selectedType = OfficeType.Collection;
+        }
+
         this.officeService.getCities().subscribe(
         {
             next: cities => this.cities = cities,

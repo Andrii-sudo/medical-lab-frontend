@@ -3,7 +3,8 @@
     width="32rem"
     title="Розклад: Відділення №{{ office().number }}" 
     [errorText]="errorMessage"
-    submitText="Зберегти" 
+    [cancelText]="cancelText"
+    [submitText]="submitText" 
     (cancel)="onCancel()">
     
     <form id="schedule-form" [formGroup]="scheduleForm" (ngSubmit)="onSubmit()">

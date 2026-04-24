@@ -2,19 +2,22 @@
 
 <main class="content">
     <div class="top-bar">
-        <h2>Результати</h2>
+        <h2>{{ userRole() === UserRole.Patient ? 'Мої' : '' }} Результати</h2>
     </div>
 
-    <div class="toolbar">
-        <div class="search-wrapper">
-            <input type="text" [placeholder]="searchPlaceholder" [value]="searchTerm" (input)="onSearchChange($event)" />
-            <img src="icons/search.svg" alt="" class="search-icon" />
+    @if (userRole() !== UserRole.Patient)
+    {
+        <div class="toolbar">
+            <div class="search-wrapper">
+                <input type="text" [placeholder]="searchPlaceholder" [value]="searchTerm" (input)="onSearchChange($event)" />
+                <img src="icons/search.svg" alt="" class="search-icon" />
+            </div>
+            <select class="slc-filter" [(ngModel)]="searchType" (ngModelChange)="loadPage(1)">
+                <option [value]="SearchType.Order">Пошук за номером замовлення</option>
+                <option [value]="SearchType.Patient">Пошук за пацієнтом</option>
+            </select>
         </div>
-        <select class="slc-filter" [(ngModel)]="searchType" (ngModelChange)="loadPage(1)">
-            <option [value]="SearchType.Order">Пошук за номером замовлення</option>
-            <option [value]="SearchType.Patient">Пошук за пацієнтом</option>
-        </select>
-    </div>
+    }
 
     <div class="table-panel">
         <div class="app-table">
@@ -41,7 +44,10 @@
                     <div class="col-action">
                         @if (result.status === ResultStatus.Pending)
                         {
-                            <button class="btn-action btn-enter-result" (click)="onEnterResult(result)">Внести результати</button>
+                            @if (userRole() !== UserRole.Patient)
+                            {
+                                <button class="btn-action btn-enter-result" (click)="onEnterResult(result)">Внести результати</button>
+                            }
                         }
                         @else if (result.status === ResultStatus.Normal || result.status === ResultStatus.Abnormal) 
                         {
@@ -60,7 +66,7 @@
             }
             @empty 
             {
-                <div class="empty-state">Зразків не знайдено</div>
+                <div class="empty-state">Результатів не знайдено</div>
             }
         </div>
     </div>

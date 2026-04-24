@@ -18,14 +18,37 @@ export class LoginComponent
 	private router = inject(Router);
 	private authService = inject(AuthService);
 	
-	loginForm = this.fb.group({
-		email: ['', [Validators.required, Validators.email]],
-		password: ['', [Validators.required, Validators.minLength(6)]]
-	});
+	loginForm!: FormGroup;
 	
-	formFor = 'Employee'; // Передаватиметься через state
+	isPatient = false; 
 	showPassword = false;
 	errorMessage = '';
+
+	constructor()
+    {
+        const navState = history.state;
+        if (navState && navState.isPatient !== undefined)
+        {
+            this.isPatient = navState.isPatient;
+        }
+
+		if (this.isPatient) 
+        {
+            this.loginForm = this.fb.group(
+			{
+                phone: ['', [Validators.required]], 
+                password: ['', [Validators.required, Validators.minLength(6)]]
+            });
+        } 
+        else 
+        {
+            this.loginForm = this.fb.group(
+			{
+                email: ['', [Validators.required, Validators.email]],
+                password: ['', [Validators.required, Validators.minLength(6)]]
+            });
+        }
+    }
 
 	togglePassword(): void
 	{
@@ -40,15 +63,15 @@ export class LoginComponent
 			return;
 		}
 		
-		if (this.formFor === 'Employee')
+		if (this.isPatient)
 		{
 			const data = this.loginForm.value;
-			this.authService.loginEmployee(data.email!, data.password!)
+			this.authService.loginPatient(data.phone!, data.password!)
 				.subscribe(
 				{ 
 					next: () => 
 					{
-						this.router.navigate(['/dashboard']);
+						this.router.navigate(['/analyses']);
 					}, 
 					error: err => 
 					{
@@ -57,9 +80,22 @@ export class LoginComponent
 					} 
 				});
 		}
-		else if (this.formFor === 'Patient')
+		else
 		{
-			//
+			const data = this.loginForm.value;
+			this.authService.loginEmployee(data.email!, data.password!)
+				.subscribe(
+				{ 
+					next: () => 
+					{
+						this.router.navigate(['/patients']);
+					}, 
+					error: err => 
+					{
+						console.error(err);
+						this.errorMessage = err.error.msg;
+					} 
+				});
 		}
 	}
 }
