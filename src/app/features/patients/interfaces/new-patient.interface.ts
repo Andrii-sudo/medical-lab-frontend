@@ -7,4 +7,5 @@ export interface NewPatient
     gender: string;
     phone: string;
     email?: string;
+    password: string;
 }

@@ -6,6 +6,7 @@
 
 <nav [class.open]="isOpen">
     <button class="btn-navbar-close" (click)="closeMenu()">&#8592;</button>
+    <h1 class="nav-logo">Med<span>Lab</span></h1>
     <ul class="nav-links">
         @if (userRole() === UserRole.Employee)
         {
@@ -39,7 +40,7 @@
     </ul>
 
     <div class="nav-footer">
-        @if (userRole() === UserRole.Employee)
+        @if (userRole() === UserRole.Employee || userRole() === UserRole.Admin)
         {
             <div class="current-office">
                 <label for="office-select" class="office-label">Поточне відділення:</label>

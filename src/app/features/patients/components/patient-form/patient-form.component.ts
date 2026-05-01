@@ -40,7 +40,8 @@ export class PatientFormComponent implements OnInit
             birthDate:  [this.formatDate(this.patient()?.birthDate), Validators.required],
             gender:     [this.patient()?.gender ?? '', Validators.required],
             phone:      [this.patient()?.phone ?? null, [Validators.required, Validators.pattern(/^\+?[\d\s\-()]{7,18}$/)]],
-            email:      [this.patient()?.email ?? null, Validators.email]
+            email:      [this.patient()?.email ?? null, Validators.email],
+            password:   [null, !this.patient() ? [Validators.required, Validators.minLength(6)] : []]
         });
         this.today = this.formatDate(new Date());
     }

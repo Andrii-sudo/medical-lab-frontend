@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit
     {
         
         const userId = this.authService.userId();
-        if (userId && this.userRole() === UserRole.Employee)
+        if (userId && this.userRole() !== UserRole.Patient)
         {   
             this.selcOfficeService.getEmployeeOffices(userId)
                 .subscribe({ 
@@ -89,6 +89,6 @@ export class NavbarComponent implements OnInit
     {
         this.authService.logout().subscribe({ error: err => console.error(err) });
         this.selcOfficeService.selectedOffice.set(null);
-        this.router.navigate(['/login']);
+        this.router.navigate(['']);
     }
 }

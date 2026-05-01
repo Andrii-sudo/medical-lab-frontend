@@ -46,6 +46,25 @@
     background: rgba(77, 166, 255, 0.2);
 }
 
+h1 
+{
+    margin: 0;
+}
+
+.nav-logo
+{
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #a0c4f1;
+    letter-spacing: 0.05em;
+    padding: 0 0 1.5rem 1rem;
+}
+
+.nav-logo span
+{
+    color: #4da6ff;
+}
+
 nav
 {
     display: flex;

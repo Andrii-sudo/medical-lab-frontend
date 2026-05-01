@@ -79,5 +79,22 @@
                 }
             </div>
         </div>
+        @if (!patient())
+            {
+                <div class="form-block">
+                    <label for="password">Пароль</label>
+                    <input formControlName="password" type="password" id="password" 
+                        placeholder="Мінімум 6 символів" />
+                    
+                    @if (patientForm.get('password')?.touched && patientForm.get('password')?.hasError('required'))
+                    {
+                        <span class="form-error">Пароль обов'язковий</span>
+                    }
+                    @else if (patientForm.get('password')?.touched && patientForm.get('password')?.hasError('minlength'))
+                    {
+                        <span class="form-error">Мінімум 6 символів</span>
+                    }
+                </div>
+            }
     </form>
 </app-modal>
